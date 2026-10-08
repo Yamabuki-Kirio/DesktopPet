@@ -19,6 +19,20 @@
 ## 目录结构
 
 ```
+
+### 目录用途速查
+
+| 目录 | 用途 | 是否参与客户端构建 |
+| --- | --- | --- |
+| [`lib/`](lib/) | Flutter/Dart 主程序、共享业务、页面与平台适配 | 是 |
+| [`android/`](android/) | Android Gradle 工程与 Kotlin 悬浮桌宠 | 是（Android） |
+| [`windows/`](windows/) | Windows Runner、CMake 与原生窗口通道 | 是（Windows） |
+| [`assets/`](assets/) | 随客户端打包的静态资源 | 是 |
+| [`test/`](test/) | Dart、Widget、平台契约与回归测试 | 否 |
+| [`server/`](server/) | FastAPI、PostgreSQL、迁移、MCP 与服务端测试 | 独立部署 |
+| [`docs/`](docs/) | 架构、协议、构建和阶段交付文档 | 否 |
+| [`tools/`](tools/) | 开发、诊断、资源生成和端到端脚本 | 否 |
+| [`snapshots/`](snapshots/) | 历史源码快照，仅用于回溯 | 否 |
 petlife/
 ├── lib/                     # Flutter 应用源码（Dart）
 │   ├── activity_tracking/   #   前台应用与使用时长采集
