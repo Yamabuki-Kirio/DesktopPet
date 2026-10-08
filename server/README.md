@@ -1,5 +1,7 @@
 # PetLife 服务端（Phase 2）
 
+本目录是独立部署的云端组件，包含 FastAPI API、PostgreSQL/Alembic 迁移、同步服务和 MCP Server；它不随 Windows 或 Android 客户端一起打包。
+
 账户 / 设备 / 使用数据同步服务。**只接收应用使用时长与分类**，
 不接受窗口标题、URL、文档名、本地完整路径、截图或素材文件。
 
