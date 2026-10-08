@@ -8,3 +8,5 @@
 - `gradle/`：Gradle Wrapper 配置。
 
 应用的共享业务与 Flutter 界面仍位于仓库根目录的 `lib/`。构建与签名说明见 [`../docs/28-Android构建与签名.md`](../docs/28-Android构建与签名.md)。
+
+维护边界：这里只放 Android 平台工程；账户、同步和通用页面修改应优先放在 `lib/`。
