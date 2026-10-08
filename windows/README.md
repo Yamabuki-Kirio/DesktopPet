@@ -9,3 +9,5 @@ flutter build windows --release
 ```
 
 分发时必须复制整个 `build/windows/x64/runner/Release/` 目录，不能只分发 `petlife.exe`。
+
+维护边界：这里只维护 Windows Runner 和原生桥接；轮盘业务与 Flutter 绘制仍位于 `lib/`。
