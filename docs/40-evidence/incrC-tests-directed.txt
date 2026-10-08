@@ -1,0 +1,228 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart
+00:00 +0: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +1: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +2: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +3: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +4: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +5: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +6: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +7: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +8: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +9: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +10: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +11: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +12: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +13: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +14: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +15: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +16: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +17: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +18: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +19: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_tap_wheel_chain_test.dart: 手势遮挡（1） closed：点轮盘区域时事件落到**下层**（轮盘不抢命中）
+00:00 +20: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_context_menu_test.dart: Overlay 真实行为（10 / 11） 10d. 内容可滚动：滚轮改变滚动偏移
+00:00 +21: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_context_menu_test.dart: Overlay 真实行为（10 / 11） 10d. 内容可滚动：滚轮改变滚动偏移
+00:00 +22: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_context_menu_test.dart: Overlay 真实行为（10 / 11） 10d. 内容可滚动：滚轮改变滚动偏移
+00:00 +23: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_context_menu_test.dart: Overlay 真实行为（10 / 11） 10d. 内容可滚动：滚轮改变滚动偏移
+00:00 +24: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +25: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +26: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +27: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +28: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +29: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +30: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +31: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +32: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +33: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +34: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +35: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +36: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +37: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +38: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +39: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +40: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +41: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +42: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +43: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +44: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +45: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +46: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +47: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +48: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +49: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +50: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +51: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +52: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +53: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +54: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +55: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +56: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +57: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +58: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +59: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +60: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +61: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +62: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +63: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +64: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +65: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +66: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +67: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +68: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +69: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +70: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +71: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +72: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +73: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +74: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +75: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +76: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +77: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +78: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +79: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +80: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +81: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +82: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +83: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +84: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +85: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +86: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +87: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +88: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +89: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +90: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +91: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +92: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +93: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +94: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +95: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +96: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +97: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +98: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +99: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +100: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +101: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +102: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +103: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +104: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +105: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +106: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +107: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +108: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +109: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +110: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +111: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +112: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +113: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +114: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:01 +115: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:01 +116: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:01 +117: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +118: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +119: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +120: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +121: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +122: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +123: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +124: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +125: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +126: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +127: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +128: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +129: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +130: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +131: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +132: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +133: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +134: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +135: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +136: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 子菜单里按 Esc → 先返回上一层（不关闭）；根菜单再按 Esc → 关闭
+00:01 +137: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 子菜单里按 Esc → 先返回上一层（不关闭）；根菜单再按 Esc → 关闭
+00:01 +138: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 子菜单里按 Esc → 先返回上一层（不关闭）；根菜单再按 Esc → 关闭
+00:01 +139: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 子菜单里按 Esc → 先返回上一层（不关闭）；根菜单再按 Esc → 关闭
+00:01 +140: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 子菜单里按 Esc → 先返回上一层（不关闭）；根菜单再按 Esc → 关闭
+00:01 +141: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 子菜单里按 Esc → 先返回上一层（不关闭）；根菜单再按 Esc → 关闭
+00:01 +142: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 子菜单里按 Esc → 先返回上一层（不关闭）；根菜单再按 Esc → 关闭
+00:01 +143: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #4 菜单开 / 关与层级切换都不改变画布计划、也不再提交窗口矩形
+00:01 +144: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #4 菜单开 / 关与层级切换都不改变画布计划、也不再提交窗口矩形
+00:01 +145: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #4 菜单开 / 关与层级切换都不改变画布计划、也不再提交窗口矩形
+00:01 +146: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #4 菜单开 / 关与层级切换都不改变画布计划、也不再提交窗口矩形
+00:01 +147: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 滑选中的 Esc = 取消这次滑选（不改层级、不关闭）
+00:01 +148: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 滑选中的 Esc = 取消这次滑选（不改层级、不关闭）
+00:01 +149: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 滑选中的 Esc = 取消这次滑选（不改层级、不关闭）
+00:01 +150: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 滑选中的 Esc = 取消这次滑选（不改层级、不关闭）
+00:01 +151: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 滑选中的 Esc = 取消这次滑选（不改层级、不关闭）
+00:01 +152: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5/#6 几何设置变化：关闭态只重建一次，桌宠屏幕锚点误差 ≤ 1px
+00:01 +153: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5/#6 几何设置变化：关闭态只重建一次，桌宠屏幕锚点误差 ≤ 1px
+00:01 +154: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5/#6 几何设置变化：关闭态只重建一次，桌宠屏幕锚点误差 ≤ 1px
+00:01 +155: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5/#6 几何设置变化：关闭态只重建一次，桌宠屏幕锚点误差 ≤ 1px
+00:01 +156: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5/#6 几何设置变化：关闭态只重建一次，桌宠屏幕锚点误差 ≤ 1px
+00:01 +157: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5/#6 几何设置变化：关闭态只重建一次，桌宠屏幕锚点误差 ≤ 1px
+00:01 +158: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5/#6 几何设置变化：关闭态只重建一次，桌宠屏幕锚点误差 ≤ 1px
+00:01 +159: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: #1a 挂载前已起动画时，挂载后 Ticker 必须自己启动（否则整帧不画）
+00:01 +160: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: #1a 挂载前已起动画时，挂载后 Ticker 必须自己启动（否则整帧不画）
+00:01 +161: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/panel_transition_test.dart: #5 Region 在进入面板前先被清除；#11 先 dismiss 弹窗再清 Region
+00:01 +162: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/panel_transition_test.dart: #5 Region 在进入面板前先被清除；#11 先 dismiss 弹窗再清 Region
+00:01 +163: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/panel_transition_test.dart: #5 Region 在进入面板前先被清除；#11 先 dismiss 弹窗再清 Region
+00:01 +164: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/panel_transition_test.dart: #5 Region 在进入面板前先被清除；#11 先 dismiss 弹窗再清 Region
+00:01 +165: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/panel_transition_test.dart: #5 Region 在进入面板前先被清除；#11 先 dismiss 弹窗再清 Region
+00:01 +166: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/panel_transition_test.dart: #5 Region 在进入面板前先被清除；#11 先 dismiss 弹窗再清 Region
+00:01 +167: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5 轮盘打开时改设置：先关闭再重建，仍然是"一次窗口提交"
+00:01 +168: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5 轮盘打开时改设置：先关闭再重建，仍然是"一次窗口提交"
+00:01 +169: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5 轮盘打开时改设置：先关闭再重建，仍然是"一次窗口提交"
+00:01 +170: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5 轮盘打开时改设置：先关闭再重建，仍然是"一次窗口提交"
+00:01 +171: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5 轮盘打开时改设置：先关闭再重建，仍然是"一次窗口提交"
+00:01 +172: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5 轮盘打开时改设置：先关闭再重建，仍然是"一次窗口提交"
+00:01 +173: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/panel_transition_test.dart: 返回失败（Region 应用失败）→ 回滚到普通矩形窗口并给显式错误
+00:01 +174: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: closed 状态下 WheelMenuView 层不参与命中测试（IgnorePointer 口径）
+00:01 +175: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #13 面板返回：采用已提交画布（不再自行提交），并刷新计划快照
+00:01 +176: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #13 面板返回：采用已提交画布（不再自行提交），并刷新计划快照
+00:01 +177: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: 桌面专属实现只出现在平台层 / 桌面 UI / 装配点
+00:01 +178: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: 桌面专属实现只出现在平台层 / 桌面 UI / 装配点
+00:02 +179: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: 桌面专属实现只出现在平台层 / 桌面 UI / 装配点
+00:02 +180: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #16 左键打开后展开动画真的推进（Ticker 启动 + 首帧不吞掉终态）
+00:02 +181: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: Platform.is* 只在平台层出现（不存在散落的平台分支）
+00:02 +182: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: Platform.is* 只在平台层出现（不存在散落的平台分支）
+00:02 +183: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: Platform.is* 只在平台层出现（不存在散落的平台分支）
+00:02 +184: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: Android 编译单元只依赖中立接口
+00:02 +185: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: 平台装配点确实同时认识两个平台（否则隔离只是假象）
+00:02 +186: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: 窗口与托盘是中立接口，实现在平台层
+00:02 +187: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: Android 权限清单精确可控（Phase 4C 只有悬浮窗 / 前台服务 / 使用情况访问）
+00:02 +188: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: Android 应用标识与最低版本已按 Phase 4A 要求配置
+00:02 +189: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_region_transaction_test.dart: #3 正常路径：放大 → body → 恢复（顺序正确，且凭据被透传）
+00:02 +190: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_region_transaction_test.dart: #4 异常路径：body 抛错仍然恢复 Region（finally）
+00:02 +191: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_region_transaction_test.dart: expand 抛错时不进入 body（且不吞掉异常）
+00:02 +192: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_region_transaction_test.dart: 未注入端口（null）时事务是纯 body：不写 Region，也不炸
+00:02 +193: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_region_transaction_test.dart: expand 未拿到凭据（RegionLease.none）时，恢复侧拿到的是失效凭据
+00:02 +194: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_region_transaction_test.dart: ContextMenuBridge（切面板前主动 dismiss） register → dismissAndWait 会调用 dismiss 并等待关闭
+00:02 +195: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_region_transaction_test.dart: ContextMenuBridge（切面板前主动 dismiss） 未打开菜单时 dismissAndWait 是安全的空操作
+00:02 +196: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 锚点解析（纯逻辑） #1 有指针坐标时，锚点 = 指针（不是画布右下角）
+00:02 +197: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 锚点解析（纯逻辑） #4 指针缺失 → 回退到桌宠矩形右下角（绝不用画布右下角）
+00:02 +198: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 锚点解析（纯逻辑） 锚点被夹取到 Overlay 内（不会整体跑到窗口外）
+00:02 +199: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +200: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +201: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +202: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +203: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +204: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +205: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +206: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +207: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +208: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +209: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +210: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +211: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +212: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +213: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +214: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +215: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +216: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:02 +217: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:03 +218: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:03 +219: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:03 +220: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:03 +221: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2a 桌宠靠左下：菜单贴近指针且完整落在窗口内
+00:03 +222: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_view_geometry_guard_test.dart: #11 关闭菜单（owner 回到 pet）后，pet 尺寸跟随仍正常工作
+00:03 +223: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/context_menu_anchor_test.dart: 真实 showMenu 定位（不再钉在画布右下角 + 自动翻转不越界） #2b 桌宠靠右下：菜单自动避开右下角并保持完整可见
+00:03 +224: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/pet_view_geometry_guard_test.dart: #12 单击 / 双击 / 右键回调仍接线（右键菜单与双击面板入口不回归）
+00:03 +225: All tests passed!

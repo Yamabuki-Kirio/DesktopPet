@@ -1,0 +1,3 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+Building Windows application...                                   213.9s
+鈭?Built build_incrC111\windows\x64\runner\Release\petlife.exe

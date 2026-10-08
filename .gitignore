@@ -1,0 +1,88 @@
+# ==============================================================================
+# PetLife .gitignore
+#
+# 仓库根目录 = petlife/ （Flutter 桌面/移动端 + server/ Python 后端）
+# 原则：只提交源码、配置与项目文档；构建产物、本地运行时、密钥、打包件一律不入库。
+#
+# 注意：.gitignore 只对「尚未被追踪」的文件生效。
+#       如果某个目录在你添加本文件之前已经被 git 追踪过，需要先执行：
+#           git rm -r --cached <路径>
+#       才能真正把它移出仓库。
+# ==============================================================================
+
+
+# ------------------------------ Flutter / Dart ------------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+/build/
+/dist/
+/windows/flutter/ephemeral/
+
+# 说明：pubspec.lock 是「应用」类型项目（project_type: app）的应提交文件，
+#       它锁定了可直接复现的依赖版本，因此**不**忽略。
+#       （早期版本的 .gitignore 曾忽略它，现已修正。）
+
+
+# ------------------------- 构建产物与本地工作区 ------------------------------
+# 每个增量版本的独立构建目录：build_incrA / build_incrB / ... / build_incrC2 等
+/build_*/
+# Windows 回归测试工作区
+/petlife_win_regress_*/
+
+
+# ------------------------------- 打包产物 ------------------------------------
+# 仓库根目录下的 APK / 压缩包（源码快照 zip 在 snapshots/ 内，不受此规则影响）
+/*.apk
+/*.zip
+/*.rar
+
+
+# -------------------------------- Android ------------------------------------
+android/.gradle/
+android/.kotlin/
+android/local.properties
+android/key.properties
+*.jks
+*.keystore
+
+
+# ----------------------------- Python 后端 -----------------------------------
+# （server/.gitignore 也覆盖了同样的规则，此处重复是为了让根目录一览无余）
+server/.python/
+server/**/__pycache__/
+server/**/*.py[cod]
+server/.pytest_cache/
+server/.mypy_cache/
+server/.ruff_cache/
+server/*.db
+server/*.db-wal
+server/*.db-shm
+server/*.sqlite3
+server/.env
+server/.env.*
+!server/.env.example
+
+
+# --------------------------- 编辑器 / 操作系统 -------------------------------
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*.suo
+*.user
+Thumbs.db
+desktop.ini
+
+
+# ----------------------------- 日志与临时文件 --------------------------------
+*.log
+.tmp_*
+*.tmp
+
+
+# ------------------------- AI 协作工作区 -------------------------------------
+# AI 协作工具的本地记忆、探针和临时状态不进入版本库。
+.workbuddy/

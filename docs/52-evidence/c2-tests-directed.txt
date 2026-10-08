@@ -1,0 +1,193 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart
+00:00 +0: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂16.1 娉ㄥ唽琛ㄥ畬鏁存€?validate() 鏃犻棶棰橈紙鍙跺瓙鍔ㄤ綔鍏ㄩ儴鏈変笖浠呮湁鍞竴璺敱锛?00:00 +1: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂16.1 娉ㄥ唽琛ㄥ畬鏁存€?鍙跺瓙鍔ㄤ綔鎬绘暟涓?26锛堣彍鍗曠洰褰曢噷鐨勯潪瀵艰埅鏉＄洰锛?00:00 +2: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂16.1 娉ㄥ唽琛ㄥ畬鏁存€?姣忎釜鍙跺瓙鍔ㄤ綔閮借兘瑙ｆ瀽鍑鸿矾鐢憋紝涓?*娌℃湁**鍙跺瓙鏄彍鍗曟爤鍔ㄤ綔
+00:00 +3: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂16.1 娉ㄥ唽琛ㄥ畬鏁存€?鑿滃崟鏍堝姩浣滐紙杩斿洖 / 杩涘叆瀛愯彍鍗曪級涓嶅湪鍙跺瓙鍔ㄤ綔閲?00:00 +4: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂16.1 娉ㄥ唽琛ㄥ畬鏁存€?canonical 鍔ㄤ綔 id 鏃犻噸澶嶏紙Set 璇箟 + 瀹氫箟榻愬叏锛?00:00 +5: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂16.1 娉ㄥ唽琛ㄥ畬鏁存€?涓氬姟鍔ㄤ綔闆嗗悎鑷冲皯瑕嗙洊璁板綍 / 鍚屾 / 褰㈣薄 / 妗屽疇 / 璁剧疆椤?00:00 +6: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂16.1 娉ㄥ唽琛ㄥ畬鏁存€?绐楀彛绾у姩浣滃綊鍏?nativeWindow锛堜笉璧颁笟鍔￠€氶亾锛?00:00 +7: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂16.1 娉ㄥ唽琛ㄥ畬鏁存€?鍥涗釜璁剧疆鍏ュ彛褰掑叆 wheelAdjust锛堢敱鑿滃崟鏍堝鐞嗭級
+00:00 +8: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂16.1 娉ㄥ唽琛ㄥ畬鏁存€?鍙淇℃伅椤瑰綊鍏?info
+00:00 +9: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂15 姝ｅ紡鐩綍閲屾病鏈変换浣曟硾鍖栧崰浣?閬嶅巻鍏ㄩ儴鍙跺瓙鍔ㄤ綔锛氫笉寰楀嚭鐜?涓嶆敮鎸?/ 灏氭湭鎺ュ叆 / 澧為噺 C2"瀛楁牱
+00:00 +10: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂15 姝ｅ紡鐩綍閲屾病鏈変换浣曟硾鍖栧崰浣?鍏ㄩ儴涓氬姟鍔ㄤ綔閮界湡鐨勫埌杈惧敮涓€涓氬姟閫氶亾
+00:00 +11: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂3.1 鍞竴涓氬姟鍏ュ彛 WheelMenuActionDispatcher dispatch() 鎶婂姩浣滆浆浜や笟鍔￠€氶亾
+00:00 +12: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂3.1 鍞竴涓氬姟鍏ュ彛 WheelMenuActionDispatcher 鑿滃崟鏍堝姩浣滀笉寰楄繘鍏ヤ笟鍔″垎鍙戯紙鏂█鎷︽埅锛?00:00 +13: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂12.1 PanelDestination wireName 鍞竴涓斾笌涓枃鏂囨鏃犲叧
+00:00 +14: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂12.1 PanelDestination fromWire 寰€杩斾竴鑷?00:00 +15: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂12.1 PanelDestination 鑷冲皯鍖呭惈闇€姹?搂12.1 鍒楀嚭鐨?8 涓洰鐨勫湴
+00:00 +16: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂12.1 PanelDestination AppDestination 鈫?PanelDestination 鏄犲皠瑕嗙洊鍏ㄩ儴 6 涓彇鍊?00:00 +17: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂12.1 PanelDestination 瀵艰埅鍔ㄤ綔 鈫?鐩殑鍦板０鏄庝笌 canonical 鎵ц鍣ㄤ竴涓€瀵瑰簲
+00:00 +18: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂12.1 PanelDestination 闇€瑕佺櫥褰曠殑鍔ㄤ綔闆嗗悎鍙惈"绔嬪嵆鍚屾"
+00:00 +19: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂8.1 鍚屾鍙嶉鏂囨 鎴愬姛涓旀湁鏁版嵁 鈫?銆屽悓姝ュ畬鎴愶細涓婁紶 N 鏉★紝涓嬭浇 M 鏉°€?00:00 +20: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂8.1 鍚屾鍙嶉鏂囨 鎴愬姛浣嗘病鏈夋暟鎹?鈫?銆屾病鏈夐渶瑕佸悓姝ョ殑鏁版嵁銆?00:00 +21: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂8.1 鍚屾鍙嶉鏂囨 绂荤嚎 / 闇€閲嶆柊鐧诲綍 / 鏈櫥褰?/ 澶辫触 鍚勮嚜鐨勭畝鐭腑鏂?00:00 +22: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂8.1 鍚屾鍙嶉鏂囨 鏂囨閲屼笉鍑虹幇鑻辨枃寮傚父 / 鎶€鏈粏鑺傦紙搂14锛?00:00 +23: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c2_registry_test.dart: 搂13 WheelFeedbackKind 娲剧敓 鎸夌粨鏋滅姸鎬佹槧灏勶紙鍞竴鎺ㄥ鐐癸級
+00:00 +24: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 绐楀彛绾у姩浣滅湡姝ｆ墽琛?root_hide 闅愯棌绐楀彛
+00:00 +25: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 绐楀彛绾у姩浣滅湡姝ｆ墽琛?root_hide 闅愯棌绐楀彛
+00:00 +26: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 绐楀彛绾у姩浣滅湡姝ｆ墽琛?root_hide 闅愯棌绐楀彛
+00:00 +27: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 绐楀彛绾у姩浣滅湡姝ｆ墽琛?root_hide 闅愯棌绐楀彛
+00:00 +28: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 绐楀彛绾у姩浣滅湡姝ｆ墽琛?pet_size_up / down / reset
+00:00 +29: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 绐楀彛绾у姩浣滅湡姝ｆ墽琛?pet_home 閲嶇疆浣嶇疆
+00:00 +30: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 绐楀彛绾у姩浣滅湡姝ｆ墽琛?tools_open_app 鎵撳紑鎺у埗闈㈡澘
+00:00 +31: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 闇€姹?搂3.1锛氬叏閮ㄤ笟鍔″姩浣滃鎵樺敮涓€涓氬姟閫氶亾 妗屽疇 / 褰㈣薄 / 璁板綍 / 鍚屾 / 璁剧疆 鍏ㄩ儴璧?dispatchBusiness
+00:00 +32: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 闇€姹?搂3.1锛氬叏閮ㄤ笟鍔″姩浣滃鎵樺敮涓€涓氬姟閫氶亾 涓氬姟鍔ㄤ綔涓嶅啀鍑虹幇浠讳綍"澧為噺 C2 鎺ュ叆"鍗犱綅鏂囨
+00:00 +33: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 鍙淇℃伅椤瑰洖鎶ョ湡瀹炵姸鎬?pet_current 鈫?褰撳墠鐘舵€佹枃妗?00:00 +34: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 鍙淇℃伅椤瑰洖鎶ョ湡瀹炵姸鎬?records_app 鈫?褰撳墠搴旂敤鏂囨
+00:00 +35: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 瀵艰埅 / 璋冩暣灞傚叆鍙ｄ笉杩涘叆涓氬姟鎵ц鍣?settings_* 璋冩暣灞傚叆鍙?鈫?unavailable 涓斿師鍥犳寚鍚?鑿滃崟鏍?
+00:00 +36: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 瀵艰埅 / 璋冩暣灞傚叆鍙ｄ笉杩涘叆涓氬姟鎵ц鍣?瀵艰埅椤?鈫?unavailable锛堢敱鑿滃崟鏍堝鐞嗭級
+00:00 +37: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 鏈煡 id 鏈煡 id 鈫?failed 骞堕檮 id
+00:00 +38: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/windows_menu_action_executor_test.dart: 闇€姹?搂3.1锛歞ispatch 鎺ュ彛鎷掔粷鑿滃崟鏍堝姩浣?鑿滃崟鏍堝姩浣滀笉寰楄繘鍏ヤ笟鍔″垎鍙戯紙鏂█鐢熸晥锛?00:00 +39: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂鍏?璇锋眰/骞傜瓑鍩虹 requestId 鍗曡皟閫掑锛宬ey 鍞竴
+00:00 +40: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂鍏?璇锋眰/骞傜瓑鍩虹 鍚屼竴 key 鍙厑璁?begin 涓€娆★紙闃查噸澶嶆姇閫掞級
+00:00 +41: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂鍏?璇锋眰/骞傜瓑鍩虹 瀹归噺涓婇檺浼氭窐姹版渶鏃ц褰曪紙涓嶄細鏃犻檺澧為暱锛?00:00 +42: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +43: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +44: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +45: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +46: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +47: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +48: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +49: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +50: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +51: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +52: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +53: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +54: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +55: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +56: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +57: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +58: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +59: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +60: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +61: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:00 +62: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +63: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +64: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +65: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +66: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +67: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +68: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +69: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +70: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +71: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +72: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +73: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +74: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +75: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +76: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +77: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +77: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鏈櫥褰曟椂鐘舵€佷负 signedOut锛屼笖涓嶅彂浠讳綍缃戠粶璇锋眰
+*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:01 +78: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +79: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +80: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +81: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +82: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +83: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +84: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +85: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.6 涓婚锛氬嵆鏃跺垏鎹笖**涓嶉噸寤?HWND** 璋冩暣灞傞噷閫変富棰?鈫?鍙啓涓婚銆佺獥鍙ｇ煩褰笉鍙樸€佷笉杩涢噸寤轰簨鍔?00:01 +85: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:01 +86: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?00:01 +87: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?00:01 +88: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?00:01 +89: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?00:01 +90: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?00:01 +91: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?00:01 +92: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?00:01 +93: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?00:01 +94: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鐧诲綍 鈫?璁惧娉ㄥ唽 鈫?涓婁紶鍘嗗彶璁板綍 鈫?鐘舵€?success 涓旈槦鍒楁竻绌?00:01 +95: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?澧炲ぇ杞洏澶у皬 鈫?鍐欒缃?+ **鍙噸寤轰竴娆?*鐢诲竷
+00:01 +95: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鎷夊彇浼氭帹杩涙父鏍囷紙鐢ㄤ簬涓庢湇鍔＄瀵归綈锛?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:01 +96: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?澧炲ぇ杞洏澶у皬 鈫?鍐欒缃?+ **鍙噸寤轰竴娆?*鐢诲竷
+00:01 +97: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?澧炲ぇ杞洏澶у皬 鈫?鍐欒缃?+ **鍙噸寤轰竴娆?*鐢诲竷
+00:01 +98: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?澧炲ぇ杞洏澶у皬 鈫?鍐欒缃?+ **鍙噸寤轰竴娆?*鐢诲竷
+00:01 +98: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鐧诲綍涓庡熀鏈悓姝?鍚屼竴涓壒娆￠噸澶嶆彁浜や笉浼氫骇鐢熼噸澶嶆暟鎹紙鏈嶅姟绔箓绛?+ 瀹㈡埛绔‘璁わ級
+*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:01 +99: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?澧炲ぇ杞洏澶у皬 鈫?鍐欒缃?+ **鍙噸寤轰竴娆?*鐢诲竷
+00:01 +100: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?澧炲ぇ杞洏澶у皬 鈫?鍐欒缃?+ **鍙噸寤轰竴娆?*鐢诲竷
+00:01 +100: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鍗曚换鍔′簰鏂?骞跺彂瑙﹀彂鏃朵笉浼氬惎鍔ㄧ浜屼釜鍚屾浠诲姟
+*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:02 +101: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 鍗曚换鍔′簰鏂?骞跺彂瑙﹀彂鏃朵笉浼氬惎鍔ㄧ浜屼釜鍚屾浠诲姟
+00:02 +102: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?鎸夐挳澶у皬 / 鑿滃崟璺濈鍚屾牱璧拌皟鏁村眰
+00:02 +102: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 浠ょ墝鍒锋柊 Access Token 杩囨湡鏃惰嚜鍔ㄥ埛鏂板苟閲嶈瘯涓€娆?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:02 +103: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?鎸夐挳澶у皬 / 鑿滃崟璺濈鍚屾牱璧拌皟鏁村眰
+00:02 +103: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 浠ょ墝鍒锋柊 Refresh Token 澶辨晥 鈫?杩涘叆闇€瑕侀噸鏂扮櫥褰曪紝涓斾笉浼氭棤闄愬埛鏂?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:02 +104: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?鎸夐挳澶у皬 / 鑿滃崟璺濈鍚屾牱璧拌皟鏁村眰
+00:02 +104: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 璁惧鎾ら攢 琚挙閿€璁惧杩涘叆闇€瑕侀噸鏂扮櫥褰曪紝浣嗘湰鍦版暟鎹繚鐣?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:02 +105: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?鎸夐挳澶у皬 / 鑿滃崟璺濈鍚屾牱璧拌皟鏁村眰
+00:02 +105: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 绂荤嚎涓庡け璐ラ噸璇?鏈嶅姟绔笉鍙揪 鈫?waitingForNetwork锛屾暟鎹繚鐣欙紝骞跺畨鎺掗噸璇?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:02 +106: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 绂荤嚎涓庡け璐ラ噸璇?鏈嶅姟绔笉鍙揪 鈫?waitingForNetwork锛屾暟鎹繚鐣欙紝骞跺畨鎺掗噸璇?00:03 +107: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 绂荤嚎涓庡け璐ラ噸璇?鏈嶅姟绔笉鍙揪 鈫?waitingForNetwork锛屾暟鎹繚鐣欙紝骞跺畨鎺掗噸璇?00:04 +108: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 绂荤嚎涓庡け璐ラ噸璇?鏈嶅姟绔笉鍙揪 鈫?waitingForNetwork锛屾暟鎹繚鐣欙紝骞跺畨鎺掗噸璇?00:04 +109: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?搂11.9 閲嶅缓鍚?*鎭㈠鍘熻皟鏁村眰**锛堜笉鏄洖鍒版牴鑿滃崟锛?00:04 +109: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 绂荤嚎涓庡け璐ラ噸璇?鏈嶅姟绔?5xx 鈫?鐘舵€?failed锛屼絾鍚屾牱淇濈暀鏁版嵁骞堕噸璇?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:04 +110: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?搂11.9 閲嶅缓鍚?*鎭㈠鍘熻皟鏁村眰**锛堜笉鏄洖鍒版牴鑿滃崟锛?00:04 +110: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 绂荤嚎涓庡け璐ラ噸璇?缃戠粶鎭㈠鍚庤嚜鍔ㄧ户缁悓姝ワ紙閫€閬胯瑙ｉ櫎锛?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:04 +111: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 绂荤嚎涓庡け璐ラ噸璇?缃戠粶鎭㈠鍚庤嚜鍔ㄧ户缁悓姝ワ紙閫€閬胯瑙ｉ櫎锛?00:04 +112: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 绂荤嚎涓庡け璐ラ噸璇?缃戠粶鎭㈠鍚庤嚜鍔ㄧ户缁悓姝ワ紙閫€閬胯瑙ｉ櫎锛?00:04 +113: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?搂11.8 杩炵画鍔犲噺鍙簲鐢ㄦ渶鏂板€硷紙鏃?revision 琚斁寮冿級
+00:04 +113: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 绂荤嚎涓庡け璐ラ噸璇?鎵归噺瓒呰繃鏈嶅姟绔笂闄愭椂鎸?200 鏉℃媶鎵?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:05 +114: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: 搂11.3/4/5 + 搂11.7 璋冩暣灞傚姞鍑忎笌涓€娆￠噸寤?搂11.8 杩炵画鍔犲噺鍙簲鐢ㄦ渶鏂板€硷紙鏃?revision 琚斁寮冿級
+00:05 +114: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:05 +115: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:05 +116: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:06 +117: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:06 +118: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:06 +119: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:07 +120: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:07 +121: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:07 +122: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:08 +123: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:08 +124: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:08 +125: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:08 +126: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑哄墠蹇€熷悓姝?鏈嶅姟绔緢鎱㈡椂涔熶笉浼氶暱鏃堕棿闃诲閫€鍑?00:10 +127: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑虹櫥褰?鍙竻鐞嗚璇佷俊鎭紝淇濈暀鏈湴璁板綍涓庡緟鍚屾闃熷垪
+*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:10 +128: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 閫€鍑虹櫥褰?閫€鍑虹櫥褰曟椂浼氬敖鍔涢€氱煡鏈嶅姟绔敞閿€
+*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:10 +129: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 澧為噺 C2锛氬悓姝ユ憳瑕?浠庢湭鍚屾杩囨椂鎽樿涓恒€屾病鏈夐渶瑕佸悓姝ョ殑鏁版嵁銆?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:10 +130: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 澧為噺 C2锛氬悓姝ユ憳瑕?涓婁紶 2 鏉″巻鍙茶褰曞悗鎽樿鍚€屼笂浼?2 鏉°€?*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:10 +131: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: 澧為噺 C2锛氬悓姝ユ憳瑕?姣忚疆鍚屾閮戒細閲嶇疆鎽樿绱犳暟锛堜笉浼氳法杞疮鍔狅級
+*** sqflite warning ***
+
+You are changing sqflite default factory.
+Be aware of the potential side effects. Any library using sqflite
+will have this factory as the default for all operations.
+
+*** sqflite warning ***
+
+00:10 +132: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/sync_engine_test.dart: (tearDownAll)
+00:10 +132: All tests passed!

@@ -1,0 +1,122 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart
+00:00 +0: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +1: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +2: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +3: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +4: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +5: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +6: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +7: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +8: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +9: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +10: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +11: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +12: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +13: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +14: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +15: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +16: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +17: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +18: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +19: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +20: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +21: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +22: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +23: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +24: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +25: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +26: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +27: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +28: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +29: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +30: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +31: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +32: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +33: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +34: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +35: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +36: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +37: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +38: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +39: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +40: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +41: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +42: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +43: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +44: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +45: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +46: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +47: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +48: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +49: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +50: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +51: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +52: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +53: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +54: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +55: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +56: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +57: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +58: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +59: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +60: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +61: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +62: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +63: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +64: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +65: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +66: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +67: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +68: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +69: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +70: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +71: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +72: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +73: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +74: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +75: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +76: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +77: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +78: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +79: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +80: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +81: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +82: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +83: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +84: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +85: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +86: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +87: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +88: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +89: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +90: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +91: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +92: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +93: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +94: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +95: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +96: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +97: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +98: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +99: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +100: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +101: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +102: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +103: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #2 桌宠锚点在开合前后不变；#5 仅桌宠 Region 不含画布
+00:00 +104: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #4 镜像只改变菜单局部矩形（桌宠矩形不变）
+00:00 +105: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #11 Region 应用失败 → 回退小窗口（清 Region + 缩回桌宠矩形）
+00:00 +106: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #9 鼠标穿透开启 → 拒绝打开菜单并给明确提示
+00:00 +107: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #9b 释放固定画布清除 Region 并复位锚点
+00:00 +108: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #6b 右键 Overlay：临时放大 Region，关闭后恢复仅桌宠
+00:00 +109: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: 轮盘打开时右键被拒绝：Region 不再被 contextMenu 改动
+00:00 +110: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: opening 时的第二次左键被忽略（不重入、不改 Region）
+00:00 +111: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: Region 失败的后继路径不留下 full-canvas Region
+00:00 +112: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: Region 与 WheelInteractionState 不一致 → 自检发现并安全回退
+00:00 +113: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #4 菜单开 / 关与层级切换都不改变画布计划、也不再提交窗口矩形
+00:00 +114: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5/#6 几何设置变化：关闭态只重建一次，桌宠屏幕锚点误差 ≤ 1px
+00:00 +115: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #5 轮盘打开时改设置：先关闭再重建，仍然是"一次窗口提交"
+00:00 +116: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #13 面板返回：采用已提交画布（不再自行提交），并刷新计划快照
+00:00 +117: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #15 反复开合不增长：窗口提交恒为 1、Region 矩形数稳定、不重建画布
+00:00 +118: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #12 负坐标显示器：画布仍然提交且桌宠可见
+00:00 +119: All tests passed!

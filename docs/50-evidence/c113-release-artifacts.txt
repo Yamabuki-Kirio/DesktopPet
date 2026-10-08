@@ -1,0 +1,23 @@
+增量 C1.1.3 — Release 产物清单（只构建一次）
+============================================================
+
+构建命令：
+    flutter config --build-dir=build_incrC113
+    flutter build windows --release
+构建结果：BUILD_EXIT=0（66.9s）
+构建完成后已将 build-dir 还原为 build。
+
+产物路径：
+    C:\Users\Administrator\WorkBuddy\DesktopPet\petlife\build_incrC113\windows\x64\runner\Release\petlife.exe
+
+------------------------------------------------------------
+petlife.exe
+    size    : 137216 B
+    sha256  : 442BC34E7F791BCDFD91EE600AF68631919A13759C450BC4C935E4EE9827CA2A
+
+data\app.so
+    size    : 9356168 B
+    sha256  : 22F2799EB438BA517B5351B8906F8A2BC5A2C54F87E0ABB04C6F740190C8C1AA
+------------------------------------------------------------
+
+本轮未改动 pubspec / 原生插件，仅 Dart 源码 + 测试。

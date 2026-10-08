@@ -1,0 +1,104 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- 登录 / 同步需要访问 PetLife 服务端。
+         debug 构建由 Flutter 的 debug manifest 自动加上，release 必须显式声明。 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Phase 4C：系统级悬浮桌宠。
+         * SYSTEM_ALERT_WINDOW：唯一能显示在**其他应用之上**的权限，由用户在
+           系统设置里手动授予，应用无法自行开启；
+         * FOREGROUND_SERVICE / FOREGROUND_SERVICE_SPECIAL_USE：targetSdk 36，
+           悬浮桌宠不属于任何既有前台服务类型，只能归入 specialUse；
+         * POST_NOTIFICATIONS：Android 13+ 通知需用户授权；即使被拒绝，
+           前台服务仍必须调用 startForeground() 并提供通知。 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!-- Phase 4C-5：状态联动需要读取"当前前台应用包名"。
+         这是**特殊权限**，只能由用户在系统设置里授予（应用无法自行开启），
+         与悬浮窗权限 SYSTEM_ALERT_WINDOW 是两项**互相独立**的权限：
+         未授予时桌宠仍能正常显示与播放动画，只是状态保持默认。 -->
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
+    <!-- Phase 4D：开机自启。
+         * RECEIVE_BOOT_COMPLETED：接收 BOOT_COMPLETED / MY_PACKAGE_REPLACED 的唯一权限；
+         * 这是**普通权限**，安装即授予，不需要用户额外操作；
+         * 只有当用户在设置页显式打开「开机自动启动」时才会真正启动服务。 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <!-- 仍然**不申请**：无障碍服务、读取其他应用内容、后台定位、
+         电池优化白名单、安装未知应用。Phase 4C 只需要上面这几项。 -->
+    <application
+        android:label="PetLife"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. -->
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!-- Phase 4C：悬浮桌宠前台服务。
+             stopWithTask=false：从最近任务里划掉 PetLife **不**停止悬浮桌宠
+             （产品规则：悬浮桌宠是"常驻"能力，由用户在通知栏或设置页显式停止）。 -->
+        <service
+            android:name=".overlay.PetOverlayService"
+            android:exported="false"
+            android:stopWithTask="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="persistent_user_enabled_desktop_pet_overlay" />
+        </service>
+        <!-- Phase 4D：开机自启接收器。
+             * exported=false：它只接收**系统**发来的广播（BOOT_COMPLETED /
+               MY_PACKAGE_REPLACED 都是保护广播），不需要对外暴露；
+             * directBootAware=false（默认）：只在**用户解锁后**接收 BOOT_COMPLETED，
+               此时凭据加密的 SharedPreferences 才可读 —— 符合"解锁后再动桌宠"的要求；
+             * 不声明 LOCKED_BOOT_COMPLETED：未解锁拿到标志也读不到，不做任何事。 -->
+        <receiver
+            android:name=".overlay.BootCompletedReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+    <!-- Required to query activities that can process text, see:
+         https://developer.android.com/training/package-visibility and
+         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+
+         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+</manifest>

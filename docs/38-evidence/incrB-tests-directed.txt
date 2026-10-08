@@ -1,0 +1,95 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart
+00:00 +0: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 主题 · P3P 六色逐字 P3P 粉的六个颜色与 Android 完全一致
+00:00 +1: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 主题 · P3P 六色逐字 themeId 的 wire 取值是 p3p-pink（不是 p3p_pink）
+00:00 +2: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 主题 · P3P 六色逐字 强调色固定为 P3P 黄、描边固定为近黑（各预设共用）
+00:00 +3: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 主题 · P3P 六色逐字 其它预设只钉主色，其余派生（派生算法确定）
+00:00 +4: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 主题 · P3P 六色逐字 baseFanColor = mix(secondary, background, 0.40) 再压 alpha 108
+00:00 +5: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 主题 · P3P 六色逐字 文字色自动选择偏向白字（大号粗体阈值 3.0）
+00:00 +6: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 主题 · P3P 六色逐字 fromWire：空 / 未命中 → P3P 粉；custom → 按主色派生
+00:00 +7: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 主题 · P3P 六色逐字 hex 解析：非法输入不抛异常、返回 null；合法值不失真
+00:00 +8: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 主题 · P3P 六色逐字 主题对象**不含** Android 不存在的自创字段
+00:00 +9: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 几何 · 常量逐字 缩放与距离常量
+00:00 +10: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 几何 · 常量逐字 轮盘尺寸常量（dp）
+00:00 +11: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 几何 · 常量逐字 角度 / 缺口 / 安全区常量
+00:00 +12: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 几何 · 常量逐字 7 项及以上用 40dp 按钮（44dp 基准）
+00:00 +13: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 几何 · 常量逐字 描边随缩放变宽但有上下限
+00:00 +14: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 几何 · 常量逐字 半张角与槽位间隔按 Android 取值
+00:00 +15: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 信封 · 缺口与半径 窗口与信封都可用（不是降级路径）
+00:00 +16: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 信封 · 缺口与半径 缺口椭圆半径 = 桌宠可见尺寸 × 1.05 / 2 + 10dp（**不乘应急缩放**）
+00:00 +17: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 信封 · 缺口与半径 缺口中心恒等于桌宠视觉锚点（允许偏心 menuDistance）
+00:00 +18: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 信封 · 缺口与半径 ringRadius 三式求解：轨道间距 / 缺口净空 / 桌宠净空 三者的最大值
+00:00 +19: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 信封 · 缺口与半径 环带必须容得下缺口（不许出现"粗甜甜圈"）
+00:00 +20: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 信封 · 缺口与半径 按钮直径 = base(count) × (effScale × buttonVisualScale)（唯一落点）
+00:00 +21: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 信封 · 缺口与半径 面板不小于 48dp 触摸下界
+00:00 +22: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 方向与镜像 桌宠在左半屏 → 向右展开；在右半屏 → 向左展开
+00:00 +23: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 方向与镜像 locked 时方向被锁定（打开期间不改）
+00:00 +24: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 方向与镜像 靠上 / 靠下边缘 → 竖直模式带 ±26° 偏转
+00:00 +25: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 方向与镜像 镜像：absoluteAngle 取反（左展开 = 180° − offset）
+00:00 +26: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 方向与镜像 normalizeAngle 落在 (−180, 180]
+00:00 +27: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 方向与镜像 槽位落位：第 i 项 offset = (i − (n−1)/2) × step，且沿圆周分布
+00:00 +28: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 方向与镜像 rawIndexAt：角度 → 连续索引（0 号在最靠近展开方向的一侧）
+00:00 +29: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 状态机 · 七态 阶段集合与 Android 逐字一致
+00:00 +30: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 状态机 · 七态 open → opening → open，方向锁定；重复打开幂等拒绝
+00:00 +31: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 状态机 · 七态 根菜单不允许返回；进入子菜单后可以
+00:00 +32: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 状态机 · 七态 滑选：preview 优先于 selected，确认后落到 selected
+00:00 +33: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 状态机 · 七态 切换选中项：beginSwitch 拒绝同项与越界
+00:00 +34: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 状态机 · 七态 被打断后收敛到确定状态，绝不卡中间态
+00:00 +35: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 状态机 · 七态 close 从任何阶段都收敛到 closed（菜单栈清空）
+00:00 +36: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 阈值常量：滞回 7°、离开容差 130ms、tap 8dp、swipe 12dp
+00:00 +37: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 分区：缺口内 = 取消区中心；环带内 = 可选；环带外 = 空白
+00:00 +38: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 缺口判定是**椭圆**（宽高不等时按各自半径）
+00:00 +39: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 点击（位移在 tap 阈值内）→ 松手确认该按钮
+00:00 +40: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 **滑过不执行**：位移超过 tap 阈值但不确认 → 抬手时按当前落点确认
+00:00 +41: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 沿弧线滑选 → 高亮跨槽 → 抬手确认
+00:00 +42: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 7° 槽位滞回：越过槽位边界但不越过"边界 + 7°"时不换槽
+00:00 +43: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 滑出环带：130ms 内保持高亮，超出即取消
+00:00 +44: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 落在空白处松手 → outsideTap（父层据此关闭菜单）
+00:00 +45: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 手势 多指介入 → 取消（不产生任何确认）
+00:00 +46: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 动画 时间线毫秒数与 Android 一致
+00:00 +47: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 动画 四条缓动曲线的控制点与 Android PathInterpolator 一致
+00:00 +48: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 动画 缓动端点与单调性
+00:00 +49: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 动画 展开帧：openProgress 0→1、旋转 −6°→1°→0°、缩放 0.75→1.03→1.0
+00:00 +50: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 动画 展开时按钮**错峰**（后面的按钮晚出现，且最后一项仍在 230ms 内落位）
+00:00 +51: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 动画 关闭帧：openProgress 1→0（时长 180ms）
+00:00 +52: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 动画 按压缩放 70ms 内往返（按下 → 弹回）
+00:00 +53: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 动画 换层帧：layerProgress 与 titleProgress 同步过渡
+00:00 +54: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 动画 hidden 帧：完全收起且按钮进度全 0
+00:00 +55: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: Region 生成 包含桌宠缺口矩形（人物层始终可点）
+00:00 +56: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 39 个图标 key（与 Android WheelMenuIcon 数量一致）
+00:00 +57: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 39 个图标 key（与 Android WheelMenuIcon 数量一致）
+00:00 +58: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 39 个图标 key（与 Android WheelMenuIcon 数量一致）
+00:00 +59: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 39 个图标 key（与 Android WheelMenuIcon 数量一致）
+00:00 +60: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 39 个图标 key（与 Android WheelMenuIcon 数量一致）
+00:00 +61: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 39 个图标 key（与 Android WheelMenuIcon 数量一致）
+00:00 +62: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 固定画布桥接 桌宠锚点居中（画布尺寸变化时桌宠屏幕位置不变）
+00:00 +63: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 菜单目录里每个条目 id 都有**专属**图标（无遗漏、无兜底）
+00:00 +64: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 菜单目录里每个条目 id 都有**专属**图标（无遗漏、无兜底）
+00:00 +65: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 固定画布桥接 装不下时夹取到画布内（兜底，不允许 widget 跑到画布外）
+00:00 +66: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 映射表里的 id 都在菜单目录里（没有写错的键）
+00:00 +67: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 映射表里的 id 都在菜单目录里（没有写错的键）
+00:00 +68: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 设置 · 夹取与持久化 默认值就是 Android 默认值
+00:00 +69: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 未知 id 回退到 info（绝不返回 null，避免空按钮）
+00:00 +70: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 设置 · 夹取与持久化 normalized：区间内按 10% 步进吸附，越界一律夹到 MIN/MAX
+00:00 +71: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 设置 · 夹取与持久化 normalized：区间内按 10% 步进吸附，越界一律夹到 MIN/MAX
+00:00 +72: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 五个子菜单入口的图标与 Android 一致
+00:00 +73: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_android_parity_test.dart: 设置 · 夹取与持久化 未知主题 id 被拉回 P3P 粉；custom 保留
+00:00 +74: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 归一化描边宽度 0.16，线帽 / 线接都是 ROUND
+00:00 +75: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 归一化描边宽度 0.16，线帽 / 线接都是 ROUND
+00:00 +76: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 归一化描边宽度 0.16，线帽 / 线接都是 ROUND
+00:00 +77: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 归一化描边宽度 0.16，线帽 / 线接都是 ROUND
+00:00 +78: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 归一化描边宽度 0.16，线帽 / 线接都是 ROUND
+00:00 +79: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 归一化描边宽度 0.16，线帽 / 线接都是 ROUND
+00:00 +80: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 size <= 0 时**不做任何绘制**（防御空按钮）
+00:00 +81: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 每个图标都能绘制且**互不相同**（没有粘在一起的空实现）
+00:00 +82: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:00 +83: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +84: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +85: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 左键点击按钮 → 松开即确认该条目
+00:00 +86: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 按住左键沿弧线滑动 → 滑过不执行，松开才确认落点那一项
+00:00 +87: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 悬停只更新预览高亮，不确认任何条目
+00:00 +88: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 点击中央桌宠缺口（未拖动）→ 请求关闭菜单
+00:00 +89: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 落在环带之外的空白处松手 → 请求关闭菜单
+00:00 +90: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 子菜单里按 Esc → 先返回上一层（不关闭）；根菜单再按 Esc → 关闭
+00:00 +91: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 滑选中的 Esc = 取消这次滑选（不改层级、不关闭）
+00:00 +92: All tests passed!

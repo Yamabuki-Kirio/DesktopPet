@@ -1,0 +1,403 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart
+00:00 +0: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笂(鍙冲睍寮€/闈犱笂)] 搂12-1/2/3 鎮仠绗?3 椤瑰悗寰姩 / 娌垮崐寰勫悜鍐?/ 鍚戝閮戒粛鏄 3 椤?00:00 +1: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笂(鍙冲睍寮€/闈犱笂)] 搂12-4 娌垮渾寮хЩ鍔ㄥ埌绗?4 椤?鈫?楂樹寒鍒囧埌绗?4 椤?00:00 +2: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笂(鍙冲睍寮€/闈犱笂)] 搂12-5 鐩搁偦妲戒綅杈圭晫闄勮繎鍙?7掳 婊炲洖淇濇姢
+00:00 +3: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笂(鍙冲睍寮€/闈犱笂)] 搂12-6/7 绉诲嚭鏈夋晥鎵囧舰 鈫?楂樹寒 -1锛屼笖**涓嶅洖鍒扮涓€椤?*
+00:00 +4: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笂(鍙冲睍寮€/闈犱笂)] 搂12-9/10 鎵囧舰涓絾涓嶅湪鐜甫涓?鈫?鑳介€変腑锛屼笖闈欐鍗曞嚮鎵ц璇ユ寜閽?00:00 +5: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笂(鍙冲睍寮€/闈犱笂)] 搂12-13/14 浜虹墿淇濇姢鍖轰笌瑁呴グ鍖洪兘涓嶆槧灏勫埌鎸夐挳
+00:00 +6: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笂(鍙冲睍寮€/闈犱笂)] 搂12-15/16 姣忎釜妲戒綅锛氬渾蹇?/ 鎵囧舰瑙掑害妲戒綅閮藉懡涓畠鑷繁
+00:00 +7: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[椤堕儴灞呬腑] 搂12-1/2/3 鎮仠绗?3 椤瑰悗寰姩 / 娌垮崐寰勫悜鍐?/ 鍚戝閮戒粛鏄 3 椤?00:00 +8: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[椤堕儴灞呬腑] 搂12-4 娌垮渾寮хЩ鍔ㄥ埌绗?4 椤?鈫?楂樹寒鍒囧埌绗?4 椤?00:00 +9: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[椤堕儴灞呬腑] 搂12-5 鐩搁偦妲戒綅杈圭晫闄勮繎鍙?7掳 婊炲洖淇濇姢
+00:00 +10: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[椤堕儴灞呬腑] 搂12-6/7 绉诲嚭鏈夋晥鎵囧舰 鈫?楂樹寒 -1锛屼笖**涓嶅洖鍒扮涓€椤?*
+00:00 +11: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[椤堕儴灞呬腑] 搂12-9/10 鎵囧舰涓絾涓嶅湪鐜甫涓?鈫?鑳介€変腑锛屼笖闈欐鍗曞嚮鎵ц璇ユ寜閽?00:00 +12: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[椤堕儴灞呬腑] 搂12-13/14 浜虹墿淇濇姢鍖轰笌瑁呴グ鍖洪兘涓嶆槧灏勫埌鎸夐挳
+00:00 +13: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[椤堕儴灞呬腑] 搂12-15/16 姣忎釜妲戒綅锛氬渾蹇?/ 鎵囧舰瑙掑害妲戒綅閮藉懡涓畠鑷繁
+00:00 +14: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +15: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +16: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +17: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +18: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +19: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +20: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +21: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +22: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +23: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +24: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +25: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +26: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +27: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?1 鎮仠绗笁椤?1 绉掞紝楂樹寒浠嶆槸绗笁椤癸紙鍔ㄧ敾甯т笉寰楁敼鍐欎氦浜掓€侊級
+00:00 +28: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[涓儴灞呬腑] 搂12-15/16 姣忎釜妲戒綅锛氬渾蹇?/ 鎵囧舰瑙掑害妲戒綅閮藉懡涓畠鑷繁
+00:00 +29: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?2 鎵撳紑鍔ㄧ敾瀹屾垚涓嶆妸 hover 閲嶇疆鍒扮涓€椤?00:00 +30: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?2 鎵撳紑鍔ㄧ敾瀹屾垚涓嶆妸 hover 閲嶇疆鍒扮涓€椤?00:00 +31: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笅(鍙冲睍寮€/闈犱笅)] 搂12-4 娌垮渾寮хЩ鍔ㄥ埌绗?4 椤?鈫?楂樹寒鍒囧埌绗?4 椤?00:00 +32: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?3 榧犳爣闈欐浜庢寜閽€佸崟鍑昏兘鎵ц鍔ㄤ綔锛堜笉鏄彧鍏抽棴锛?00:00 +33: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?3 榧犳爣闈欐浜庢寜閽€佸崟鍑昏兘鎵ц鍔ㄤ綔锛堜笉鏄彧鍏抽棴锛?00:00 +34: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笅(鍙冲睍寮€/闈犱笅)] 搂12-6/7 绉诲嚭鏈夋晥鎵囧舰 鈫?楂樹寒 -1锛屼笖**涓嶅洖鍒扮涓€椤?*
+00:00 +35: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?4 鍗曞嚮鐢ㄥ疄鏃?HitTest锛氭棫 hover 鍦ㄧ 3 椤广€佸崟鍑昏惤鍦ㄧ 5 椤?鈫?鎵ц绗?5 椤?00:00 +36: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?4 鍗曞嚮鐢ㄥ疄鏃?HitTest锛氭棫 hover 鍦ㄧ 3 椤广€佸崟鍑昏惤鍦ㄧ 5 椤?鈫?鎵ц绗?5 椤?00:00 +37: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笅(鍙冲睍寮€/闈犱笅)] 搂12-13/14 浜虹墿淇濇姢鍖轰笌瑁呴グ鍖洪兘涓嶆槧灏勫埌鎸夐挳
+00:00 +38: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?5 鎵撳紑瀹屾垚鏃朵富鍔ㄩ噸绠?hover锛氭寜閽笂鈫掗珮浜紱鑳屾櫙涓娾啋鏃犻珮浜?00:00 +39: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[宸︿笅(鍙冲睍寮€/闈犱笅)] 搂12-15/16 姣忎釜妲戒綅锛氬渾蹇?/ 鎵囧舰瑙掑害妲戒綅閮藉懡涓畠鑷繁
+00:00 +40: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[鍙充笅(宸﹀睍寮€/闈犱笅)] 搂12-1/2/3 鎮仠绗?3 椤瑰悗寰姩 / 娌垮崐寰勫悜鍐?/ 鍚戝閮戒粛鏄 3 椤?00:00 +41: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?6 鎸変笅 / 鎶捣鍚屼竴鎸夐挳鍙墽琛屼竴娆★紙澶氫綑鐨?up 涓嶅緱鍐嶆墽琛岋級
+00:00 +42: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[鍙充笅(宸﹀睍寮€/闈犱笅)] 搂12-4 娌垮渾寮хЩ鍔ㄥ埌绗?4 椤?鈫?楂樹寒鍒囧埌绗?4 椤?00:00 +43: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?7 鎸変笅鎸夐挳鍚庢嫋鍑虹幆甯﹀啀鎶捣 鈫?涓嶆墽琛屽姩浣溿€佷篃涓嶅叧闂?00:00 +44: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[鍙充笅(宸﹀睍寮€/闈犱笅)] 搂12-5 鐩搁偦妲戒綅杈圭晫闄勮繎鍙?7掳 婊炲洖淇濇姢
+00:00 +45: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?8 缂哄彛锛堟瀹狅級鍗曞嚮鍏抽棴鑿滃崟锛汻egion 鍐呰儗鏅崟鍑讳笉鍏抽棴锛圓1锛?00:00 +46: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[鍙充笅(宸﹀睍寮€/闈犱笅)] 搂12-6/7 绉诲嚭鏈夋晥鎵囧舰 鈫?楂樹寒 -1锛屼笖**涓嶅洖鍒扮涓€椤?*
+00:00 +47: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[鍙充笅(宸﹀睍寮€/闈犱笅)] 搂12-9/10 鎵囧舰涓絾涓嶅湪鐜甫涓?鈫?鑳介€変腑锛屼笖闈欐鍗曞嚮鎵ц璇ユ寜閽?00:00 +48: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?9 鍏釜鏍规寜閽偣鍑伙細姣忔閮芥墽琛屻€佷笖浠庝笉瑙﹀彂澶栧眰鍏抽棴
+00:00 +49: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍏ㄥ満鏅紙宸﹀彸闀滃儚 脳 top/middle/bottom锛?[鍙充笅(宸﹀睍寮€/闈犱笅)] 搂12-13/14 浜虹墿淇濇姢鍖轰笌瑁呴グ鍖洪兘涓嶆槧灏勫埌鎸夐挳
+00:00 +50: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?10 鍒囨崲瀛愯彍鍗曞悗鏃?hover 涓嶆畫鐣欙紝涓斿鏂板嚑浣曢噸绠?00:00 +51: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?10 鍒囨崲瀛愯彍鍗曞悗鏃?hover 涓嶆畫鐣欙紝涓斿鏂板嚑浣曢噸绠?00:00 +52: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍗曞満鏅紙鍙冲睍寮€ / 灞呬腑锛夌殑浜や簰缁嗚妭 搂2/搂3/搂11-8 榧犳爣妯″紡涓嬮敭鐩橀粯璁ょ劍鐐逛笉鎺ョ楂樹寒
+00:00 +53: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?11 閿洏榛樿鐒︾偣涓嶈鐩栭紶鏍?hover锛坘eyboardMode 闂ㄦ帶锛?00:00 +54: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍗曞満鏅紙鍙冲睍寮€ / 灞呬腑锛夌殑浜や簰缁嗚妭 搂12-11 down 鍦ㄦ墖褰€乽p 鍦ㄥ悓涓€鎸夐挳鍦嗗舰 鈫?鍙墽琛屼竴娆?00:00 +55: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?12 鍔ㄧ敾璺戝畬锛圱icker 鍋滄锛変笉淇敼浠讳綍浜や簰鎬?00:00 +56: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍗曞満鏅紙鍙冲睍寮€ / 灞呬腑锛夌殑浜や簰缁嗚妭 搂12-12 down / up 钀藉湪涓嶅悓妲戒綅 鈫?涓嶆墽琛岋紙涔熶笉鍏抽棴锛?00:00 +57: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?14 鍏抽棴鑿滃崟鍚庢竻绌?hover銆乸ressed 涓庢渶杩戞寚閽堜綅缃?00:00 +58: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍗曞満鏅紙鍙冲睍寮€ / 灞呬腑锛夌殑浜や簰缁嗚妭 搂8 淇濇姢鍖虹偣鍑讳笉鏄犲皠鎸夐挳锛堟寜妗屽疇瑙勫垯澶勭悊锛?00:00 +59: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?15 蹇€熻繛缁偣鍑讳袱娆?鈫?鎭板ソ鎵ц涓ゆ锛堜笉浼氬涔熶笉浼氬皯锛?00:00 +60: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c113_sector_test.dart: 搂12 鍗曞満鏅紙鍙冲睍寮€ / 灞呬腑锛夌殑浜や簰缁嗚妭 搂12-17 杩涘叆瀛愯彍鍗曞悗鐢ㄥ綋鍓嶉紶鏍囦綅缃噸鏂拌绠楀懡涓?00:00 +61: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?16 D9 姝诲尯鍥炲綊锛氱獥鍙ｅ唴**鍙湁缂哄彛**浼氬叧闂彍鍗曪紙缃戞牸绌蜂妇锛?00:00 +62: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?16 D9 姝诲尯鍥炲綊锛氱獥鍙ｅ唴**鍙湁缂哄彛**浼氬叧闂彍鍗曪紙缃戞牸绌蜂妇锛?00:00 +63: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?16 D9 姝诲尯鍥炲綊锛氱獥鍙ｅ唴**鍙湁缂哄彛**浼氬叧闂彍鍗曪紙缃戞牸绌蜂妇锛?00:00 +64: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?16 D9 姝诲尯鍥炲綊锛氱獥鍙ｅ唴**鍙湁缂哄彛**浼氬叧闂彍鍗曪紙缃戞牸绌蜂妇锛?00:00 +65: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +66: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +67: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +68: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +69: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +70: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +71: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +72: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +73: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +74: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +75: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +76: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +77: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +78: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +79: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +80: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +81: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 鎵撳紑鍔ㄧ敾鏈熼棿杈撳叆琚嫤涓嬶紙涓嶈兘"娌″紶寮€灏辫鐐规帀"锛?00:00 +82: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?13 rebuild 涓嶉噸寤轰氦浜掓帶鍒跺櫒锛汳ouseRegion 鎮仠鐢熸晥
+00:01 +83: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c112_interaction_test.dart: 搂鍗?13 rebuild 涓嶉噸寤轰氦浜掓帶鍒跺櫒锛汳ouseRegion 鎮仠鐢熸晥
+00:01 +84: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍥?鎷栧姩鍚庣殑瀹炴椂鍒锋柊 12 鎷栧姩缁撴潫浣跨敤**鏂颁綅缃?*锛堢┖闂村揩鐓ч殢涔嬫洿鏂帮級
+00:01 +85: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍥?鎷栧姩鍚庣殑瀹炴椂鍒锋柊 12 鎷栧姩缁撴潫浣跨敤**鏂颁綅缃?*锛堢┖闂村揩鐓ч殢涔嬫洿鏂帮級
+00:01 +86: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍥?鎷栧姩鍚庣殑瀹炴椂鍒锋柊 12 鎷栧姩缁撴潫浣跨敤**鏂颁綅缃?*锛堢┖闂村揩鐓ч殢涔嬫洿鏂帮級
+00:01 +87: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍥?鎷栧姩鍚庣殑瀹炴椂鍒锋柊 12 鎷栧姩缁撴潫浣跨敤**鏂颁綅缃?*锛堢┖闂村揩鐓ч殢涔嬫洿鏂帮級
+00:01 +88: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍥?鎷栧姩鍚庣殑瀹炴椂鍒锋柊 12 鎷栧姩缁撴潫浣跨敤**鏂颁綅缃?*锛堢┖闂村揩鐓ч殢涔嬫洿鏂帮級
+00:01 +89: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +90: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +91: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +92: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +93: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +94: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +95: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +96: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +97: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +98: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +99: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +100: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +101: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +102: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +103: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +104: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +105: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +106: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +107: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +108: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +109: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:01 +110: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 宸︿笂 ==
+{
+  "scenario": "宸︿笂",
+  "petScreen": "64.0,120.0",
+  "horizontalSide": "right",
+  "verticalPlacement": "top",
+  "selection_reason": "fit_natural_top",
+  "candidate.top.overflow": 0.0,
+  "candidate.middle.overflow": 46.57211072997029,
+  "candidate.bottom.overflow": 61.32267120521749,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "81.8,7.5,445.0,529.3",
+  "canvasBounds": "4.0,3.0,450.0,534.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "142.0,156.0,234.0,312.0",
+  "canvasRect": "-77.0,-69.0,453.0,538.0",
+  "menuLocalRect": "85.0,77.0,503.0,530.0"
+}
+00:01 +111: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍏?鍏抽棴鍚庝笉鍐嶇粯鍒讹紙娈嬬墖锛?22 鍏抽棴鍚庯細涓嶇粯鍒?+ Region 浠?pet + 鐘舵€?closed
+00:01 +112: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍏?鍏抽棴鍚庝笉鍐嶇粯鍒讹紙娈嬬墖锛?22 鍏抽棴鍚庯細涓嶇粯鍒?+ Region 浠?pet + 鐘舵€?closed
+00:01 +113: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍏?鍏抽棴鍚庝笉鍐嶇粯鍒讹紙娈嬬墖锛?22 鍏抽棴鍚庯細涓嶇粯鍒?+ Region 浠?pet + 鐘舵€?closed
+00:02 +114: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍏?鍏抽棴鍚庝笉鍐嶇粯鍒讹紙娈嬬墖锛?22 鍏抽棴鍚庯細涓嶇粯鍒?+ Region 浠?pet + 鐘舵€?closed
+00:02 +115: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍏?鍏抽棴鍚庝笉鍐嶇粯鍒讹紙娈嬬墖锛?22 鍏抽棴鍚庯細涓嶇粯鍒?+ Region 浠?pet + 鐘舵€?closed
+00:02 +116: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍏?鍏抽棴鍚庝笉鍐嶇粯鍒讹紙娈嬬墖锛?22 鍏抽棴鍚庯細涓嶇粯鍒?+ Region 浠?pet + 鐘舵€?closed
+00:02 +117: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍏?鍏抽棴鍚庝笉鍐嶇粯鍒讹紙娈嬬墖锛?22 鍏抽棴鍚庯細涓嶇粯鍒?+ Region 浠?pet + 鐘舵€?closed
+00:02 +118: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:02 +119: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:02 +120: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:02 +121: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:02 +122: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:02 +123: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:02 +124: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 鍙充笂 ==
+{
+  "scenario": "鍙充笂",
+  "petScreen": "1600.0,120.0",
+  "horizontalSide": "left",
+  "verticalPlacement": "top",
+  "selection_reason": "fit_natural_top",
+  "candidate.top.overflow": 0.0,
+  "candidate.middle.overflow": 46.57211072997029,
+  "candidate.bottom.overflow": 61.32267120521749,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "1467.0,7.5,1830.2,529.3",
+  "canvasBounds": "1462.0,3.0,1908.0,534.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "1678.0,156.0,1770.0,312.0",
+  "canvasRect": "1459.0,-69.0,1989.0,538.0",
+  "menuLocalRect": "27.0,77.0,445.0,530.0"
+}
+00:02 +125: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 A-鍙充笅锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+00:02 +126: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 A-鍙充笅锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+00:02 +127: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 A-鍙充笅锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+00:02 +128: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 A-鍙充笅锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+00:02 +129: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 A-鍙充笅锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+00:02 +130: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 A-鍙充笅锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+00:02 +131: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 A-鍙充笅锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+== 鎴浘鍥炲綊 A-鍙充笅 ==
+{
+  "scenario": "A-鍙充笅",
+  "petScreen": "1376.0,534.0",
+  "canvasRect": "1235.0,345.0,1765.0,952.0",
+  "canvasSize": "530.0x607.0",
+  "petVisualScreenRect": "1454.0,570.0,1546.0,726.0",
+  "alphaBounds": "0.3047,0.1875,0.6641,1.0000",
+  "side": "left",
+  "menuLocalRect": "29.0,84.0,376.0,522.0",
+  "visualBounds": "8.3,7.7,521.7,598.3",
+  "interactiveBounds": "8.3,7.7,521.7,598.3",
+  "regionRects": [
+    "177.7,127.1,294.3,310.9",
+    "134.6,81.3,181.2,132.7",
+    "108.6,98.3,159.2,149.6",
+    "88.9,122.0,140.6,170.5",
+    "76.7,151.1,126.6,194.0",
+    "72.5,72.9,368.4,367.2",
+    "72.5,219.0,117.8,253.9",
+    "76.7,244.0,126.6,286.9",
+    "88.9,267.5,140.6,316.0",
+    "108.6,288.4,159.2,339.7",
+    "134.6,305.3,181.2,356.7",
+    "194.5,1.9,251.2,178.6",
+    "139.7,3.5,216.0,181.2",
+    "90.3,17.7,205.7,186.5",
+    "49.9,45.6,196.5,193.9",
+    "49.9,244.1,196.5,392.4",
+    "90.3,251.5,205.7,420.3",
+    "139.7,256.8,216.0,434.5",
+    "194.5,259.4,251.2,436.1",
+    "130.6,34.7,184.2,88.4",
+    "65.6,81.2,119.3,134.9",
+    "29.1,152.2,82.8,205.9",
+    "29.1,232.1,82.8,285.8",
+    "65.6,303.1,119.3,356.8",
+    "130.6,349.6,184.2,403.3",
+    "56.2,-61.6,237.0,499.6",
+    "-11.0,19.3,177.8,418.7"
+  ],
+  "envelopeWindow": "1264.0,429.0,1611.0,867.0",
+  "ringRadius": 124.87385138137418,
+  "buttonDiameter": 31.200000000000003,
+  "holeRx": 58.300000000000004,
+  "holeRy": 91.9
+}
+00:02 +132: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 椤堕儴灞呬腑锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:02 +133: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 椤堕儴灞呬腑锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:02 +134: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 椤堕儴灞呬腑锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+00:02 +135: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 椤堕儴灞呬腑锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 椤堕儴灞呬腑 ==
+{
+  "scenario": "椤堕儴灞呬腑",
+  "petScreen": "832.0,120.0",
+  "horizontalSide": "right",
+  "verticalPlacement": "top",
+  "selection_reason": "fit_natural_top",
+  "candidate.top.overflow": 0.0,
+  "candidate.middle.overflow": 46.57211072997029,
+  "candidate.bottom.overflow": 61.32267120521749,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "849.8,7.5,1213.0,529.3",
+  "canvasBounds": "772.0,3.0,1218.0,534.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "910.0,156.0,1002.0,312.0",
+  "canvasRect": "691.0,-69.0,1221.0,538.0",
+  "menuLocalRect": "85.0,77.0,503.0,530.0"
+}
+00:03 +136: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 B-宸︿笅锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+== 鎴浘鍥炲綊 B-宸︿笅 ==
+{
+  "scenario": "B-宸︿笅",
+  "petScreen": "64.0,780.0",
+  "canvasRect": "-77.0,591.0,453.0,1198.0",
+  "canvasSize": "530.0x607.0",
+  "petVisualScreenRect": "142.0,816.0,234.0,972.0",
+  "alphaBounds": "0.3047,0.1875,0.6641,1.0000",
+  "side": "right",
+  "menuLocalRect": "85.0,-4.0,503.0,449.0",
+  "visualBounds": "8.3,7.7,521.7,598.3",
+  "interactiveBounds": "8.3,7.7,521.7,598.3",
+  "regionRects": [
+    "121.7,215.1,238.3,398.9",
+    "184.6,158.5,219.8,202.3",
+    "212.7,160.6,253.5,209.4",
+    "236.8,170.5,283.9,222.0",
+    "258.6,188.1,309.4,239.3",
+    "276.8,212.4,328.4,260.5",
+    "290.4,241.9,340.0,284.2",
+    "298.7,275.1,343.4,310.1",
+    "297.6,309.2,343.4,344.9",
+    "288.4,334.1,338.5,377.6",
+    "273.9,357.5,325.6,406.3",
+    "73.6,101.7,181.7,273.2",
+    "124.3,90.4,192.2,268.5",
+    "179.9,89.9,236.4,267.0",
+    "202.8,93.9,290.2,270.4",
+    "231.3,315.5,407.4,405.6",
+    "225.3,325.5,388.5,452.3",
+    "217.2,334.3,356.4,489.1",
+    "207.6,341.2,313.3,513.5",
+    "156.3,110.8,210.0,164.4",
+    "235.1,124.1,288.7,177.7",
+    "299.0,171.9,352.7,225.6",
+    "334.0,243.7,387.7,297.4",
+    "332.4,323.6,386.0,377.2",
+    "294.4,393.8,348.0,447.5",
+    "94.1,11.7,437.0,533.5",
+    "147.4,92.9,428.0,454.0"
+  ],
+  "envelopeWindow": "8.0,587.0,426.0,1040.0",
+  "ringRadius": 124.87385138137418,
+  "buttonDiameter": 31.200000000000003,
+  "holeRx": 58.300000000000004,
+  "holeRy": 91.9
+}
+00:03 +137: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笅锛歷ertical=WheelVerticalPlacement.bottom 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 宸︿笅 ==
+{
+  "scenario": "宸︿笅",
+  "petScreen": "64.0,680.0",
+  "horizontalSide": "right",
+  "verticalPlacement": "bottom",
+  "selection_reason": "fit_natural_bottom",
+  "candidate.top.overflow": 49.3226712052176,
+  "candidate.middle.overflow": 34.57211072997052,
+  "candidate.bottom.overflow": 0.0,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "81.8,498.7,445.0,1020.5",
+  "canvasBounds": "4.0,494.0,450.0,1025.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "142.0,716.0,234.0,872.0",
+  "canvasRect": "-77.0,491.0,453.0,1098.0",
+  "menuLocalRect": "85.0,76.0,503.0,529.0"
+}
+00:03 +138: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 C-宸︿笂锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+== 鎴浘鍥炲綊 C-宸︿笂 ==
+{
+  "scenario": "C-宸︿笂",
+  "petScreen": "64.0,120.0",
+  "canvasRect": "-77.0,-69.0,453.0,538.0",
+  "canvasSize": "530.0x607.0",
+  "petVisualScreenRect": "142.0,156.0,234.0,312.0",
+  "alphaBounds": "0.3047,0.1875,0.6641,1.0000",
+  "side": "right",
+  "menuLocalRect": "85.0,77.0,503.0,530.0",
+  "visualBounds": "8.3,7.7,521.7,598.3",
+  "interactiveBounds": "8.3,7.7,521.7,598.3",
+  "regionRects": [
+    "121.7,134.1,238.3,317.9",
+    "273.9,126.7,325.6,175.5",
+    "288.4,155.4,338.5,198.9",
+    "297.6,188.1,343.4,223.8",
+    "298.7,222.9,343.4,257.9",
+    "290.4,248.8,340.0,291.1",
+    "276.8,272.5,328.4,320.6",
+    "258.6,293.7,309.4,344.9",
+    "236.8,311.0,283.9,362.5",
+    "212.7,323.6,253.5,372.4",
+    "184.6,330.7,219.8,374.5",
+    "207.6,19.5,313.3,191.8",
+    "217.2,43.9,356.4,198.7",
+    "225.3,80.7,388.5,207.5",
+    "231.3,127.4,407.4,217.5",
+    "202.8,262.6,290.2,439.1",
+    "179.9,266.0,236.4,443.1",
+    "124.3,264.5,192.2,442.6",
+    "73.6,259.8,181.7,431.3",
+    "294.4,85.5,348.0,139.2",
+    "332.4,155.8,386.0,209.4",
+    "334.0,235.6,387.7,289.3",
+    "299.0,307.4,352.7,361.1",
+    "235.1,355.3,288.7,408.9",
+    "156.3,368.6,210.0,422.2",
+    "94.1,-0.5,437.0,521.3",
+    "147.4,79.0,428.0,440.1"
+  ],
+  "envelopeWindow": "8.0,8.0,426.0,461.0",
+  "ringRadius": 124.87385138137418,
+  "buttonDiameter": 31.200000000000003,
+  "holeRx": 58.300000000000004,
+  "holeRy": 91.9
+}
+00:03 +139: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笅锛歷ertical=WheelVerticalPlacement.bottom 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 鍙充笅 ==
+{
+  "scenario": "鍙充笅",
+  "petScreen": "1600.0,680.0",
+  "horizontalSide": "left",
+  "verticalPlacement": "bottom",
+  "selection_reason": "fit_natural_bottom",
+  "candidate.top.overflow": 49.3226712052176,
+  "candidate.middle.overflow": 34.57211072997052,
+  "candidate.bottom.overflow": 0.0,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "1467.0,498.7,1830.2,1020.5",
+  "canvasBounds": "1462.0,494.0,1908.0,1025.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "1678.0,716.0,1770.0,872.0",
+  "canvasRect": "1459.0,491.0,1989.0,1098.0",
+  "menuLocalRect": "27.0,76.0,445.0,529.0"
+}
+00:04 +140: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗?鎴浘鍥炲綊锛堝洓涓満鏅級 23 鍦烘櫙 D-涓彸锛氳疆鐩樺畬鏁磋惤鍦ㄧ敾甯冨唴銆佹柟鍚戞纭€佸叧闂棤娈嬬墖
+== 鎴浘鍥炲綊 D-涓彸 ==
+{
+  "scenario": "D-涓彸",
+  "petScreen": "1500.0,500.0",
+  "canvasRect": "1359.0,311.0,1889.0,918.0",
+  "canvasSize": "530.0x607.0",
+  "petVisualScreenRect": "1578.0,536.0,1670.0,692.0",
+  "alphaBounds": "0.3047,0.1875,0.6641,1.0000",
+  "side": "left",
+  "menuLocalRect": "29.0,84.0,376.0,522.0",
+  "visualBounds": "8.3,7.7,521.7,598.3",
+  "interactiveBounds": "8.3,7.7,521.7,598.3",
+  "regionRects": [
+    "177.7,127.1,294.3,310.9",
+    "134.6,81.3,181.2,132.7",
+    "108.6,98.3,159.2,149.6",
+    "88.9,122.0,140.6,170.5",
+    "76.7,151.1,126.6,194.0",
+    "72.5,72.9,368.4,367.2",
+    "72.5,219.0,117.8,253.9",
+    "76.7,244.0,126.6,286.9",
+    "88.9,267.5,140.6,316.0",
+    "108.6,288.4,159.2,339.7",
+    "134.6,305.3,181.2,356.7",
+    "194.5,1.9,251.2,178.6",
+    "139.7,3.5,216.0,181.2",
+    "90.3,17.7,205.7,186.5",
+    "49.9,45.6,196.5,193.9",
+    "49.9,244.1,196.5,392.4",
+    "90.3,251.5,205.7,420.3",
+    "139.7,256.8,216.0,434.5",
+    "194.5,259.4,251.2,436.1",
+    "130.6,34.7,184.2,88.4",
+    "65.6,81.2,119.3,134.9",
+    "29.1,152.2,82.8,205.9",
+    "29.1,232.1,82.8,285.8",
+    "65.6,303.1,119.3,356.8",
+    "130.6,349.6,184.2,403.3",
+    "56.2,-61.6,237.0,499.6",
+    "-11.0,19.3,177.8,418.7"
+  ],
+  "envelopeWindow": "1388.0,395.0,1735.0,833.0",
+  "ringRadius": 124.87385138137418,
+  "buttonDiameter": 31.200000000000003,
+  "holeRx": 58.300000000000004,
+  "holeRy": 91.9
+}
+00:04 +141: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 灞忓箷涓績锛歷ertical=WheelVerticalPlacement.middle 涓斿洓渚ф孩鍑轰负 0
+00:04 +142: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 灞忓箷涓績锛歷ertical=WheelVerticalPlacement.middle 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 灞忓箷涓績 ==
+{
+  "scenario": "灞忓箷涓績",
+  "petScreen": "832.0,420.0",
+  "horizontalSide": "right",
+  "verticalPlacement": "middle",
+  "selection_reason": "fit_natural_middle",
+  "candidate.top.overflow": 0.0,
+  "candidate.middle.overflow": 0.0,
+  "candidate.bottom.overflow": 0.0,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "940.8,253.4,1208.8,814.6",
+  "canvasBounds": "841.0,249.0,1213.0,819.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "910.0,456.0,1002.0,612.0",
+  "canvasRect": "691.0,231.0,1221.0,838.0",
+  "menuLocalRect": "154.0,84.0,501.0,522.0"
+}
+00:04 +143: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c11_geometry_regression_test.dart: 搂鍗佷竴 鍒嗚鲸鐜?/ DPI / 澶氬睆 25 璐熷潗鏍囧壇灞忥紙宸︿晶灞忥級锛氱敾甯冩彁浜ゅ悗浜虹墿浠嶅彲瑙?00:04 +144: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂鍥?/ 搂鍏?椤堕儴閫傞厤涓嶅緱绉诲姩浜虹墿 / 缂╁皬鑿滃崟 3 椤堕儴閫傞厤锛氫汉鐗╁睆骞曞潗鏍囦笉鍙樸€佺己鍙ｅ榻愩€佽彍鍗曞昂瀵镐笉鍙?00:05 +145: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂鍥?/ 搂鍏?椤堕儴閫傞厤涓嶅緱绉诲姩浜虹墿 / 缂╁皬鑿滃崟 3 椤堕儴閫傞厤锛氫汉鐗╁睆骞曞潗鏍囦笉鍙樸€佺己鍙ｅ榻愩€佽彍鍗曞昂瀵镐笉鍙?00:05 +146: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂鍥?/ 搂鍏?椤堕儴閫傞厤涓嶅緱绉诲姩浜虹墿 / 缂╁皬鑿滃崟 3 椤堕儴閫傞厤锛氫汉鐗╁睆骞曞潗鏍囦笉鍙樸€佺己鍙ｅ榻愩€佽彍鍗曞昂瀵镐笉鍙?00:05 +147: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 宸︿笂锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:05 +148: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 鍙充笂锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:06 +149: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 椤堕儴灞呬腑锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:06 +150: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 宸︿笅锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:07 +151: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 鍙充笅锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:07 +152: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 灞忓箷涓績锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:08 +153: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?椤堕儴鍙嶅寮€鍚堜笉寰楁紓绉?5 宸︿笂寮€鍚?10 娆★細姣忔閮藉畬鏁村彲瑙併€佺粍鍚堢ǔ瀹氥€佹棤娈嬬墖
+00:13 +154: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?椤堕儴鍙嶅寮€鍚堜笉寰楁紓绉?6 鍙充笂寮€鍚?10 娆★細鍚屼竴鍙ｅ緞锛堥暅鍍忔柟鍚戯級
+00:18 +155: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂浜?/ 搂涓?绾嚱鏁版€ц川锛堜笉渚濊禆鍘嗗彶鐘舵€侊級 7 绾靛悜妯″紡鏄綅缃殑绾嚱鏁帮紙鍚屼竴浣嶇疆 鈫?鍚屼竴缁撹锛?00:18 +156: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂浜?/ 搂涓?绾嚱鏁版€ц川锛堜笉渚濊禆鍘嗗彶鐘舵€侊級 8 涓夊€欓€夐兘琚瘎浼帮紝涓旈€夋嫨瑙勫垯鍙柇瑷€
+00:18 +157: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂浜?/ 搂涓?绾嚱鏁版€ц川锛堜笉渚濊禆鍘嗗彶鐘舵€侊級 9 鐢诲竷鐭╁舰 = 瑙嗚鍖呭洿鐩?鈭?绐楀彛锛屽啀 expand(4).roundOut()
+00:18 +158: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂浜?/ 搂涓?绾嚱鏁版€ц川锛堜笉渚濊禆鍘嗗彶鐘舵€侊級 10 绾?Dart锛氭柊澧炴ā鍧椾笉渚濊禆妗岄潰瀹炵幇锛圓ndroid 闅旂锛?00:18 +159: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?杈圭晫锛氳疆鐩樻湰韬氨姣斿墿浣欑┖闂村ぇ 11 璐村埌鏋侀檺锛坹=40锛夋椂浠嶉€?*闈犱笂**锛屾畫浣欐孩鍑哄瀹炰笂鎶?00:18 +160: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?閫夋嫨瑙勫垯锛氫綅缃紭鍏堜簬灞呬腑 12 灞呬腑鏀惧緱涓嬫椂锛岄《閮ㄤ綅缃?*浠嶇劧**閫夐潬涓婏紙鍚﹀垯 top 姘镐笉鐢熸晥锛?00:18 +161: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart: 搂涓?閫夋嫨瑙勫垯锛氫綅缃紭鍏堜簬灞呬腑 13 灞忓箷姝ｄ腑 鈫?灞呬腑锛堜綅缃鐨勬ā寮忓氨鏄眳涓級
+00:18 +162: All tests passed!

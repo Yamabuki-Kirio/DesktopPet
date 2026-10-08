@@ -1,0 +1,25 @@
+# 统一换行符策略：仓库内存 LF，检出到 Windows 工作区时按平台习惯处理。
+# 这样可以避免「在 Windows / Linux / macOS 之间来回切换后整个仓库显示被修改」的问题。
+* text=auto
+
+# 二进制文件：不做换行符转换，也不做 diff 文本化
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.jar  binary
+*.dll  binary
+*.so   binary
+*.exe  binary
+*.ttf  binary
+*.otf  binary
+*.zip  binary
+
+# Windows 批处理脚本必须保留 CRLF，否则在部分环境下无法执行
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+
+# 让 GitHub 在语言统计里把本仓库识别为 Dart 项目（而不是被文档/脚本淹没）
+*.dart linguist-language=Dart

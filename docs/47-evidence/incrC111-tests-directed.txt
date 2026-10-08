@@ -1,0 +1,128 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_c111_top_edge_test.dart
+00:00 +0: 搂浜?鏂瑰悜妯″瀷锛氬叚绉嶇粍鍚堝畬鏁存敮鎸?1 鍏缁勫悎榻愬叏锛屼笖鍋忚浆甯搁噺閫愬瓧澶嶇敤 Android锛埪?6 / 0锛?00:00 +1: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 宸︿笂 ==
+{
+  "scenario": "宸︿笂",
+  "petScreen": "64.0,120.0",
+  "horizontalSide": "right",
+  "verticalPlacement": "top",
+  "selection_reason": "fit_natural_top",
+  "candidate.top.overflow": 0.0,
+  "candidate.middle.overflow": 46.57211072997029,
+  "candidate.bottom.overflow": 61.32267120521749,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "81.8,7.5,445.0,529.3",
+  "canvasBounds": "4.0,3.0,450.0,534.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "142.0,156.0,234.0,312.0",
+  "canvasRect": "-77.0,-69.0,453.0,538.0",
+  "menuLocalRect": "85.0,77.0,503.0,530.0"
+}
+00:00 +2: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笂锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 鍙充笂 ==
+{
+  "scenario": "鍙充笂",
+  "petScreen": "1600.0,120.0",
+  "horizontalSide": "left",
+  "verticalPlacement": "top",
+  "selection_reason": "fit_natural_top",
+  "candidate.top.overflow": 0.0,
+  "candidate.middle.overflow": 46.57211072997029,
+  "candidate.bottom.overflow": 61.32267120521749,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "1467.0,7.5,1830.2,529.3",
+  "canvasBounds": "1462.0,3.0,1908.0,534.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "1678.0,156.0,1770.0,312.0",
+  "canvasRect": "1459.0,-69.0,1989.0,538.0",
+  "menuLocalRect": "27.0,77.0,445.0,530.0"
+}
+00:01 +3: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 椤堕儴灞呬腑锛歷ertical=WheelVerticalPlacement.top 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 椤堕儴灞呬腑 ==
+{
+  "scenario": "椤堕儴灞呬腑",
+  "petScreen": "832.0,120.0",
+  "horizontalSide": "right",
+  "verticalPlacement": "top",
+  "selection_reason": "fit_natural_top",
+  "candidate.top.overflow": 0.0,
+  "candidate.middle.overflow": 46.57211072997029,
+  "candidate.bottom.overflow": 61.32267120521749,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "849.8,7.5,1213.0,529.3",
+  "canvasBounds": "772.0,3.0,1218.0,534.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "910.0,156.0,1002.0,312.0",
+  "canvasRect": "691.0,-69.0,1221.0,538.0",
+  "menuLocalRect": "85.0,77.0,503.0,530.0"
+}
+00:01 +4: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 宸︿笅锛歷ertical=WheelVerticalPlacement.bottom 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 宸︿笅 ==
+{
+  "scenario": "宸︿笅",
+  "petScreen": "64.0,680.0",
+  "horizontalSide": "right",
+  "verticalPlacement": "bottom",
+  "selection_reason": "fit_natural_bottom",
+  "candidate.top.overflow": 49.3226712052176,
+  "candidate.middle.overflow": 34.57211072997052,
+  "candidate.bottom.overflow": 0.0,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "81.8,498.7,445.0,1020.5",
+  "canvasBounds": "4.0,494.0,450.0,1025.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "142.0,716.0,234.0,872.0",
+  "canvasRect": "-77.0,491.0,453.0,1098.0",
+  "menuLocalRect": "85.0,76.0,503.0,529.0"
+}
+00:02 +5: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 鍙充笅锛歷ertical=WheelVerticalPlacement.bottom 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 鍙充笅 ==
+{
+  "scenario": "鍙充笅",
+  "petScreen": "1600.0,680.0",
+  "horizontalSide": "left",
+  "verticalPlacement": "bottom",
+  "selection_reason": "fit_natural_bottom",
+  "candidate.top.overflow": 49.3226712052176,
+  "candidate.middle.overflow": 34.57211072997052,
+  "candidate.bottom.overflow": 0.0,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "1467.0,498.7,1830.2,1020.5",
+  "canvasBounds": "1462.0,494.0,1908.0,1025.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "1678.0,716.0,1770.0,872.0",
+  "canvasRect": "1459.0,491.0,1989.0,1098.0",
+  "menuLocalRect": "27.0,76.0,445.0,529.0"
+}
+00:02 +6: 搂涓?/ 搂鍏?鍏甯冨眬锛氶浂婧㈠嚭 + 璇婃柇瀛楁 2 鍦烘櫙 灞忓箷涓績锛歷ertical=WheelVerticalPlacement.middle 涓斿洓渚ф孩鍑轰负 0
+== C1.1.1 甯冨眬璇婃柇 灞忓箷涓績 ==
+{
+  "scenario": "灞忓箷涓績",
+  "petScreen": "832.0,420.0",
+  "horizontalSide": "right",
+  "verticalPlacement": "middle",
+  "selection_reason": "fit_natural_middle",
+  "candidate.top.overflow": 0.0,
+  "candidate.middle.overflow": 0.0,
+  "candidate.bottom.overflow": 0.0,
+  "topOverflowPx": 0.0,
+  "bottomOverflowPx": 0.0,
+  "selectedVisualBounds": "940.8,253.4,1208.8,814.6",
+  "canvasBounds": "841.0,249.0,1213.0,819.0",
+  "anchorErrorPx": 0.006399999999985084,
+  "petVisualScreenRect": "910.0,456.0,1002.0,612.0",
+  "canvasRect": "691.0,231.0,1221.0,838.0",
+  "menuLocalRect": "154.0,84.0,501.0,522.0"
+}
+00:03 +7: 搂鍥?/ 搂鍏?椤堕儴閫傞厤涓嶅緱绉诲姩浜虹墿 / 缂╁皬鑿滃崟 3 椤堕儴閫傞厤锛氫汉鐗╁睆骞曞潗鏍囦笉鍙樸€佺己鍙ｅ榻愩€佽彍鍗曞昂瀵镐笉鍙?00:04 +8: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 宸︿笂锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:04 +9: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 鍙充笂锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:05 +10: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 椤堕儴灞呬腑锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:05 +11: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 宸︿笅锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:06 +12: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 鍙充笅锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:06 +13: 搂涔?姣忎釜鍦烘櫙锛氫笉瑁佸垏 / 鍏ㄥ湪鐢诲竷鍐?/ Region 瑕嗙洊 / 鏂瑰悜涓嶅洖褰?4 鍦烘櫙 灞忓箷涓績锛氬畬鏁村彲瑙佷笖宸﹀彸鏂瑰悜涓嶅洖褰?00:07 +14: 搂涓?椤堕儴鍙嶅寮€鍚堜笉寰楁紓绉?5 宸︿笂寮€鍚?10 娆★細姣忔閮藉畬鏁村彲瑙併€佺粍鍚堢ǔ瀹氥€佹棤娈嬬墖
+00:12 +15: 搂涓?椤堕儴鍙嶅寮€鍚堜笉寰楁紓绉?6 鍙充笂寮€鍚?10 娆★細鍚屼竴鍙ｅ緞锛堥暅鍍忔柟鍚戯級
+00:16 +16: 搂浜?/ 搂涓?绾嚱鏁版€ц川锛堜笉渚濊禆鍘嗗彶鐘舵€侊級 7 绾靛悜妯″紡鏄綅缃殑绾嚱鏁帮紙鍚屼竴浣嶇疆 鈫?鍚屼竴缁撹锛?00:16 +17: 搂浜?/ 搂涓?绾嚱鏁版€ц川锛堜笉渚濊禆鍘嗗彶鐘舵€侊級 8 涓夊€欓€夐兘琚瘎浼帮紝涓旈€夋嫨瑙勫垯鍙柇瑷€
+00:16 +18: 搂浜?/ 搂涓?绾嚱鏁版€ц川锛堜笉渚濊禆鍘嗗彶鐘舵€侊級 9 鐢诲竷鐭╁舰 = 瑙嗚鍖呭洿鐩?鈭?绐楀彛锛屽啀 expand(4).roundOut()
+00:16 +19: 搂浜?/ 搂涓?绾嚱鏁版€ц川锛堜笉渚濊禆鍘嗗彶鐘舵€侊級 10 绾?Dart锛氭柊澧炴ā鍧椾笉渚濊禆妗岄潰瀹炵幇锛圓ndroid 闅旂锛?00:16 +20: 搂涓?杈圭晫锛氳疆鐩樻湰韬氨姣斿墿浣欑┖闂村ぇ 11 璐村埌鏋侀檺锛坹=40锛夋椂浠嶉€?*闈犱笂**锛屾畫浣欐孩鍑哄瀹炰笂鎶?00:16 +21: 搂涓?閫夋嫨瑙勫垯锛氫綅缃紭鍏堜簬灞呬腑 12 灞呬腑鏀惧緱涓嬫椂锛岄《閮ㄤ綅缃?*浠嶇劧**閫夐潬涓婏紙鍚﹀垯 top 姘镐笉鐢熸晥锛?00:16 +22: 搂涓?閫夋嫨瑙勫垯锛氫綅缃紭鍏堜簬灞呬腑 13 灞忓箷姝ｄ腑 鈫?灞呬腑锛堜綅缃鐨勬ā寮忓氨鏄眳涓級
+00:16 +23: All tests passed!

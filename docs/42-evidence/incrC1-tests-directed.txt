@@ -1,0 +1,305 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart
+00:00 +0: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §八 请求/幂等基础 requestId 单调递增，key 唯一
+00:00 +1: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §八 请求/幂等基础 同一 key 只允许 begin 一次（防重复投递）
+00:00 +2: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §八 请求/幂等基础 容量上限会淘汰最旧记录（不会无限增长）
+00:00 +3: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +4: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +5: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +6: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +7: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +8: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +9: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +10: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +11: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +12: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +13: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +14: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +15: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +16: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +17: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +18: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +19: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +20: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +21: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +22: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +23: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +24: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +25: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +26: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +27: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +28: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +29: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +30: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +31: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +32: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +33: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +34: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +35: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +36: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +37: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +38: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +39: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +40: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +41: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +42: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +43: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +44: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +45: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +46: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +47: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +48: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +49: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +50: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +51: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +52: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +53: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +54: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +55: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +56: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +57: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +58: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +59: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.6 主题：即时切换且**不重建 HWND** 调整层里选主题 → 只写主题、窗口矩形不变、不进重建事务
+00:00 +60: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +61: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +62: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +63: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +64: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +65: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +66: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:00 +67: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +68: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +69: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +70: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +71: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +72: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +73: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +74: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +75: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +76: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +77: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +78: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +79: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +80: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +81: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +82: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +83: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +84: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +85: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +86: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +87: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +88: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +89: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +90: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +91: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +92: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +93: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +94: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +95: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +96: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +97: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +98: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +99: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +100: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +101: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +102: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +103: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +104: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +105: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +106: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +107: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +108: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +109: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +110: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +111: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +112: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +113: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +114: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +115: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +116: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +117: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +118: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +119: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +120: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +121: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +122: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +123: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +124: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +125: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +126: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +127: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +128: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +129: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +130: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +131: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +132: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: #1 开 / 关菜单绝不再提交窗口矩形（只改 Region）
+00:01 +133: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +134: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +135: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +136: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +137: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +138: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +139: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +140: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +141: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +142: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +143: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 归一化范围与直立性 所有图标的几何都落在归一化 [-1,1]²（外圈透明）
+00:01 +144: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +145: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +146: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +147: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +148: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +149: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +150: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +151: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +152: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +153: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +154: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +155: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +156: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +157: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +158: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +159: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +160: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +161: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +162: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +163: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +164: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +165: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +166: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +167: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +168: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +169: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +170: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +171: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +172: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +173: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +174: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +175: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +176: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +177: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +178: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +179: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +180: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +181: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +182: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +183: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +184: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +185: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +186: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +187: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +188: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +189: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +190: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +191: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +192: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +193: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +194: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +195: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 增大轮盘大小 → 写设置 + **只重建一次**画布
+00:01 +196: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_probe_test.dart: Region 失败的后继路径不留下 full-canvas Region
+00:01 +197: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:01 +198: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:01 +199: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:01 +200: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:01 +201: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:01 +202: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:01 +203: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:01 +204: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +205: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +206: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +207: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +208: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +209: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +210: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +211: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +212: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +213: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +214: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +215: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +216: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +217: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +218: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +219: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +220: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +221: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +222: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +223: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +224: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +225: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 按钮大小 / 菜单距离同样走调整层
+00:02 +226: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +227: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +228: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +229: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +230: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +231: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +232: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +233: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +234: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +235: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +236: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +237: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +238: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +239: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +240: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +241: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +242: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +243: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +244: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +245: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +246: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +247: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +248: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +249: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +250: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +251: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +252: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +253: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +254: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +255: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +256: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +257: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +258: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +259: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +260: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +261: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +262: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +263: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +264: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +265: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +266: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +267: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +268: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +269: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +270: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +271: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +272: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +273: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +274: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +275: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:02 +276: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:02 +277: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:02 +278: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:02 +279: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:02 +280: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:02 +281: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:02 +282: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:03 +283: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:03 +284: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:03 +285: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:03 +286: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 恢复默认到得了默认值（网格对齐）
+00:03 +287: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 到边界时明确反馈"已到最大"，且**不**假装成功
+00:03 +288: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 §11.9 重建后**恢复原调整层**（不是回到根菜单）
+00:04 +289: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 §11.10 重建失败 → 回滚旧设置并给出失败反馈
+00:04 +290: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.3/4/5 + §11.7 调整层加减与一次重建 §11.8 连续加减只应用最新值（旧 revision 被放弃）
+00:04 +291: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.19 root_hide 与托盘恢复 root_hide → 隐藏窗口（服务继续运行）
+00:05 +292: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.14/15/16/17/18 形象与页面跳转（委托给共用执行器） appearance_prev / next 真正执行
+00:05 +293: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.14/15/16/17/18 形象与页面跳转（委托给共用执行器） appearance_auto / fav / mapping / library 都真正执行
+00:05 +294: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.14/15/16/17/18 形象与页面跳转（委托给共用执行器） pet_auto 真正执行（复用现有设置与状态系统）
+00:06 +295: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.22 C2 动作只显示统一临时提示 records_* 全部返回同一句 C2 提示（无"不支持"、无英文）
+00:06 +296: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.22 C2 动作只显示统一临时提示 records_sync 未登录 → 明确的登录提示（不是 C2 提示）
+00:06 +297: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.20/21 幂等与晚到结果 同一次确认被重复派发时只执行一次
+00:07 +298: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.20/21 幂等与晚到结果 菜单已关闭后晚到的结果不恢复旧 UI
+00:07 +299: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.23/27 Region 与反馈一致 / HWND 不变 反馈期间 Region 重算，反馈结束后恢复；窗口矩形全程不变
+00:07 +300: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.24/25 右键菜单与控制面板不退化 / Android 隔离 右键菜单仍按 workArea 约束（未受 C1 影响）
+00:07 +301: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_action_dispatch_test.dart: §11.24/25 右键菜单与控制面板不退化 / Android 隔离 新增模块不依赖桌面实现（Android 隔离）
+00:07 +302: All tests passed!

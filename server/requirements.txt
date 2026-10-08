@@ -1,0 +1,16 @@
+# PetLife 服务端运行时依赖（版本为实际安装并跑通测试的版本，供 Docker 复现）
+fastapi==0.141.1
+uvicorn==0.54.0
+SQLAlchemy==2.1.1
+alembic==1.20.0
+pydantic==2.13.5
+pydantic-settings==2.15.0
+email-validator==2.3.0
+argon2-cffi==25.1.0
+PyJWT==2.15.0
+# PostgreSQL 驱动：仅在生产/测试连 PG 时需要，SQLite 环境下不会导入
+psycopg2-binary==2.9.13
+python-dotenv==1.2.3
+
+# --- Phase 3：MCP Server（纯 HTTP 客户端，不接数据库）---
+mcp==1.30.0

@@ -1,0 +1,27 @@
+# --- 机密：绝不入库 ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- 本地 Python 运行时（用脚本下载的 embeddable 包，可随时删掉重建）---
+.python/
+python-embed*.zip
+get-pip.py
+
+# --- Python 产物 ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- 本地数据库与日志 ---
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.log

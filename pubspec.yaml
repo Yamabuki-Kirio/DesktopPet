@@ -1,0 +1,89 @@
+name: petlife
+description: "PetLife - 跨平台桌宠与屏幕使用统计。阶段 0：Windows x64 桌宠与素材系统原型。"
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.9.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 状态管理 / 依赖注入
+  provider: ^6.1.2
+
+  # 桌面窗口与系统集成
+  window_manager: ^0.5.1
+  screen_retriever: ^0.2.0
+  tray_manager: ^0.5.0
+
+  # 路径与文件
+  path: ^1.9.1
+  path_provider: ^2.1.5
+  file_picker: ^10.1.9
+
+  # SQLite：Windows 桌面走 FFI
+  sqflite_common_ffi: ^2.3.5
+  sqlite3_flutter_libs: ^0.5.32
+  # SQLite：Android 走移动端实现（系统 android.database.sqlite）
+  sqflite: ^2.4.4
+  # 上层的 PlatformDatabase 接口需要直接引用 sqflite_common 的 Database / Options
+  sqflite_common: ^2.5.4
+
+  # Android 安全凭据存储
+  #
+  # ⚠️ 这里**刻意不依赖** `flutter_secure_storage`：它在 Windows 侧会编译一个
+  # 需要 ATL（atlstr.h）的 C++ 插件，而本机的 VS Build Tools 未安装 ATL，
+  # 结果是 **Windows Release 构建直接失败**（违反"不破坏现有 Windows 功能"）。
+  # Android Keystore 改为项目内自建原生通道实现（Phase 4A 已完成）：
+  #   * Kotlin：android/app/src/main/kotlin/asia/akechi/petlife/PetLifeCredentialStore.kt
+  #   * 通道：asia.akechi.petlife/credential_store（在 MainActivity 注册）
+  #   * Dart：lib/platform/android/android_keystore_credential_store.dart
+  #   * 工厂：lib/platform/android/android_credential_store.dart（不降级到内存）
+  #
+  # Android 设备型号与系统版本（服务端 devices 表上报用）
+  # 说明：13.x 要求 win32 ^6，与既有依赖锁定的 win32 ^5 冲突，
+  # 因此固定在 12.x（功能相同，Phase 4A 只用 BasicInfo）。
+  device_info_plus: ^12.4.0
+
+  # 素材处理
+  archive: ^4.0.7
+  image: ^4.5.4
+  crypto: ^3.0.6
+
+  # 通用
+  collection: ^1.19.1
+  uuid: ^4.5.1
+  logging: ^1.3.0
+  intl: ^0.20.2
+
+  # Windows 原生能力（进程 CPU / 内存 / 句柄采样）
+  ffi: ^2.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    # 系统托盘图标（由 tools/make_tray_icon.py 用纯标准库生成，可复现）
+    - assets/tray_icon.ico
+    - assets/tray_icon.png
+
+# SQLite 的 native assets 构建钩子默认会从 GitHub Releases 下载预编译的
+# sqlite3.x64.windows.dll。在受限网络（例如只放行 sqlite.org / pub 镜像）下这会失败，
+# 因此改为 source: system —— 钩子只登记「运行时按名字查找」，
+# 由 sqlite3_flutter_libs 的 Windows CMake 脚本从 sqlite.org 编译并随应用打包 sqlite3.dll。
+# 该 DLL 会与 petlife.exe 同目录，按文件名即可加载。
+#
+# 注意：这里的名字**不要带 .dll 后缀**。native assets 运行时会自动补平台后缀，
+# 写成 "sqlite3.dll" 会变成 "sqlite3.dll.dll" 并报 error code 126（已在真机验证）。
+hooks:
+  user_defines:
+    sqlite3:
+      source: system
+      name_windows: sqlite3

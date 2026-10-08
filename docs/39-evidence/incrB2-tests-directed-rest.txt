@@ -1,0 +1,79 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart
+00:00 +0: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 39 个图标 key（与 Android WheelMenuIcon 数量一致）
+00:00 +1: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 菜单目录里每个条目 id 都有**专属**图标（无遗漏、无兜底）
+00:00 +2: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 映射表里的 id 都在菜单目录里（没有写错的键）
+00:00 +3: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 未知 id 回退到 info（绝不返回 null，避免空按钮）
+00:00 +4: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 返回槽位用 back 图标（Android 同口径）
+00:00 +5: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 覆盖与映射 五个子菜单入口的图标与 Android 一致
+00:00 +6: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 归一化描边宽度 0.16，线帽 / 线接都是 ROUND
+00:00 +7: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 size <= 0 时**不做任何绘制**（防御空按钮）
+00:00 +8: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_icons_test.dart: 图标 · 描边与画法 每个图标都能绘制且**互不相同**（没有粘在一起的空实现）
+00:00 +9: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/platform_isolation_test.dart: 桌面专属实现只出现在平台层 / 桌面 UI / 装配点
+00:00 +10: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +11: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +12: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +13: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +14: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +15: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +16: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +17: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +18: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +19: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +20: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +21: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +22: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +23: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +24: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +25: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +26: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +27: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +28: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +29: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +30: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +31: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +32: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +33: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +34: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +35: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +36: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +37: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +38: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +39: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +40: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +41: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +42: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +43: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +44: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +45: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +46: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +47: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/wheel_menu_view_test.dart: 打开动画期间输入被拦下（不能"没张开就被点掉"）
+00:00 +48: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +49: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +50: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +51: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +52: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +53: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +54: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +55: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +56: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +57: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +58: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +59: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +60: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +61: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +62: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +63: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +64: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +65: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +66: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +67: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +68: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +69: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +70: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +71: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +72: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +73: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +74: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:00 +75: C:/Users/Administrator/WorkBuddy/DesktopPet/petlife/test/fixed_canvas_contract_test.dart: 平台隔离（Android / 服务端不被触碰） Windows Region 通道名不会出现在 Android 或 server 目录
+00:01 +76: All tests passed!

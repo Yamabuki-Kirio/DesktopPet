@@ -1,0 +1,25 @@
+EXE=C:\Users\Administrator\WorkBuddy\DesktopPet\petlife\build_incrC111\windows\x64\runner\Release\petlife.exe
+EXE_BYTES=137216
+EXE_SHA256=ED479D5D95402393A7CC44A21C62F844CA27DD9EE4B013B0FB67C51913423942
+APPSO_SHA256=10D1537EAF67E28EAF54FDCD4F88211747475E85377E746BEE0032003D67D4BC
+--- FILES ---
+dartjni.dll  59904
+flutter_windows.dll  21274112
+native_assets.json  129
+petlife.exe  137216
+screen_retriever_windows_plugin.dll  119296
+sqlite3_flutter_libs_plugin.dll  9728
+sqlite3.dll  1479168
+tray_manager_plugin.dll  107520
+window_manager_plugin.dll  130048
+data\app.so  9323400
+data\icudtl.dat  864880
+data\flutter_assets\AssetManifest.bin  112
+data\flutter_assets\FontManifest.json  82
+data\flutter_assets\NativeAssetsManifest.json  129
+data\flutter_assets\NOTICES.Z  105674
+data\flutter_assets\assets\tray_icon.ico  197
+data\flutter_assets\assets\tray_icon.png  175
+data\flutter_assets\fonts\MaterialIcons-Regular.otf  13824
+data\flutter_assets\shaders\ink_sparkle.frag  21856
+data\flutter_assets\shaders\stretch_effect.frag  17616

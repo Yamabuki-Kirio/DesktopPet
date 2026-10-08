@@ -1,0 +1,83 @@
+# PetLife 服务端开发/测试环境
+#
+# 一条命令启动（含自动迁移）：
+#   docker compose up --build
+#
+# 只跑迁移：
+#   docker compose run --rm migrate
+#
+# 说明：
+# * PostgreSQL 数据落在命名卷 petlife_pgdata，容器重建不丢数据。
+# * POSTGRES_PASSWORD 未设置时 compose 会直接报错退出——
+#   这是刻意的：需求要求"API 容器不得使用默认弱密码"。
+# * 默认只绑定 127.0.0.1，不会无意中把服务暴露到局域网。
+# * ⚠️ 本文件不会自动部署到公网。生产化改造见 README 的"生产部署"一节。
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-petlife}
+      POSTGRES_USER: ${POSTGRES_USER:-petlife}
+      # 必填：未设置则 compose 直接失败，杜绝默认弱口令
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?必须在 server/.env 中设置 POSTGRES_PASSWORD（强口令）}
+      # 让容器内的时间/编码稳定，避免排序与日期行为随宿主机漂移
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+      TZ: UTC
+    volumes:
+      - petlife_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-petlife} -d ${POSTGRES_DB:-petlife}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    # 默认不对宿主机暴露数据库端口；需要本地直连时再打开
+    # ports:
+    #   - "127.0.0.1:5432:5432"
+
+  migrate:
+    build:
+      context: .
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      PETLIFE_DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-petlife}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-petlife}
+    command: ["alembic", "upgrade", "head"]
+
+  api:
+    build:
+      context: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    env_file:
+      - .env
+    environment:
+      PETLIFE_DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-petlife}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-petlife}
+    ports:
+      - "${API_BIND_ADDRESS:-127.0.0.1}:${API_HOST_PORT:-8000}:8000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - |
+          import urllib.request, sys
+          sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4).status == 200 else 1)
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  petlife_pgdata:
+    name: petlife_pgdata
