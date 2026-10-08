@@ -10,3 +10,5 @@
 - `database/`：本地 SQLite schema 与 DAO。
 
 修改轮盘几何、窗口 Region 或同步协议时，应同步运行对应的 `test/` 回归测试。
+
+维护边界：跨平台逻辑放在这里；只有必须调用系统能力的部分才下沉到 `android/` 或 `windows/`。
