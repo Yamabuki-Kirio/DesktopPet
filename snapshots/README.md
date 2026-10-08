@@ -4,4 +4,4 @@
 
 新开发环境应以 Git 提交和 Release 为准，不要直接从快照 ZIP 继续开发。体积较大的长期归档建议迁移到 GitHub Release 或外部存储。
 
-维护边界：只保留确有恢复价值的里程碑，普通版本应使用 Git 标签和 GitHub Release。
+维护要点：只保留确有恢复价值的里程碑，普通版本应使用 Git 标签和 GitHub Release。
