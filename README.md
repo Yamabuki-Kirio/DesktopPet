@@ -31,6 +31,19 @@ PetLife 将桌宠、数字生活记录与多设备同步放在同一个应用里
 | 透明悬浮、拖拽、动画素材、角色与状态切换 | 应用时长、使用时间段、时间线、当前应用 | 账户、设备管理、离线队列、增量同步 |
 | P3P 风格轮盘菜单与自定义主题 | 数据默认保存在本机，可随时暂停采集 | FastAPI + PostgreSQL + MCP Server |
 
+## 界面预览
+
+<p align="center">
+  <img src="docs/images/petlife-wheel-menu.png" width="46%" alt="PetLife 桌宠与 P3P 风格轮盘菜单">
+  <img src="docs/images/petlife-usage-statistics.png" width="52%" alt="PetLife 多设备使用统计">
+</p>
+
+<p align="center">
+  <img src="docs/images/petlife-asset-library.png" width="86%" alt="PetLife 桌宠素材库">
+</p>
+
+<p align="center"><sub>桌宠轮盘、多设备使用统计与素材库。示例角色素材版权归原权利人所有，不包含在本仓库及发布包中。</sub></p>
+
 ## 下载与安装
 
 前往 [PetLife v0.1.0-preview.1](https://github.com/Yamabuki-Kirio/DesktopPet/releases/tag/v0.1.0-preview.1) 下载适合你的版本。
