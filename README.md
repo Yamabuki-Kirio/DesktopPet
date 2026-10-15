@@ -5,7 +5,7 @@
   <p>Windows 悬浮桌宠 · Android 悬浮窗 · 使用统计 · 多设备同步 · 自托管服务端</p>
 
   <p>
-    <a href="https://github.com/aaa1789261750-png/DesktopPet/releases/tag/v0.1.0-preview.1"><img src="https://img.shields.io/badge/下载-v0.1.0--preview.1-F24D96?style=for-the-badge" alt="下载最新预览版"></a>
+    <a href="https://github.com/Yamabuki-Kirio/DesktopPet/releases/tag/v0.1.0-preview.1"><img src="https://img.shields.io/badge/下载-v0.1.0--preview.1-F24D96?style=for-the-badge" alt="下载最新预览版"></a>
     <img src="https://img.shields.io/badge/Flutter-stable-02569B?style=for-the-badge&logo=flutter" alt="Flutter stable">
     <img src="https://img.shields.io/badge/平台-Windows%20%7C%20Android-6C63FF?style=for-the-badge" alt="Windows 和 Android">
   </p>
@@ -33,7 +33,7 @@ PetLife 将桌宠、数字生活记录与多设备同步放在同一个应用里
 
 ## 下载与安装
 
-前往 [PetLife v0.1.0-preview.1](https://github.com/aaa1789261750-png/DesktopPet/releases/tag/v0.1.0-preview.1) 下载适合你的版本。
+前往 [PetLife v0.1.0-preview.1](https://github.com/Yamabuki-Kirio/DesktopPet/releases/tag/v0.1.0-preview.1) 下载适合你的版本。
 
 | 平台 | 下载文件 | 使用方式 |
 | --- | --- | --- |
@@ -85,7 +85,7 @@ flowchart LR
 ### 获取源码
 
 ```bash
-git clone https://github.com/aaa1789261750-png/DesktopPet.git
+git clone https://github.com/Yamabuki-Kirio/DesktopPet.git
 cd DesktopPet
 flutter pub get
 ```
