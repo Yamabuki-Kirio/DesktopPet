@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="assets/tray_icon.png" width="112" alt="PetLife 图标">
   <h1>PetLife</h1>
   <p><strong>会陪伴你，也会帮你看见时间去了哪里的跨平台桌面宠物。</strong></p>
   <p>Windows 悬浮桌宠 · Android 悬浮窗 · 使用统计 · 多设备同步 · 自托管服务端</p>
