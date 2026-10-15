@@ -30,6 +30,9 @@ class AppSettings {
     this.lastAssetId,
     this.manualAssetId,
     this.usageStatsTab = usageStatsTabLocal,
+    this.themeMode = themeModeLight,
+    this.themePrimaryColor = defaultThemePrimaryColor,
+    this.themeAccentColor = defaultThemeAccentColor,
     this.overlayAutomaticState = true,
     this.wheelThemeId = WheelThemeIds.p3pPink,
     this.wheelCustomPrimary = '',
@@ -43,6 +46,34 @@ class AppSettings {
   /// 只是 UI 记忆，决定下次打开时停留在哪一页（需求：默认保持用户上次选择）。
   static const String usageStatsTabLocal = 'local';
   static const String usageStatsTabCloud = 'cloud';
+
+  // --- 外观与主题（Android UI 增量）---
+
+  /// 明暗模式：`light` / `dark` / `system`。
+  ///
+  /// 默认 **light**：验收要求「默认是白色＋P3P 粉色」且「默认界面一眼可判定为
+  /// 白色主题」。若默认跟随系统，深色系统上首次启动就是暗色界面，与验收冲突 ——
+  /// 「跟随系统」必须由用户显式选择。
+  static const String themeModeLight = 'light';
+  static const String themeModeDark = 'dark';
+  static const String themeModeSystem = 'system';
+
+  static const List<String> themeModes = <String>[
+    themeModeLight,
+    themeModeDark,
+    themeModeSystem,
+  ];
+
+  /// 默认主色（白色）。控制页面背景 / 顶部栏 / 卡片表面 / 底部导航 / 弹窗表面。
+  static const String defaultThemePrimaryColor = '#FFFFFF';
+
+  /// 默认强调色（P3P 粉）。控制按钮、选中态、图表、进度条、开关、焦点边框。
+  static const String defaultThemeAccentColor = '#F24D96';
+
+  /// 主题字段的持久化前缀（与其它 UI 记忆放在同一命名空间）。
+  static const String themeModeKey = 'ui.themeMode';
+  static const String themePrimaryKey = 'ui.primaryColor';
+  static const String themeAccentKey = 'ui.accentColor';
 
   // --- 窗口 ---
   final bool alwaysOnTop;
@@ -111,6 +142,18 @@ class AppSettings {
   /// 纯 UI 记忆：决定下次打开统计页时停留在本机还是云端。
   final String usageStatsTab;
 
+  /// 明暗模式（`light` / `dark` / `system`）。默认 `light`。
+  final String themeMode;
+
+  /// 主色（`#RRGGBB`）。控制页面背景 / 卡片表面 / 顶部栏 / 底部导航 / 弹窗表面。
+  ///
+  /// **与 [themeAccentColor] 完全独立**：改一个绝不会覆盖另一个。
+  final String themePrimaryColor;
+
+  /// 强调色（`#RRGGBB`）。控制按钮 / 当前导航项 / 选中标签 / 图表 /
+  /// 进度条 / 开关 / 焦点边框。**独立保存**。
+  final String themeAccentColor;
+
   /// Phase 4C-6A：「根据当前应用自动切换桌宠状态与素材」总开关。
   ///
   /// 默认开启。关闭后仍照常识别前台应用与采集使用时长，只是不再自动换素材。
@@ -157,6 +200,9 @@ class AppSettings {
     String? manualAssetId,
     bool clearManualAssetId = false,
     String? usageStatsTab,
+    String? themeMode,
+    String? themePrimaryColor,
+    String? themeAccentColor,
     bool? overlayAutomaticState,
     String? wheelThemeId,
     String? wheelCustomPrimary,
@@ -185,6 +231,9 @@ class AppSettings {
         lastAssetId: lastAssetId ?? this.lastAssetId,
         manualAssetId: clearManualAssetId ? null : (manualAssetId ?? this.manualAssetId),
         usageStatsTab: usageStatsTab ?? this.usageStatsTab,
+        themeMode: themeMode ?? this.themeMode,
+        themePrimaryColor: themePrimaryColor ?? this.themePrimaryColor,
+        themeAccentColor: themeAccentColor ?? this.themeAccentColor,
         overlayAutomaticState: overlayAutomaticState ?? this.overlayAutomaticState,
         wheelThemeId: wheelThemeId ?? this.wheelThemeId,
         wheelCustomPrimary: wheelCustomPrimary ?? this.wheelCustomPrimary,
@@ -208,6 +257,15 @@ class AppSettings {
       usageStatsTab: usageStatsTab == usageStatsTabCloud
           ? usageStatsTabCloud
           : usageStatsTabLocal,
+      // 主题：非法模式回落 light；非法颜色回落默认色（**不抛异常**，
+      // 一个手改数据库的脏值不应该让整个应用起不来）。
+      themeMode: themeModes.contains(themeMode) ? themeMode : themeModeLight,
+      themePrimaryColor: isValidThemeColor(themePrimaryColor)
+          ? normalizeThemeColor(themePrimaryColor)
+          : defaultThemePrimaryColor,
+      themeAccentColor: isValidThemeColor(themeAccentColor)
+          ? normalizeThemeColor(themeAccentColor)
+          : defaultThemeAccentColor,
       // 轮盘：与 Android `WheelMenuLayoutSettings.normalized()` 同一口径
       // （大小 / 按钮吸附到 10% 步进，距离直接夹取）。
       wheelScale: WheelMenuLayoutSettings.quantizeScale(wheelScale),
@@ -224,6 +282,16 @@ class AppSettings {
   ///
   /// 自定义主色非法（空 / 解析失败）时 [WheelMenuTheme.fromWire] 会回退 P3P 粉同构配色。
   static WheelMenuThemeResolver get themeResolver => const WheelMenuThemeResolver._();
+
+  /// 主题色文本是否合法（只接受 `#RRGGBB`）。
+  ///
+  /// 刻意**不**在这里解析成 `Color`：设置层不依赖 Flutter 的 UI 库，
+  /// 真正的解析在 `ui/theme/petlife_theme.dart` 里完成。
+  static bool isValidThemeColor(String? raw) =>
+      raw != null && RegExp(r'^#[0-9A-Fa-f]{6}$').hasMatch(raw.trim());
+
+  /// 归一化主题色文本（统一成 `#RRGGBB` 大写）。
+  static String normalizeThemeColor(String raw) => raw.trim().toUpperCase();
 
   /// 当前轮盘主题（由 `wheelThemeId` + `wheelCustomPrimary` 解析）。
   WheelMenuTheme get wheelTheme => themeResolver.resolve(
@@ -259,6 +327,9 @@ class AppSettings {
         'state.lastAssetId': lastAssetId ?? '',
         'state.manualAssetId': manualAssetId ?? '',
         'ui.usageStatsTab': usageStatsTab,
+        themeModeKey: themeMode,
+        themePrimaryKey: themePrimaryColor,
+        themeAccentKey: themeAccentColor,
         'overlay.automaticState': overlayAutomaticState ? '1' : '0',
         'wheel.themeId': wheelThemeId,
         'wheel.customPrimary': wheelCustomPrimary,
@@ -292,6 +363,11 @@ class AppSettings {
       lastAssetId: _stringOrNull(kv['state.lastAssetId']),
       manualAssetId: _stringOrNull(kv['state.manualAssetId']),
       usageStatsTab: _stringOrNull(kv['ui.usageStatsTab']) ?? base.usageStatsTab,
+      themeMode: _stringOrNull(kv[themeModeKey]) ?? base.themeMode,
+      themePrimaryColor:
+          _stringOrNull(kv[themePrimaryKey]) ?? base.themePrimaryColor,
+      themeAccentColor:
+          _stringOrNull(kv[themeAccentKey]) ?? base.themeAccentColor,
       overlayAutomaticState:
           _bool(kv['overlay.automaticState'], base.overlayAutomaticState),
       wheelThemeId: _stringOrNull(kv['wheel.themeId']) ?? base.wheelThemeId,

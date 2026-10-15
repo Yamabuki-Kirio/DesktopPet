@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- APK 图标（adaptive icon）的背景层：白色圆角方形底。
+         前景层是 @mipmap/ic_launcher_foreground（粉色放射环 + 中央爪印）。 -->
+    <color name="ic_launcher_background">#FFFFFF</color>
+
+    <!-- 启动页背景：暖白（与默认主色一致，避免启动瞬间出现灰白跳变）。 -->
+    <color name="splash_background">#FFFFFF</color>
+</resources>

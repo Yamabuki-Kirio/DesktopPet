@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../settings/app_settings.dart';
 import '../ui/desktop/desktop_shell.dart';
 import '../ui/mobile/mobile_shell.dart';
+import '../ui/theme/design_tokens.dart';
+import '../ui/theme/petlife_theme.dart';
 import 'app_scope.dart';
 
 /// 应用根组件。
@@ -15,15 +18,57 @@ class PetLifeApp extends StatelessWidget {
     // 字体：Windows 用微软雅黑；Android 上没有该字体，交给系统默认字体，
     // 否则中文会回退到不含中文的字形而显示成方框。
     final bool desktop = services.platform.capabilities.isDesktop;
-    return MaterialApp(
-      title: 'PetLife',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4A7EBB)),
-        fontFamily: desktop ? 'Microsoft YaHei' : null,
-      ),
-      home: AppShell(services: services),
+
+    if (desktop) {
+      // ⚠ Windows 端**保持不变**：本轮的 Android UI 增量明确要求"Windows 不受影响"。
+      // 因此桌面外壳沿用原来的主题，一行都不改。
+      return MaterialApp(
+        title: 'PetLife',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4A7EBB)),
+          fontFamily: 'Microsoft YaHei',
+        ),
+        home: AppShell(services: services),
+      );
+    }
+
+    // Android：主题来自持久化设置（主色 / 强调色 / 明暗模式），
+    // 三者**互相独立**保存，任何一处改动都不会覆盖其它两项。
+    return ListenableBuilder(
+      listenable: services.settings,
+      builder: (BuildContext context, Widget? _) {
+        final AppSettings s = services.settings.settings;
+        final Color primary =
+            petLifeColorFromHex(s.themePrimaryColor) ?? PetLifeColors.primaryDefault;
+        final Color accent =
+            petLifeColorFromHex(s.themeAccentColor) ?? PetLifeColors.accentDefault;
+
+        return MaterialApp(
+          title: 'PetLife',
+          debugShowCheckedModeBanner: false,
+          // 主题切换用颜色渐变，而不是整页闪白（需求 §6）。
+          themeAnimationDuration: PetLifeDurations.themeChange,
+          themeAnimationCurve: PetLifeDurations.easing,
+          theme: buildPetLifeThemeData(
+            primary: primary,
+            accent: accent,
+            brightness: Brightness.light,
+          ),
+          darkTheme: buildPetLifeThemeData(
+            primary: primary,
+            accent: accent,
+            brightness: Brightness.dark,
+          ),
+          themeMode: switch (PetLifeThemeMode.fromWire(s.themeMode)) {
+            PetLifeThemeMode.light => ThemeMode.light,
+            PetLifeThemeMode.dark => ThemeMode.dark,
+            PetLifeThemeMode.system => ThemeMode.system,
+          },
+          home: AppShell(services: services),
+        );
+      },
     );
   }
 }

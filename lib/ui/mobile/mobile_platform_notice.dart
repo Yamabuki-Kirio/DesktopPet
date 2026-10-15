@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../theme/design_tokens.dart';
+import '../theme/petlife_theme.dart';
+import '../widgets/petlife/petlife_components.dart';
+
 /// 移动端「平台能力说明」卡片。
 ///
 /// 存在的理由：**必须让用户知道这一版有没有在采集**。
-/// Phase 4A 的 Android 只做"普通应用"（登录 / 同步 / 查看已有统计 / 应用内桌宠），
-/// 不采集应用使用时长；如果不写清楚，用户会以为"数据丢了"。
+/// 如果不写清楚，用户会以为"数据丢了"。
 ///
 /// 抽成独立组件有两个好处：
 /// * 桌面外壳不会误用移动端文案（反之亦然）；
 /// * 可以用纯 Widget 测试覆盖"有没有采集"两种文案。
+///
+/// 视觉：使用统一设计系统的卡片与主题色（不再硬编码蓝灰色）。
 class MobilePlatformNotice extends StatelessWidget {
   const MobilePlatformNotice({super.key, required this.collecting});
 
@@ -27,27 +32,31 @@ class MobilePlatformNotice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: const Color(0xFF2F4A63).withValues(alpha: 0.06),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Icon(
-              collecting ? Icons.check_circle_outline : Icons.info_outline,
-              size: 16,
-              color: const Color(0xFF2F4A63),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                collecting ? collectingBody : pendingBody,
-                style: const TextStyle(fontSize: 12),
+    final PetLifePalette p = PetLifeTheme.of(context);
+    final Color tone = collecting ? p.success : p.onAccentSoft;
+    return PetLifeCard(
+      color: tone.withValues(alpha: 0.06),
+      borderColor: tone.withValues(alpha: 0.35),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Icon(
+            collecting ? Icons.check_circle_outline : Icons.info_outline,
+            size: 16,
+            color: tone,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              collecting ? collectingBody : pendingBody,
+              style: TextStyle(
+                fontSize: PetLifeText.caption,
+                color: p.textPrimary,
+                height: 1.45,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

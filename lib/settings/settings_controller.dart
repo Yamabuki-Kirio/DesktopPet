@@ -98,6 +98,28 @@ class SettingsController extends ChangeNotifier {
   Future<void> setOverlayAutomaticState(bool value) =>
       update((AppSettings s) => s.copyWith(overlayAutomaticState: value));
 
+  // --- 外观与主题（Android UI 增量）---
+
+  /// 明暗模式（`light` / `dark` / `system`）。非法值由归一化拉回 `light`。
+  Future<void> setThemeMode(String mode) =>
+      update((AppSettings s) => s.copyWith(themeMode: mode));
+
+  /// 主色（`#RRGGBB`）。**只改主色**，不触碰强调色。
+  Future<void> setThemePrimaryColor(String hex) =>
+      update((AppSettings s) => s.copyWith(themePrimaryColor: hex));
+
+  /// 强调色（`#RRGGBB`）。**只改强调色**，不触碰主色。
+  Future<void> setThemeAccentColor(String hex) =>
+      update((AppSettings s) => s.copyWith(themeAccentColor: hex));
+
+  /// 主题恢复默认（白色主色 + P3P 粉强调色）。明暗模式保持用户当前选择。
+  Future<void> resetThemeColors() => update(
+        (AppSettings s) => s.copyWith(
+          themePrimaryColor: AppSettings.defaultThemePrimaryColor,
+          themeAccentColor: AppSettings.defaultThemeAccentColor,
+        ),
+      );
+
   // --- 轮盘（增量 B：字段语义与 Android `WheelMenuLayoutSettings` 一致）---
 
   /// 轮盘主题（`p3p-pink` / `blue` / `red` / `purple` / `green` / `custom`）。

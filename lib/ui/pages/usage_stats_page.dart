@@ -9,31 +9,37 @@ import '../../activity_tracking/current_activity_provider.dart';
 import '../../activity_tracking/models/activity_enums.dart';
 import '../../activity_tracking/models/usage_stats.dart';
 import '../../activity_tracking/usage_analytics_service.dart';
+import '../../app/app_scope.dart';
 import '../../core/constants.dart';
 import '../../core/logger.dart';
-import '../../app/app_scope.dart';
 import '../../platform/overlay_pet.dart';
 import '../../settings/app_settings.dart';
 import '../../state_engine/system_state.dart';
 import '../dialogs/text_input_dialog.dart';
+import '../desktop/legacy/legacy_usage_stats_page.dart';
 import '../overlay_pet_controller.dart';
+import '../theme/design_tokens.dart';
+import '../theme/petlife_theme.dart';
+import '../widgets/petlife/petlife_components.dart';
+import '../widgets/petlife/petlife_decor.dart';
+import '../widgets/petlife/petlife_page.dart';
 import 'cloud_statistics_page.dart';
 
-/// 使用统计页面（需求「十三、统计界面」）。
+/// 使用统计页面（需求「使用统计」）。
 ///
 /// 口径说明集中在 [UsageAnalyticsService] 与 `docs/12-使用统计口径.md`：
 /// **屏幕会话时间 / 活跃使用时间 / 空闲时间 / 应用使用时间**是四个不同指标，
 /// 本页面把它们分开显示，绝不笼统地叫「屏幕时间」。
 ///
-/// Phase 4B 之后，本页顶部增加「本机 | 云端」切换：
-/// * **本机**：原有采集数据（采集、暂停/恢复、应用管理全部保留、行为不变）；
-/// * **云端**：其他设备上传到服务器的使用统计（只读，见 [CloudStatisticsPage]）。
+/// **本轮只改视觉**：统计口径、去重规则、查询窗口与筛选逻辑一行未动。
+/// 页面结构调整为三个清晰区域：今日概览卡 → 应用排行 → 时间线。
 class UsageStatsPage extends StatefulWidget {
   const UsageStatsPage({
     super.key,
     required this.services,
     this.onOpenAccount,
     this.overlay,
+    this.showActivityQualifier = false,
   });
 
   final AppServices services;
@@ -41,12 +47,15 @@ class UsageStatsPage extends StatefulWidget {
   /// 云端页未登录时「去登录」的入口（切到「账户与同步」页）。
   final VoidCallback? onOpenAccount;
 
-  /// Android 悬浮桌宠协调器（Phase 4C-6A）。
+  /// Android 悬浮桌宠协调器。
   ///
   /// 「当前桌宠状态」必须读**原生**真值：Android 的状态切换发生在悬浮服务里，
   /// Flutter 状态引擎在 Android 上不会收到前台事件（其采集器是"不可用"实现），
   /// 因此读状态引擎会让这一行**永远停在 default**。
   final OverlayPetController? overlay;
+
+  /// 采集能力未启用时，在标题上标注「本机」，避免与服务器汇总混淆。
+  final bool showActivityQualifier;
 
   @override
   State<UsageStatsPage> createState() => UsageStatsPageState();
@@ -61,21 +70,18 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
   bool _loading = true;
   String? _error;
 
-  /// 与 [_summary] **同一个窗口**的时间段列表（需求 §8.3）。
+  /// 与 [_summary] **同一个窗口**的时间段列表。
   List<UsageSegmentRow> _timeline = const <UsageSegmentRow>[];
 
-  /// 当前子页：false = 本机统计（原有），true = 云端统计（Phase 4B）。
+  /// 当前子页：false = 本机统计（原有），true = 云端统计。
   bool _showCloud = false;
   bool _tabRestored = false;
 
-  /// Phase 4C-5.1A：「当前前台应用」来自**跨平台**提供者。
-  ///
-  /// 原先直接读 `ActivityTracker.currentAppDisplayName`（Windows 专用链路），
-  /// 因此在 Android 上永远是空 —— 这也正是"设置页能显示、统计页显示空"的根因。
+  /// 「当前前台应用」来自**跨平台**提供者。
   CurrentActivity? _activity;
   StreamSubscription<CurrentActivity>? _activitySub;
 
-  /// Phase 4C-5.1B：Android 原生采集器状态（非 Android 时为 null）。
+  /// Android 原生采集器状态（非 Android 时为 null）。
   UsageCollectorState? _collector;
 
   @override
@@ -87,7 +93,7 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
     _subscribeCurrentActivity();
   }
 
-  /// 从后台回到前台：先把原生暂存会话导入，再刷新（需求 §7 的触发点之一）。
+  /// 从后台回到前台：先把原生暂存会话导入，再刷新。
   @override
   void didChangeAppLifecycleState(AppLifecycleState lifecycle) {
     if (lifecycle == AppLifecycleState.resumed) {
@@ -117,8 +123,6 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
   }
 
   /// 恢复用户上次停留的子页（需求：默认保持用户上次选择）。
-  ///
-  /// 用 post-frame 的原因：读设置是异步的，而 build 期间不该触发 I/O 或 setState。
   void _restoreTab() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || _tabRestored) return;
@@ -143,7 +147,7 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
 
   /// 切到「云端」子页（轮盘菜单 `records_cloud` 用）。
   ///
-  /// 刻意复用 [_selectTab]：切换动作、持久化与顶部 SegmentedButton 完全同源，
+  /// 刻意复用 [_selectTab]：切换动作、持久化与顶部胶囊选择器完全同源，
   /// 不存在"从菜单进来是一套、手点又是另一套"的分叉。
   void showCloudTab() => _selectTab(true);
 
@@ -157,10 +161,10 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
     try {
       // 先把内存中的活动段落盘，保证查询到的是最新数据。
       await widget.services.activityTracker.flushNow();
-      // Phase 4C-5.1B：再把原生暂存的使用会话幂等导入本机库（Android）。
+      // 再把原生暂存的使用会话幂等导入本机库（Android）。
       // 顺序很重要：不先导入，统计页会"看不到刚用完的应用"。
       await widget.services.importAndroidUsageSessions();
-      // 累计统计与时间段列表用**同一个窗口**（需求 §8.3）。
+      // 累计统计与时间段列表用**同一个窗口**。
       final UsageWindow window = UsageAnalyticsService.windowFor(_range);
       final UsageSummary summary =
           await widget.services.usageAnalytics.summarize(window);
@@ -193,27 +197,92 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
 
   @override
   Widget build(BuildContext context) {
+    // ⚠ Windows 控制面板与本页**共用同一个类**，但需求要求「Windows UI 不受影响」。
+    // 桌面外壳的主题里没有 PetLifeTheme 扩展 → 这里原样回落到改造前的实现，
+    // Windows 的外观与行为与改造前**逐字节一致**（见 test/desktop_legacy_pages_test.dart）。
+    if (PetLifeTheme.maybeOf(context) == null) {
+      return LegacyUsageStatsPage(
+        services: widget.services,
+        onOpenAccount: widget.onOpenAccount,
+        overlay: widget.overlay,
+      );
+    }
+
     final AppServices s = widget.services;
     final ActivityTracker tracker = s.activityTracker;
 
+    return PetLifePage(
+      title: widget.showActivityQualifier ? '使用统计（本机）' : '使用统计',
+      subtitle: '本机采集 + 云端汇总；统计口径与去重规则与改造前一致',
+      actions: <Widget>[
+        PetLifeHeaderAction(
+          icon: Icons.refresh,
+          tooltip: '刷新统计',
+          onPressed: _loading || _showCloud ? null : _reload,
+        ),
+      ],
+      headerTrailing: PetLifePillSelector<bool>(
+        options: const <bool>[false, true],
+        selected: _showCloud,
+        onSelected: _selectTab,
+        labelOf: (bool cloud) => cloud ? '云端' : '本机',
+      ),
+      child: IndexedStack(
+        index: _showCloud ? 1 : 0,
+        children: <Widget>[
+          _localStatsView(s, tracker),
+          CloudStatisticsPage(
+            controller: s.cloudStatistics,
+            isSignedIn: () => s.authenticatedApi.isSignedIn,
+            syncEngine: s.syncEngine,
+            onOpenAccount: widget.onOpenAccount,
+            active: _showCloud,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 本机统计视图（业务逻辑未改动，仅重排视觉）。
+  Widget _localStatsView(AppServices s, ActivityTracker tracker) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        _sourceSelector(),
-        const Divider(height: 1),
-        // 用 IndexedStack 而不是条件构建：切回本机页时滚动位置与展开状态都保留，
-        // 云端页也不会因为切走而被销毁（返回时不会重新请求）。
+        _rangeToolbar(),
+        const SizedBox(height: PetLifeSpacing.topContent),
         Expanded(
-          child: IndexedStack(
-            index: _showCloud ? 1 : 0,
+          child: ListView(
+            padding: EdgeInsets.zero,
             children: <Widget>[
-              _localStatsView(s, tracker),
-              CloudStatisticsPage(
-                controller: s.cloudStatistics,
-                isSignedIn: () => s.authenticatedApi.isSignedIn,
-                syncEngine: s.syncEngine,
-                onOpenAccount: widget.onOpenAccount,
-                active: _showCloud,
-              ),
+              _liveCard(s, tracker),
+              const SizedBox(height: PetLifeSpacing.cardGap),
+              if (_loading)
+                const PetLifeLoading(label: '正在统计…')
+              else if (_error != null)
+                PetLifeErrorState(
+                  title: '读取使用统计时出错',
+                  detail: _error!,
+                  hint: '桌宠动画不受影响；可稍后重试或查看设置页的「诊断」。',
+                  onRetry: _reload,
+                )
+              else ...<Widget>[
+                PetLifeCardEntrance(child: _overviewCard()),
+                const SizedBox(height: PetLifeSpacing.cardGap),
+                PetLifeCardEntrance(
+                  delay: const Duration(milliseconds: 40),
+                  child: _appRankingCard(),
+                ),
+                const SizedBox(height: PetLifeSpacing.cardGap),
+                PetLifeCardEntrance(
+                  delay: const Duration(milliseconds: 80),
+                  child: _timelineCard(),
+                ),
+                const SizedBox(height: PetLifeSpacing.cardGap),
+                _categoryCard(),
+              ],
+              const SizedBox(height: PetLifeSpacing.groupGap),
+              _managementCard(s, tracker),
+              const SizedBox(height: PetLifeSpacing.cardGap),
             ],
           ),
         ),
@@ -221,29 +290,142 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
     );
   }
 
-  /// 「本机 | 云端」切换。原有本机统计完全保留。
-  Widget _sourceSelector() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-      child: Row(
+  // ---------------------------------------------------------------------------
+  // 筛选区
+  // ---------------------------------------------------------------------------
+
+  Widget _rangeToolbar() {
+    return PetLifeCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Expanded(
-            child: SegmentedButton<bool>(
-              segments: const <ButtonSegment<bool>>[
-                ButtonSegment<bool>(
-                  value: false,
-                  label: Text('本机'),
-                  icon: Icon(Icons.computer, size: 18),
+          Text(
+            '统计范围',
+            style: TextStyle(
+              fontSize: PetLifeText.caption,
+              fontWeight: FontWeight.w600,
+              color: PetLifeTheme.of(context).textSecondary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          PetLifePillSelector<UsageRange>(
+            options: UsageRange.values,
+            selected: _range,
+            labelOf: (UsageRange r) => r.label,
+            onSelected: (UsageRange next) {
+              setState(() => _range = next);
+              _reload();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // 今日概览卡
+  // ---------------------------------------------------------------------------
+
+  Widget _overviewCard() {
+    final UsageSummary summary = _summary!;
+    final UsageOverview o = summary.overview;
+    // Android 的原生采集只产出应用会话，没有设备级「屏幕会话 / 空闲」来源：
+    // 这一项为 false 时**如实用应用时长表达总时长**，而不是摆三个 0 让人误判。
+    final bool deviceMetrics = o.deviceMetricsAvailable;
+    final PetLifePalette p = PetLifeTheme.of(context);
+
+    return PetLifeCard(
+      large: true,
+      corner: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const PetLifeSectionTitle(
+            title: '今日概览',
+            marker: false,
+          ),
+          PetLifeStat(
+            value: formatDurationZh(o.appActiveSeconds),
+            label: '${_range.label}累计应用使用时长',
+            note: summary.window.label,
+            large: true,
+          ),
+          const SizedBox(height: 14),
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final double scale = MediaQuery.textScalerOf(context).scale(1.0);
+              final int columns = constraints.maxWidth < 340 * scale ? 2 : 3;
+              const double gap = 12;
+              final double itemWidth =
+                  (constraints.maxWidth - gap * (columns - 1)) / columns;
+              final List<Widget> stats = <Widget>[
+                if (deviceMetrics) ...<Widget>[
+                  PetLifeStat(
+                    value: formatDurationZh(o.activeSeconds),
+                    label: '活跃使用时间',
+                    note: '屏幕会话中未超过空闲阈值的时间',
+                  ),
+                  PetLifeStat(
+                    value: formatDurationZh(o.sessionSeconds),
+                    label: '屏幕会话时间',
+                    note: '设备解锁且未休眠的时间',
+                  ),
+                  PetLifeStat(
+                    value: formatDurationZh(o.idleSeconds),
+                    label: '空闲时间',
+                    note: '解锁但用户超过空闲阈值的时间',
+                  ),
+                  PetLifeStat(
+                    value: formatDurationZh(o.appActiveSeconds),
+                    label: '应用使用时间',
+                    note: '归属到有效前台应用的部分',
+                  ),
+                ] else
+                  PetLifeStat(
+                    value: '${summary.apps.length}',
+                    label: '应用数量',
+                    note: '本设备只采集应用使用时长',
+                  ),
+                PetLifeStat(
+                  value: '${summary.apps.fold<int>(0, (int a, AppUsageRow r) => a + r.segmentCount)}',
+                  label: '使用记录数量',
+                  note: '有起止时间的应用会话条数',
                 ),
-                ButtonSegment<bool>(
-                  value: true,
-                  label: Text('云端'),
-                  icon: Icon(Icons.cloud_outlined, size: 18),
+                PetLifeStat(
+                  value: formatDurationZh(o.longestContinuousSeconds),
+                  label: '最长连续使用',
+                  note: '同一段连续活跃的峰值',
                 ),
-              ],
-              selected: <bool>{_showCloud},
-              onSelectionChanged: (Set<bool> selection) =>
-                  _selectTab(selection.first),
+                PetLifeStat(
+                  value: _fmtClock(o.firstActiveAt),
+                  label: '首次活跃',
+                ),
+                PetLifeStat(
+                  value: _fmtClock(o.lastActiveAt),
+                  label: '最后活跃',
+                ),
+              ];
+              return Wrap(
+                spacing: gap,
+                runSpacing: 14,
+                children: <Widget>[
+                  for (final Widget stat in stats)
+                    SizedBox(width: itemWidth, child: stat),
+                ],
+              );
+            },
+          ),
+          const SizedBox(height: 12),
+          Text(
+            deviceMetrics
+                ? '四个时间口径互不相同：活跃 ≠ 屏幕会话（可能锁屏/休眠），'
+                    '应用使用 ≤ 活跃使用（可能存在无有效前台应用的时间）。'
+                : '本设备（Android）只统计「应用使用时长」：'
+                    '没有可靠来源区分屏幕会话与空闲时间，因此不作展示，也不填 0 充数。',
+            style: TextStyle(
+              fontSize: PetLifeText.captionSmall,
+              color: p.textSecondary,
+              height: 1.4,
             ),
           ),
         ],
@@ -251,189 +433,120 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
     );
   }
 
-  /// 本机统计视图（Phase 4B 之前的内容，逻辑未改动）。
-  Widget _localStatsView(AppServices s, ActivityTracker tracker) {
-    return Column(
-      children: <Widget>[
-        _toolbar(tracker),
-        const Divider(height: 1),
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _liveCard(s, tracker),
-                const SizedBox(height: 16),
-                if (_loading)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 24),
-                    child: Center(child: Text('正在统计…')),
-                  )
-                else if (_error != null)
-                  _errorCard()
-                else ...<Widget>[
-                  _overviewCard(),
-                  const SizedBox(height: 16),
-                  _timelineCard(),
-                  const SizedBox(height: 16),
-                  _appRankingCard(),
-                  const SizedBox(height: 16),
-                  _categoryCard(),
-                ],
-                const SizedBox(height: 16),
-                _managementCard(s, tracker),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // 顶部工具条
-  // ---------------------------------------------------------------------------
-
-  Widget _toolbar(ActivityTracker tracker) {
-    return Material(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Row(
-          children: <Widget>[
-            const Text('统计范围：', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            const SizedBox(width: 8),
-            SegmentedButton<UsageRange>(
-              segments: <ButtonSegment<UsageRange>>[
-                for (final UsageRange r in UsageRange.values)
-                  ButtonSegment<UsageRange>(value: r, label: Text(r.label)),
-              ],
-              selected: <UsageRange>{_range},
-              onSelectionChanged: (Set<UsageRange> next) {
-                setState(() => _range = next.first);
-                _reload();
-              },
-            ),
-            const Spacer(),
-            OutlinedButton.icon(
-              onPressed: _loading ? null : _reload,
-              icon: const Icon(Icons.refresh, size: 16),
-              label: const Text('刷新'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _errorCard() => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text('读取使用统计时出错', style: TextStyle(color: Colors.red)),
-              const SizedBox(height: 6),
-              SelectableText(_error ?? '', style: const TextStyle(fontSize: 11)),
-              const SizedBox(height: 8),
-              const Text(
-                '桌宠动画不受影响；可稍后重试或查看诊断页的「最近日志」。',
-                style: TextStyle(fontSize: 11, color: Colors.black54),
-              ),
-            ],
-          ),
-        ),
-      );
-
   // ---------------------------------------------------------------------------
   // 实时状态
   // ---------------------------------------------------------------------------
 
   Widget _liveCard(AppServices s, ActivityTracker tracker) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: ListenableBuilder(
-          // 状态诊断由悬浮控制器每 2 秒推送一次（只读），这里跟着一起重建，
-          // 因此"当前桌宠状态"与设置页显示的是**同一份原生真值**。
-          listenable: widget.overlay == null
-              ? tracker
-              : Listenable.merge(<Listenable>[tracker, widget.overlay!]),
-          builder: (BuildContext context, Widget? _) {
-            final TrackingStatus status = tracker.status;
-            final CurrentActivity? activity = _activity;
-            final AppCategory? category = _categoryOf(activity?.category);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    const Text('当前应用：', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-                    Expanded(
-                      child: Text(
-                        '${activity?.displayLabelZh ?? '读取中…'}'
-                        '${category == null ? '' : '（${category.labelZh}）'}',
-                        style: const TextStyle(fontSize: 13),
-                      ),
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return PetLifeCard(
+      child: ListenableBuilder(
+        // 状态诊断由悬浮控制器每 2 秒推送一次（只读），这里跟着一起重建，
+        // 因此"当前桌宠状态"与设置页显示的是**同一份原生真值**。
+        listenable: widget.overlay == null
+            ? tracker
+            : Listenable.merge(<Listenable>[tracker, widget.overlay!]),
+        builder: (BuildContext context, Widget? _) {
+          final TrackingStatus status = tracker.status;
+          final CurrentActivity? activity = _activity;
+          final AppCategory? category = _categoryOf(activity?.category);
+          final String? trace = _nativeStateTrace();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '当前应用',
+                          style: TextStyle(
+                            fontSize: PetLifeText.caption,
+                            color: p.textSecondary,
+                          ),
+                        ),
+                        Text(
+                          '${activity?.displayLabelZh ?? '读取中…'}'
+                          '${category == null ? '' : '（${category.labelZh}）'}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: PetLifeText.cardTitle,
+                            fontWeight: FontWeight.w700,
+                            color: p.textPrimary,
+                          ),
+                        ),
+                      ],
                     ),
-                    _statusChip(status, tracker.isPaused),
-                  ],
-                ),
-                if (activity != null && activity.packageName != null)
-                  Text(
+                  ),
+                  const SizedBox(width: 8),
+                  _statusChip(status, tracker.isPaused),
+                ],
+              ),
+              if (activity != null && activity.packageName != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
                     '检测来源：${activity.sourceLabelZh}'
                     '${activity.detectionReason == null ? '' : '（${activity.detectionReason}）'}',
-                    style: const TextStyle(fontSize: 11, color: Colors.black54),
-                  ),
-                const SizedBox(height: 6),
-                Text(
-                  '当前桌宠状态：${_petStateLabel(s)}'
-                  ' · 本段已持续 ${formatDurationZh(_sessionSeconds(tracker))}'
-                  ' · 连续活跃 ${formatDurationZh(tracker.continuousActiveSeconds)}',
-                  style: const TextStyle(fontSize: 12, color: Colors.black54),
-                ),
-                // Android：把"状态提交链路"的关键值一并显示，方便按应用逐条记录诊断。
-                if (_nativeStateTrace() != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2),
-                    child: Text(
-                      _nativeStateTrace()!,
-                      style: const TextStyle(fontSize: 11, color: Colors.black54),
+                    style: TextStyle(
+                      fontSize: PetLifeText.captionSmall,
+                      color: p.textSecondary,
                     ),
                   ),
-                // Phase 4C-5.1B：Android 采集器状态 + 最近一次导入时间。
-                if (_collector != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Text(
-                      '使用记录采集：${_collector!.labelZh}'
+                ),
+              const SizedBox(height: 8),
+              PetLifeKeyValue(
+                label: '桌宠状态',
+                value: _petStateLabel(s),
+              ),
+              PetLifeKeyValue(
+                label: '本段已持续',
+                value: formatDurationZh(_sessionSeconds(tracker)),
+              ),
+              PetLifeKeyValue(
+                label: '连续活跃',
+                value: formatDurationZh(tracker.continuousActiveSeconds),
+              ),
+              if (trace != null)
+                PetLifeKeyValue(label: '状态链路', value: trace),
+              if (_collector != null)
+                PetLifeKeyValue(
+                  label: '使用记录采集',
+                  value: '${_collector!.labelZh}'
                       '${_collector!.pendingCount > 0 ? ' · 待导入 ${_collector!.pendingCount} 条' : ''}'
                       '${_lastImportLabel()}',
-                      style: const TextStyle(fontSize: 11, color: Colors.black54),
-                    ),
+                ),
+              if (activity?.hintZh != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(Icons.warning_amber, size: 14, color: p.warning),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          activity!.hintZh!,
+                          style: TextStyle(
+                            fontSize: PetLifeText.caption,
+                            color: p.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                if (activity?.hintZh != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Text(
-                      '⚠ ${activity!.hintZh}',
-                      style: const TextStyle(fontSize: 11, color: Colors.orange),
-                    ),
-                  ),
-              ],
-            );
-          },
-        ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
 
   /// 「当前桌宠状态」：Android 读**原生**诊断，其它平台读状态引擎。
-  ///
-  /// 显示层根因修正：Android 的自动状态切换发生在原生悬浮服务里，
-  /// Flutter 状态引擎在该平台不会被前台事件驱动 —— 读它会让这一行永远停在
-  /// `default`，与桌宠实际状态完全无关（这正是真机"始终 default"的来源之一）。
   String _petStateLabel(AppServices s) {
     final OverlayStateDiagnostics? d = widget.overlay?.stateDiagnostics;
     if (d != null && d.stateId.isNotEmpty) {
@@ -451,8 +564,7 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
     final String target = d.resolvedTargetState ?? '—';
     final String rule = d.matchedRule ?? '—';
     final String result = d.lastTransitionResult ?? '—';
-    return '状态链路：分类 $category → 目标 $target'
-        ' · 规则 $rule · 提交 $result'
+    return '分类 $category → 目标 $target · 规则 $rule · 提交 $result'
         '${d.candidateState == null ? '' : ' · 候选 ${d.candidateState}（${d.candidateElapsedMs}ms）'}';
   }
 
@@ -467,9 +579,6 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
   }
 
   /// 当前会话已持续秒数。
-  ///
-  /// Android 的会话在**原生**侧（Dart 采集器不参与），因此优先用原生回报的值；
-  /// Windows 没有原生采集器，继续用 Dart 采集器的当前段秒数。
   int _sessionSeconds(ActivityTracker tracker) {
     final int native = _collector?.currentSessionSeconds ?? 0;
     return native > 0 ? native : tracker.currentSegmentSeconds;
@@ -487,214 +596,315 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
   }
 
   Widget _statusChip(TrackingStatus status, bool paused) {
+    final PetLifePalette p = PetLifeTheme.of(context);
     final Color color = switch (status) {
-      TrackingStatus.running => const Color(0xFF2E7D32),
-      TrackingStatus.paused => const Color(0xFFB26A00),
-      TrackingStatus.locked => const Color(0xFF5C6BC0),
-      TrackingStatus.idle => const Color(0xFF00838F),
-      TrackingStatus.unavailable => Colors.grey,
+      TrackingStatus.running => p.success,
+      TrackingStatus.paused => p.warning,
+      TrackingStatus.locked => p.onAccentSoft,
+      TrackingStatus.idle => p.textSecondary,
+      TrackingStatus.unavailable => p.textDisabled,
     };
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+    return PetLifeTag(
+      label: status.labelZh,
+      color: color,
+      icon: Icons.circle,
+      dense: true,
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // 应用排行（卡片式 + 横向进度条 + 点击展开现有明细）
+  // ---------------------------------------------------------------------------
+
+  Widget _appRankingCard() {
+    final List<AppUsageRow> apps = _summary!.apps;
+    return PetLifeCard(
+      large: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Icon(Icons.circle, size: 8, color: color),
-          const SizedBox(width: 6),
-          Text(status.labelZh, style: TextStyle(fontSize: 12, color: color)),
+          PetLifeSectionTitle(
+            title: '应用排行（${_range.label}）',
+            subtitle: '按使用时长排序，点条目展开明细',
+            marker: false,
+            trailing: Text(
+              '${apps.length} 个',
+              style: TextStyle(
+                fontSize: PetLifeText.caption,
+                color: PetLifeTheme.of(context).textSecondary,
+              ),
+            ),
+          ),
+          if (apps.isEmpty)
+            const PetLifeEmptyState(
+              icon: Icons.hourglass_empty,
+              title: '这一天还没有使用记录',
+              message: '开启桌宠后，切换应用即会开始记录；\n'
+                  '若刚刚用完应用，点右上角刷新即可看到。',
+              compact: true,
+              scrollable: false,
+            )
+          else
+            for (final AppUsageRow row in apps.take(50))
+              _AppRankingTile(
+                row: row,
+                excluded:
+                    widget.services.applications.find(row.appKey)?.excluded ?? false,
+                onAction: (String action) => _onAppAction(action, row),
+              ),
         ],
       ),
     );
   }
 
   // ---------------------------------------------------------------------------
-  // 今日 / 区间概览
+  // 时间线
   // ---------------------------------------------------------------------------
 
-  Widget _overviewCard() {
-    final UsageSummary summary = _summary!;
-    final UsageOverview o = summary.overview;
-    // Android 的原生采集只产出应用会话，没有设备级「屏幕会话 / 空闲」来源：
-    // 这一项为 false 时**如实用应用时长表达总时长**，而不是摆三个 0 让人误判。
-    final bool deviceMetrics = o.deviceMetricsAvailable;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _title('${_range.label}概览 · ${summary.window.label}'),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 28,
-              runSpacing: 12,
-              children: <Widget>[
-                if (deviceMetrics) ...<Widget>[
-                  _stat('活跃使用时间', formatDurationZh(o.activeSeconds),
-                      '屏幕会话中用户未超过空闲阈值的时间'),
-                  _stat('屏幕会话时间', formatDurationZh(o.sessionSeconds),
-                      '设备解锁且未休眠的时间'),
-                  _stat('空闲时间', formatDurationZh(o.idleSeconds),
-                      '解锁但用户超过空闲阈值的时间'),
-                  _stat('应用使用时间', formatDurationZh(o.appActiveSeconds),
-                      '活跃时间中归属到有效前台应用的部分'),
-                ] else
-                  _stat('今日总使用时长', formatDurationZh(o.appActiveSeconds),
-                      '本设备只采集「应用使用时长」（由前台应用会话累计）'),
-                _stat('最长连续使用', formatDurationZh(o.longestContinuousSeconds), '同一段连续活跃的峰值'),
-                _stat('首次活跃', _fmtClock(o.firstActiveAt), '当日第一次进入活跃'),
-                _stat('最后活跃', _fmtClock(o.lastActiveAt), '当日最后一次活跃'),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              deviceMetrics
-                  ? '四个时间口径互不相同：活跃 ≠ 屏幕会话（可能锁屏/休眠），'
-                      '应用使用 ≤ 活跃使用（可能存在无有效前台应用的时间）。'
-                  : '本设备（Android）只统计「应用使用时长」：'
-                      '没有可靠来源区分屏幕会话与空闲时间，因此不作展示，也不填 0 充数。',
-              style: const TextStyle(fontSize: 11, color: Colors.black54),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // 使用时间段（Phase 4C-5.1B，需求 §8.2）
-  // ---------------------------------------------------------------------------
-
-  /// 今天（或所选范围）的应用使用时间段，按开始时间倒序。
   Widget _timelineCard() {
     final List<UsageSegmentRow> rows = _timeline;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                _title('使用时间段（${_range.label}）'),
-                const Spacer(),
-                Text(
-                  '${rows.length} 条',
-                  style: const TextStyle(fontSize: 11, color: Colors.black54),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            if (rows.isEmpty)
-              const Text(
-                '该时间段内还没有使用记录。开启桌宠后，切换应用即会开始记录；'
-                '若刚刚用完应用，点「刷新」即可看到。',
-                style: TextStyle(fontSize: 12, color: Colors.black54),
-              )
-            else
-              Table(
-                columnWidths: const <int, TableColumnWidth>{
-                  0: FlexColumnWidth(2.4),
-                  1: FlexColumnWidth(1.2),
-                  2: FlexColumnWidth(1.2),
-                  3: FlexColumnWidth(1),
-                  4: FlexColumnWidth(1.6),
-                },
-                children: <TableRow>[
-                  _headerRow(<String>['应用', '开始', '结束', '时长', '结束原因']),
-                  for (final UsageSegmentRow row in rows.take(100)) _timelineRow(row),
-                ],
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return PetLifeCard(
+      large: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          PetLifeSectionTitle(
+            title: '时间线（${_range.label}）',
+            subtitle: '按设备本地时区显示，跨小时 / 跨午夜保留真实起止时刻',
+            marker: false,
+            trailing: Text(
+              '${rows.length} 条',
+              style: TextStyle(
+                fontSize: PetLifeText.caption,
+                color: p.textSecondary,
               ),
-            const SizedBox(height: 8),
-            const Text(
-              '时间按设备本地时区显示；跨小时 / 跨午夜的时间段保留真实起止时刻。'
-              '进行中的会话只标「使用中」，不会提前写成已结束记录。',
-              style: TextStyle(fontSize: 11, color: Colors.black54),
             ),
-          ],
-        ),
+          ),
+          if (rows.isEmpty)
+            const PetLifeEmptyState(
+              icon: Icons.timeline,
+              title: '这一天还没有使用记录',
+              message: '开启桌宠后，切换应用即会开始记录。\n'
+                  '进行中的会话只标「使用中」，不会提前写成已结束记录。',
+              compact: true,
+              scrollable: false,
+            )
+          else
+            for (final UsageSegmentRow row in rows.take(100))
+              _TimelineTile(row: row),
+        ],
       ),
     );
   }
 
-  TableRow _timelineRow(UsageSegmentRow row) {
-    return TableRow(
-      children: <Widget>[
-        _cell(row.displayName, bold: true),
-        _cell(_fmtClock(row.startedAtUtc)),
-        _cell(row.running ? '使用中' : _fmtClock(row.endedAtUtc)),
-        _cell(formatDurationZh(row.activeSeconds)),
-        _cell(row.endReasonLabelZh),
-      ],
-    );
-  }
-
   // ---------------------------------------------------------------------------
-  // 应用排行
+  // 分类统计
   // ---------------------------------------------------------------------------
 
-  Widget _appRankingCard() {
-    final List<AppUsageRow> apps = _summary!.apps;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _title('应用排行（${_range.label}）'),
-            const SizedBox(height: 6),
-            if (apps.isEmpty)
-              const Text('该时间段内没有记录到应用使用。',
-                  style: TextStyle(fontSize: 12, color: Colors.black54))
-            else
-              Table(
-                columnWidths: const <int, TableColumnWidth>{
-                  0: FlexColumnWidth(3),
-                  1: FlexColumnWidth(1.4),
-                  2: FlexColumnWidth(1.4),
-                  3: FlexColumnWidth(1),
-                  4: FlexColumnWidth(1.2),
-                  5: FlexColumnWidth(1.2),
-                },
-                children: <TableRow>[
-                  _headerRow(<String>['应用', '分类', '时长', '段次数', '占比', '操作']),
-                  for (final AppUsageRow row in apps.take(50)) _appRow(row),
-                ],
+  Widget _categoryCard() {
+    final List<CategoryUsageRow> rows = _summary!.categories;
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return PetLifeCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          PetLifeSectionTitle(
+            title: '分类统计（${_range.label}）',
+            marker: false,
+          ),
+          if (rows.isEmpty)
+            Text(
+              '该时间段内没有分类数据。',
+              style: TextStyle(fontSize: PetLifeText.caption, color: p.textSecondary),
+            )
+          else
+            for (final CategoryUsageRow row in rows)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            row.category.labelZh,
+                            style: TextStyle(
+                              fontSize: PetLifeText.bodySmall,
+                              fontWeight: FontWeight.w600,
+                              color: p.textPrimary,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          formatDurationZh(row.activeSeconds),
+                          style: TextStyle(
+                            fontSize: PetLifeText.caption,
+                            color: p.textSecondary,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '${(row.ratioOfAppTime * 100).toStringAsFixed(1)}%',
+                          style: TextStyle(
+                            fontSize: PetLifeText.caption,
+                            fontWeight: FontWeight.w600,
+                            color: p.onAccentSoft,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    PetLifeProgressBar(value: row.ratioOfAppTime),
+                  ],
+                ),
               ),
-          ],
-        ),
+        ],
       ),
     );
   }
 
-  TableRow _appRow(AppUsageRow row) {
-    return TableRow(
+  // ---------------------------------------------------------------------------
+  // 记录管理
+  // ---------------------------------------------------------------------------
+
+  Widget _managementCard(AppServices s, ActivityTracker tracker) {
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _cell(row.displayName, bold: true),
-        _cell(row.category.labelZh),
-        _cell(formatDurationZh(row.activeSeconds)),
-        _cell('${row.segmentCount}'),
-        _cell('${(row.ratioOfAppTime * 100).toStringAsFixed(1)}%'),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: PopupMenuButton<String>(
-            tooltip: '修改分类 / 显示名 / 排除记录',
-            icon: const Icon(Icons.more_horiz, size: 18),
-            onSelected: (String value) => _onAppAction(value, row),
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(value: 'rename', child: Text('修改显示名称')),
-              const PopupMenuItem<String>(value: 'category', child: Text('修改分类')),
-              PopupMenuItem<String>(
-                value: 'exclude',
-                child: Text(
-                  widget.services.applications.find(row.appKey)?.excluded ?? false
-                      ? '恢复记录'
-                      : '排除记录',
+        const PetLifeSectionTitle(
+          title: '记录管理',
+          subtitle: '暂停 / 恢复、空闲阈值与已登记应用',
+        ),
+        PetLifeCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ListenableBuilder(
+                listenable: tracker,
+                builder: (BuildContext context, Widget? _) {
+                  final bool paused = tracker.isPaused;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Wrap(
+                        spacing: 12,
+                        runSpacing: 8,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: <Widget>[
+                          PetLifeSecondaryButton(
+                            label: paused ? '恢复记录' : '暂停记录',
+                            icon: paused ? Icons.play_arrow : Icons.pause,
+                            onPressed: () => s.saveTrackingSettings(
+                              tracker.settings.copyWith(paused: !paused),
+                            ),
+                          ),
+                          Text(
+                            paused
+                                ? '当前已暂停：不计时、不写库、不切换状态'
+                                : '当前正在记录',
+                            style: TextStyle(
+                              fontSize: PetLifeText.caption,
+                              color: p.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 14),
+                      _settingRow(
+                        label: '空闲阈值',
+                        note: '超过该时长视为「离开」，不计入活跃时间',
+                        control: DropdownButton<int>(
+                          value: tracker.settings.idleThresholdMs,
+                          items: <DropdownMenuItem<int>>[
+                            for (final int ms in ActivityTracking.idleThresholdOptionsMs)
+                              DropdownMenuItem<int>(
+                                value: ms,
+                                child: Text('${ms ~/ 60000} 分钟'),
+                              ),
+                          ],
+                          onChanged: (int? value) {
+                            if (value == null) return;
+                            s.saveTrackingSettings(
+                              tracker.settings.copyWith(idleThresholdMs: value),
+                            );
+                          },
+                        ),
+                      ),
+                      _settingRow(
+                        label: '连续使用提醒',
+                        note: '开启后：连续活跃 90 分钟切换为 tired（仅改变表情，不打断使用）',
+                        control: Switch(
+                          value: tracker.settings.continuousReminderEnabled,
+                          onChanged: (bool value) => s.saveTrackingSettings(
+                            tracker.settings
+                                .copyWith(continuousReminderEnabled: value),
+                          ),
+                        ),
+                      ),
+                      _settingRow(
+                        label: '今日活跃告警阈值',
+                        note: '达到后切换为 concerned',
+                        control: DropdownButton<int>(
+                          value: tracker.settings.usageAlertThresholdMs,
+                          items: <DropdownMenuItem<int>>[
+                            const DropdownMenuItem<int>(
+                              value: 0,
+                              child: Text('关闭'),
+                            ),
+                            for (final int hours in <int>[2, 4, 6, 8, 10])
+                              DropdownMenuItem<int>(
+                                value: hours * 3600 * 1000,
+                                child: Text('$hours 小时'),
+                              ),
+                          ],
+                          onChanged: (int? value) {
+                            if (value == null) return;
+                            s.saveTrackingSettings(
+                              tracker.settings
+                                  .copyWith(usageAlertThresholdMs: value),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              Text(
+                '已登记应用（${s.applications.all.length}）',
+                style: TextStyle(
+                  fontSize: PetLifeText.bodySmall,
+                  fontWeight: FontWeight.w600,
+                  color: p.textPrimary,
                 ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                '隐私说明：只记录可执行文件名、启动时段与分类，'
+                '不保存窗口标题、文档名、网页标题、键盘输入、鼠标内容或截图，也不上传任何数据。',
+                style: TextStyle(
+                  fontSize: PetLifeText.captionSmall,
+                  color: p.textSecondary,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: <Widget>[
+                  for (final app in s.applications.all.take(60))
+                    PetLifeTag(
+                      label: '${app.displayName} · ${app.category.labelZh}'
+                          '${app.excluded ? ' · 已排除' : ''}'
+                          '${app.userOverridden ? ' · 人工' : ''}',
+                      dense: true,
+                    ),
+                ],
               ),
             ],
           ),
@@ -702,6 +912,64 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
       ],
     );
   }
+
+  /// 一行设置：窄屏 / 大字体下自动改成上下两段，避免截断。
+  Widget _settingRow({
+    required String label,
+    required String note,
+    required Widget control,
+  }) {
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final double scale = MediaQuery.textScalerOf(context).scale(1.0);
+          final Widget text = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: PetLifeText.bodySmall,
+                  fontWeight: FontWeight.w600,
+                  color: p.textPrimary,
+                ),
+              ),
+              Text(
+                note,
+                style: TextStyle(
+                  fontSize: PetLifeText.captionSmall,
+                  color: p.textSecondary,
+                ),
+              ),
+            ],
+          );
+          if (constraints.maxWidth < 320 * scale) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                text,
+                const SizedBox(height: 6),
+                Align(alignment: Alignment.centerLeft, child: control),
+              ],
+            );
+          }
+          return Row(
+            children: <Widget>[
+              Expanded(child: text),
+              const SizedBox(width: 12),
+              control,
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // 现有应用操作（完全保留）
+  // ---------------------------------------------------------------------------
 
   Future<void> _onAppAction(String action, AppUsageRow row) async {
     final AppServices s = widget.services;
@@ -729,218 +997,11 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
     await _reload();
   }
 
-  // ---------------------------------------------------------------------------
-  // 分类统计
-  // ---------------------------------------------------------------------------
-
-  Widget _categoryCard() {
-    final List<CategoryUsageRow> rows = _summary!.categories;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _title('分类统计（${_range.label}）'),
-            const SizedBox(height: 6),
-            if (rows.isEmpty)
-              const Text('该时间段内没有分类数据。',
-                  style: TextStyle(fontSize: 12, color: Colors.black54))
-            else
-              for (final CategoryUsageRow row in rows)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3),
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(width: 76, child: Text(row.category.labelZh, style: _cellStyle())),
-                      SizedBox(width: 96, child: Text(formatDurationZh(row.activeSeconds), style: _cellStyle())),
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: LinearProgressIndicator(
-                            value: row.ratioOfAppTime.clamp(0.0, 1.0),
-                            minHeight: 10,
-                            backgroundColor: const Color(0xFFE8ECF1),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      SizedBox(
-                        width: 52,
-                        child: Text('${(row.ratioOfAppTime * 100).toStringAsFixed(1)}%',
-                            textAlign: TextAlign.right, style: _cellStyle()),
-                      ),
-                    ],
-                  ),
-                ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // 管理
-  // ---------------------------------------------------------------------------
-
-  Widget _managementCard(AppServices s, ActivityTracker tracker) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _title('记录管理'),
-            const SizedBox(height: 8),
-            ListenableBuilder(
-              listenable: tracker,
-              builder: (BuildContext context, Widget? _) {
-                final bool paused = tracker.isPaused;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        FilledButton.tonalIcon(
-                          onPressed: () => s.saveTrackingSettings(
-                            tracker.settings.copyWith(paused: !paused),
-                          ),
-                          icon: Icon(paused ? Icons.play_arrow : Icons.pause, size: 16),
-                          label: Text(paused ? '恢复记录' : '暂停记录'),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          paused ? '当前已暂停：不计时、不写库、不切换状态' : '当前正在记录',
-                          style: const TextStyle(fontSize: 12, color: Colors.black54),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 14),
-                    Row(
-                      children: <Widget>[
-                        const SizedBox(
-                          width: 148,
-                          child: Text('空闲阈值', style: TextStyle(fontSize: 12, color: Colors.black54)),
-                        ),
-                        DropdownButton<int>(
-                          value: tracker.settings.idleThresholdMs,
-                          items: <DropdownMenuItem<int>>[
-                            for (final int ms in ActivityTracking.idleThresholdOptionsMs)
-                              DropdownMenuItem<int>(
-                                value: ms,
-                                child: Text('${ms ~/ 60000} 分钟', style: const TextStyle(fontSize: 12)),
-                              ),
-                          ],
-                          onChanged: (int? value) {
-                            if (value == null) return;
-                            s.saveTrackingSettings(
-                              tracker.settings.copyWith(idleThresholdMs: value),
-                            );
-                          },
-                        ),
-                        const SizedBox(width: 12),
-                        const Text(
-                          '超过该时长视为「离开」，不计入活跃时间',
-                          style: TextStyle(fontSize: 11, color: Colors.black54),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const SizedBox(
-                          width: 148,
-                          child: Text('连续使用提醒', style: TextStyle(fontSize: 12, color: Colors.black54)),
-                        ),
-                        Switch(
-                          value: tracker.settings.continuousReminderEnabled,
-                          onChanged: (bool value) => s.saveTrackingSettings(
-                            tracker.settings.copyWith(continuousReminderEnabled: value),
-                          ),
-                        ),
-                        const Text(
-                          '开启后：连续活跃 90 分钟切换为 tired（仅改变表情，不打断使用）',
-                          style: TextStyle(fontSize: 11, color: Colors.black54),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const SizedBox(
-                          width: 148,
-                          child: Text('今日活跃告警阈值', style: TextStyle(fontSize: 12, color: Colors.black54)),
-                        ),
-                        DropdownButton<int>(
-                          value: tracker.settings.usageAlertThresholdMs,
-                          items: <DropdownMenuItem<int>>[
-                            const DropdownMenuItem<int>(value: 0, child: Text('关闭', style: TextStyle(fontSize: 12))),
-                            for (final int hours in <int>[2, 4, 6, 8, 10])
-                              DropdownMenuItem<int>(
-                                value: hours * 3600 * 1000,
-                                child: Text('$hours 小时', style: TextStyle(fontSize: 12)),
-                              ),
-                          ],
-                          onChanged: (int? value) {
-                            if (value == null) return;
-                            s.saveTrackingSettings(
-                              tracker.settings.copyWith(usageAlertThresholdMs: value),
-                            );
-                          },
-                        ),
-                        const SizedBox(width: 12),
-                        const Text(
-                          '达到后切换为 concerned',
-                          style: TextStyle(fontSize: 11, color: Colors.black54),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
-            const Divider(height: 24),
-            _title('已登记应用（${s.applications.all.length}）'),
-            const SizedBox(height: 6),
-            const Text(
-              '隐私说明：只记录可执行文件名、启动时段与分类，'
-              '不保存窗口标题、文档名、网页标题、键盘输入、鼠标内容或截图，也不上传任何数据。',
-              style: TextStyle(fontSize: 11, color: Colors.black54),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: <Widget>[
-                for (final app in s.applications.all.take(60))
-                  Chip(
-                    label: Text(
-                      '${app.displayName} · ${app.category.labelZh}'
-                      '${app.excluded ? ' · 已排除' : ''}'
-                      '${app.userOverridden ? ' · 人工' : ''}',
-                      style: const TextStyle(fontSize: 11),
-                    ),
-                    visualDensity: VisualDensity.compact,
-                  ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // 小工具
-  // ---------------------------------------------------------------------------
-
   /// 询问一段单行文本（例如修改应用显示名称）。
   ///
   /// 控制器由 [TextInputDialog] 自己的 State 持有并销毁 —— 调用方**不能**
   /// 在 `await` 之后自行 dispose（那会在弹窗退场动画期间销毁仍在使用的控制器，
   /// 触发 `'_dependents.isEmpty': is not true.`，见 docs/32）。
-  ///
-  /// 取消或留空都返回 null，调用方据此不执行修改。
   Future<String?> _promptText({
     required String title,
     required String initial,
@@ -968,7 +1029,9 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
               child: Row(
                 children: <Widget>[
                   Icon(
-                    c == current ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                    c == current
+                        ? Icons.radio_button_checked
+                        : Icons.radio_button_unchecked,
                     size: 16,
                   ),
                   const SizedBox(width: 8),
@@ -981,47 +1044,253 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
     );
   }
 
-  TableRow _headerRow(List<String> labels) => TableRow(
+  String _fmtClock(DateTime? t) {
+    if (t == null) return '—';
+    final DateTime local = t.toLocal();
+    return '${local.hour.toString().padLeft(2, '0')}:'
+        '${local.minute.toString().padLeft(2, '0')}';
+  }
+}
+
+/// 应用排行的一行：名称 + 时长 + 横向进度条；点击展开现有明细。
+class _AppRankingTile extends StatefulWidget {
+  const _AppRankingTile({
+    required this.row,
+    required this.excluded,
+    required this.onAction,
+  });
+
+  final AppUsageRow row;
+  final bool excluded;
+  final ValueChanged<String> onAction;
+
+  @override
+  State<_AppRankingTile> createState() => _AppRankingTileState();
+}
+
+class _AppRankingTileState extends State<_AppRankingTile> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final PetLifePalette p = PetLifeTheme.of(context);
+    final AppUsageRow row = widget.row;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          for (final String l in labels)
-            Padding(
+          InkWell(
+            borderRadius: PetLifeRadii.buttonBorder,
+            onTap: () => setState(() => _expanded = !_expanded),
+            child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(
-                l,
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: p.accentSoft,
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        child: Icon(Icons.apps, size: 16, color: p.onAccentSoft),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              row.displayName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: PetLifeText.bodySmall,
+                                fontWeight: FontWeight.w600,
+                                color: p.textPrimary,
+                              ),
+                            ),
+                            Text(
+                              '${row.category.labelZh}'
+                              '${widget.excluded ? ' · 已排除' : ''}',
+                              style: TextStyle(
+                                fontSize: PetLifeText.captionSmall,
+                                color: p.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        formatDurationZh(row.activeSeconds),
+                        style: TextStyle(
+                          fontSize: PetLifeText.bodySmall,
+                          fontWeight: FontWeight.w700,
+                          color: p.onAccentSoft,
+                        ),
+                      ),
+                      Icon(
+                        _expanded ? Icons.expand_less : Icons.expand_more,
+                        size: 18,
+                        color: p.textSecondary,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  PetLifeProgressBar(value: row.ratioOfAppTime, height: 7),
+                ],
               ),
             ),
+          ),
+          AnimatedCrossFade(
+            duration: PetLifeDurations.press,
+            crossFadeState:
+                _expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            firstChild: const SizedBox(width: double.infinity, height: 0),
+            secondChild: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  PetLifeKeyValue(label: '应用标识', value: row.appKey, selectable: true),
+                  PetLifeKeyValue(label: '使用段次数', value: '${row.segmentCount}'),
+                  PetLifeKeyValue(
+                    label: '占应用时长',
+                    value: '${(row.ratioOfAppTime * 100).toStringAsFixed(1)}%',
+                  ),
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: <Widget>[
+                      PetLifeTag(
+                        label: '修改显示名称',
+                        icon: Icons.edit_outlined,
+                        onTap: () => widget.onAction('rename'),
+                      ),
+                      PetLifeTag(
+                        label: '修改分类',
+                        icon: Icons.category_outlined,
+                        onTap: () => widget.onAction('category'),
+                      ),
+                      PetLifeTag(
+                        label: widget.excluded ? '恢复记录' : '排除记录',
+                        icon: widget.excluded
+                            ? Icons.visibility
+                            : Icons.visibility_off_outlined,
+                        color: p.danger,
+                        onTap: () => widget.onAction('exclude'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
-      );
+      ),
+    );
+  }
+}
 
-  TextStyle _cellStyle() => const TextStyle(fontSize: 12);
+/// 时间线上的一个节点。
+class _TimelineTile extends StatelessWidget {
+  const _TimelineTile({required this.row});
 
-  Widget _cell(String text, {bool bold = false}) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 12, fontWeight: bold ? FontWeight.w600 : FontWeight.normal),
-        ),
-      );
+  final UsageSegmentRow row;
 
-  Widget _title(String t) => Text(
-        t,
-        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Color(0xFF2F4A63)),
-      );
+  @override
+  Widget build(BuildContext context) {
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // 时间节点：一列竖线 + 圆点，替代原来的灰色表格线。
+          Column(
+            children: <Widget>[
+              Container(
+                width: 10,
+                height: 10,
+                margin: const EdgeInsets.only(top: 4),
+                decoration: BoxDecoration(
+                  color: row.running ? p.accent : p.accentSoft,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: p.accent),
+                ),
+              ),
+              Container(width: 1.5, height: 34, color: p.divider),
+            ],
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        row.displayName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: PetLifeText.bodySmall,
+                          fontWeight: FontWeight.w600,
+                          color: p.textPrimary,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      formatDurationZh(row.activeSeconds),
+                      style: TextStyle(
+                        fontSize: PetLifeText.caption,
+                        fontWeight: FontWeight.w700,
+                        color: p.onAccentSoft,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${_clock(row.startedAtUtc)} – '
+                      '${row.running ? '使用中' : _clock(row.endedAtUtc)}',
+                      style: TextStyle(
+                        fontSize: PetLifeText.captionSmall,
+                        color: p.textSecondary,
+                      ),
+                    ),
+                    PetLifeTag(
+                      label: row.category.labelZh,
+                      dense: true,
+                    ),
+                    if (row.endReasonLabelZh.isNotEmpty)
+                      PetLifeTag(
+                        label: row.endReasonLabelZh,
+                        dense: true,
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-  Widget _stat(String label, String value, String note) => SizedBox(
-        width: 168,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-            Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-            Text(note, style: const TextStyle(fontSize: 10, color: Colors.black54)),
-          ],
-        ),
-      );
-
-  String _fmtClock(DateTime? t) {
+  static String _clock(DateTime? t) {
     if (t == null) return '—';
     final DateTime local = t.toLocal();
     return '${local.hour.toString().padLeft(2, '0')}:'

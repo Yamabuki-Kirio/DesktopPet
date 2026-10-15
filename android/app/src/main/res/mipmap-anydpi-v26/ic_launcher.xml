@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PetLife 的 APK 图标（Android 8.0+ adaptive icon）。
+
+  图层分工：
+    * 背景层 = 纯白色（主色）；
+    * 前景层 = 粉色放射环 + 中央爪印，内容全部落在 108dp 画布的中央 66dp
+      安全圆内，因此无论启动器用圆形 / 方形 / 水滴形遮罩都不会被裁掉。
+
+  设计为原创图形：不使用任何动漫角色、商标或文字。
+-->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>

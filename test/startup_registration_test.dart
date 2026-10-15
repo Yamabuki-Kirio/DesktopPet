@@ -416,7 +416,7 @@ void main() {
     }
 
     bool switchValue(WidgetTester tester) =>
-        tester.widget<SwitchListTile>(find.byType(SwitchListTile)).value;
+        tester.widget<Switch>(find.byType(Switch)).value;
 
     testWidgets('初始状态来自系统实况：注册表里已注册 → 开关为开', (WidgetTester tester) async {
       final _Harness h = await _Harness.create(
@@ -446,7 +446,7 @@ void main() {
       await pumpTile(tester, h.service);
       expect(switchValue(tester), isFalse);
 
-      await tester.tap(find.byType(SwitchListTile));
+      await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
       expect(switchValue(tester), isTrue);
@@ -460,7 +460,7 @@ void main() {
       await pumpTile(tester, h.service);
       expect(switchValue(tester), isFalse);
 
-      await tester.tap(find.byType(SwitchListTile));
+      await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
       expect(switchValue(tester), isFalse, reason: '失败必须回滚，不能假装已开启');
@@ -476,7 +476,7 @@ void main() {
       await pumpTile(tester, h.service);
       expect(switchValue(tester), isTrue);
 
-      await tester.tap(find.byType(SwitchListTile));
+      await tester.tap(find.byType(Switch));
       await tester.pumpAndSettle();
 
       expect(switchValue(tester), isTrue);

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Modify this file to customize your launch splash screen -->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/white" />
+<!--
+  启动页（API < 31 的传统 windowBackground 路径）。
 
-    <!-- You can insert your own image assets here -->
-    <!-- <item>
+  构图：白色背景 + 中央新图标 + 下方 PetLife + 一条粉色加载线。
+  位图由 tools/make_app_icon.py 生成，可直接复现。
+  不做长时间不可跳过的动画：Flutter 画出第一帧后系统就会移除本背景。
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/splash_background" />
+    <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/launch_image" />
-    </item> -->
+            android:src="@drawable/splash_petlife" />
+    </item>
 </layer-list>

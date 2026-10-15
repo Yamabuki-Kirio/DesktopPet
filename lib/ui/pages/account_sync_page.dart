@@ -11,19 +11,27 @@ import '../../sync/proxy/proxy_probe.dart';
 import '../../sync/proxy/system_proxy.dart';
 import '../../sync/sync_engine.dart';
 import '../dialogs/device_edit_dialog.dart';
+import '../desktop/legacy/legacy_account_sync_page.dart';
+import '../theme/design_tokens.dart';
+import '../theme/petlife_theme.dart';
 import '../widgets/cloud_sync_actions.dart';
+import '../widgets/petlife/petlife_components.dart';
+import '../widgets/petlife/petlife_decor.dart';
+import '../widgets/petlife/petlife_page.dart';
 import 'ai_access_card.dart';
 
-/// 「账户与同步」页面（需求「七、账户与同步页面」）。
+/// 「账户与同步」页面（需求「账户与同步」）。
 ///
-/// 设计原则：
-/// * **不登录也能用**：页面顶部明确写出"不登录也可正常使用桌宠和本地统计"，
-///   未登录状态不做任何网络请求；
-/// * **失败不弹窗**：所有错误都渲染在页面里（需求明确禁止连续弹窗），
-///   只有"需要重新登录"这种需要用户决策的情况才给出显著提示；
-/// * **不显示令牌**：界面上只出现邮箱、显示名、设备名与状态，
-///   令牌只存在于凭据存储与内存中；
+/// 设计原则（业务行为与本轮改造前**完全一致**）：
+/// * **不登录也能用**：未登录状态不做任何网络请求；
+/// * **失败不弹窗**：所有错误都渲染在页面里，只有"需要重新登录"这种需要
+///   用户决策的情况才给出显著提示；
+/// * **不显示令牌**：界面上只出现邮箱、显示名、设备名与状态；
 /// * **页面关闭后同步继续**：同步引擎属于 `AppServices`，生命周期与页面无关。
+///
+/// 本轮视觉改造：按功能重新分组为独立圆角卡片，
+/// 「立即同步」使用强调色主按钮并**保留现有防重入与结果反馈**，
+/// 危险操作（退出登录 / 撤销设备）**单独使用红色**，不跟随主题强调色。
 class AccountSyncPage extends StatefulWidget {
   const AccountSyncPage({super.key, required this.services});
 
@@ -50,6 +58,10 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
   String? _error;
   String? _notice;
   List<RemoteDevice> _devices = const <RemoteDevice>[];
+
+  /// 「立即同步」自己的忙碌标记：与 [_busy] 分开，
+  /// 避免一次同步把整个页面其它按钮全部禁用。
+  bool _syncing = false;
 
   AppServices get _s => widget.services;
   SyncEngine get _engine => _s.syncEngine;
@@ -160,6 +172,39 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
   }
 
   // ---------------------------------------------------------------------------
+  // 立即同步（保留现有防重入与结果反馈）
+  // ---------------------------------------------------------------------------
+
+  /// 手动触发一次同步。
+  ///
+  /// * **防重入**：引擎自身用 `_inFlight` 去重；界面再叠加 `_syncing` 禁用按钮，
+  ///   因此连点不会创建第二个同步任务；
+  /// * **结果反馈**：结束后回读引擎的**真实**状态与摘要，绝不谎报成功。
+  Future<void> _syncNow() async {
+    if (_syncing || _engine.isSyncing) return;
+    setState(() {
+      _syncing = true;
+      _error = null;
+      _notice = null;
+    });
+    try {
+      await _engine.syncNow(manual: true);
+      if (!mounted) return;
+      final String summary = _engine.status == SyncStatus.success
+          ? '同步完成：${_engine.lastRunSummary}'
+          : '同步结束（${_engine.status.labelZh}）：'
+              '${_engine.lastError ?? _engine.lastRunSummary}';
+      setState(() => _notice = summary);
+    } catch (e, st) {
+      Loggers.sync.warning('手动同步失败', e, st);
+      if (!mounted) return;
+      setState(() => _error = '手动同步失败：$e');
+    } finally {
+      if (mounted) setState(() => _syncing = false);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // 登录 / 注册
   // ---------------------------------------------------------------------------
 
@@ -168,8 +213,6 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
   /// 两步**分开报告**（这是需求明确要求的）：
   /// 1. 登录本身失败 → 「登录失败」，表单留在原地让用户改密码或地址；
   /// 2. 登录成功后的**首次同步**失败 → 只是「已登录，但首次同步失败」。
-  ///    此时会话是有效的，页面必须显示已登录：同步失败会退避重试，
-  ///    不能把它退化成"登录失败"再把登录表单塞回用户面前。
   Future<void> _submit({required bool register}) async {
     setState(() {
       _busy = true;
@@ -214,8 +257,6 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     try {
       await _engine.onSignedIn();
     } catch (e, st) {
-      // 引擎内部已经兜住异常；这里再兜一层，确保"同步出问题"不会
-      // 冒泡成"登录失败"
       Loggers.sync.fine('登录后的首次同步未完成（登录状态仍然有效）', e, st);
     }
     if (!mounted) return;
@@ -232,7 +273,7 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     final String reason = _engine.lastError ?? _engine.status.labelZh;
     return '$action，但首次同步失败：$reason\n\n'
         '登录状态是有效的（本机数据会保留并在稍后自动重试，'
-        '也可以在下方点「立即上传本机记录」再试一次）。';
+        '也可以在下方点「立即同步」再试一次）。';
   }
 
   Future<void> _signOut() async {
@@ -242,6 +283,7 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
           '本地使用记录、桌宠素材与未上传的待同步数据都会保留，'
           '下次登录后会继续上传。',
       confirmText: '退出登录',
+      danger: true,
     );
     if (confirmed != true) return;
 
@@ -253,7 +295,7 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     try {
       await _api.signOut();
       await _engine.onSignedOut();
-      // Phase 4B：退出账户必须清掉该账户的**云端统计缓存**，
+      // 退出账户必须清掉该账户的**云端统计缓存**，
       // 否则下一个账户登录进来会看到上一个账户的云端数据。
       await _s.cloudStatistics.onSignedOut();
       if (!mounted) return;
@@ -345,8 +387,6 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
         .firstWhere((RemoteDevice? d) => true, orElse: () => null);
 
     // 控制器与校验都在 DeviceEditDialog 自己的 State 里：调用方只拿**不可变结果**。
-    // 旧写法在 `await showDialog` 返回后立刻 dispose 控制器，会在弹窗路由
-    // 还在跑退场动画时销毁它，触发 `'_dependents.isEmpty': is not true.` —— 见 docs/32。
     final DeviceEditResult? result = await DeviceEditDialog.show(
       context,
       initialDeviceName: existing?.deviceName ?? '',
@@ -363,7 +403,6 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     try {
       await _api.updateDevice(
         deviceId: deviceId,
-        // 名称已在弹窗内校验为非空，不需要再回退成 null。
         deviceName: result.deviceName,
         modelName: result.modelName,
       );
@@ -385,6 +424,7 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
           '设备：${device.deviceName}\n\n'
           '历史数据会保留在服务端。',
       confirmText: '撤销',
+      danger: true,
     );
     if (confirmed != true) return;
 
@@ -409,6 +449,7 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     required String title,
     required String message,
     required String confirmText,
+    bool danger = false,
   }) =>
       showDialog<bool>(
         context: context,
@@ -416,11 +457,20 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
           title: Text(title),
           content: Text(message),
           actions: <Widget>[
-            TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('取消')),
-            FilledButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: Text(confirmText),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('取消'),
             ),
+            if (danger)
+              PetLifeDangerButton(
+                label: confirmText,
+                onPressed: () => Navigator.pop(ctx, true),
+              )
+            else
+              PetLifePrimaryButton(
+                label: confirmText,
+                onPressed: () => Navigator.pop(ctx, true),
+              ),
           ],
         ),
       );
@@ -431,63 +481,87 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _banner(),
-                const SizedBox(height: 16),
-                if (_api.isSignedIn) ...<Widget>[
-                  _accountCard(),
-                  const SizedBox(height: 16),
-                  _syncCard(),
-                  const SizedBox(height: 16),
-                  _devicesCard(),
-                ] else
-                  _loginCard(),
-                const SizedBox(height: 16),
-                AiAccessCard(api: _api, isSignedIn: _api.isSignedIn),
-                const SizedBox(height: 16),
-                _networkCard(),
-                const SizedBox(height: 16),
-                _privacyCard(),
-              ],
-            ),
-          ),
+    // ⚠ Windows 控制面板与本页共用同一个类：桌面主题里没有 PetLifeTheme 扩展时
+    // 原样回落到改造前的实现，保证「Windows UI 不受影响」。
+    if (PetLifeTheme.maybeOf(context) == null) {
+      return LegacyAccountSyncPage(services: widget.services);
+    }
+    final bool signedIn = _api.isSignedIn;
+    return PetLifePage(
+      title: '账户与同步',
+      subtitle: '不登录也能正常使用桌宠与本地统计',
+      actions: <Widget>[
+        PetLifeHeaderAction(
+          icon: Icons.refresh,
+          tooltip: '刷新设备列表',
+          onPressed: signedIn && !_busy ? _refreshDevices : null,
         ),
       ],
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          _banner(),
+          if (signedIn) ...<Widget>[
+            PetLifeCardEntrance(child: _accountCard()),
+            const SizedBox(height: PetLifeSpacing.cardGap),
+            PetLifeCardEntrance(
+              delay: const Duration(milliseconds: 40),
+              child: _syncCard(),
+            ),
+            const SizedBox(height: PetLifeSpacing.cardGap),
+            PetLifeCardEntrance(
+              delay: const Duration(milliseconds: 80),
+              child: _devicesCard(),
+            ),
+          ] else
+            PetLifeCardEntrance(child: _loginCard()),
+          const SizedBox(height: PetLifeSpacing.cardGap),
+          AiAccessCard(api: _api, isSignedIn: signedIn),
+          const SizedBox(height: PetLifeSpacing.cardGap),
+          _networkCard(),
+          const SizedBox(height: PetLifeSpacing.cardGap),
+          _privacyCard(),
+          const SizedBox(height: PetLifeSpacing.cardGap),
+        ],
+      ),
     );
   }
 
+  /// 顶部消息区：错误 → 需要重新登录 → 成功提示。
   Widget _banner() {
+    final PetLifePalette p = PetLifeTheme.of(context);
     if (_error != null) {
-      return _messageBox(
-        icon: Icons.error_outline,
-        color: const Color(0xFFB3261E),
-        title: '出错了',
-        body: _error!,
+      return Padding(
+        padding: const EdgeInsets.only(bottom: PetLifeSpacing.cardGap),
+        child: PetLifeErrorState(
+          title: '出错了',
+          detail: _error!,
+          hint: _error!.contains('登录') ? null : '本机采集与桌宠不受影响。',
+        ),
       );
     }
     if (_api.needsReauthentication) {
-      return _messageBox(
-        icon: Icons.lock_clock,
-        color: const Color(0xFFB26A00),
-        title: '需要重新登录',
-        body: '登录凭据已失效（可能是改过密码、退出过全部设备，或该设备已被撤销）。\n\n'
-            '**本地采集与桌宠不受影响**，仍在正常记录使用数据；'
-            '重新登录后会自动补传。',
+      return Padding(
+        padding: const EdgeInsets.only(bottom: PetLifeSpacing.cardGap),
+        child: _messageBox(
+          icon: Icons.lock_clock,
+          color: p.warning,
+          title: '需要重新登录',
+          body: '登录凭据已失效（可能是改过密码、退出过全部设备，或该设备已被撤销）。\n\n'
+              '本地采集与桌宠不受影响，仍在正常记录使用数据；'
+              '重新登录后会自动补传。',
+        ),
       );
     }
     if (_notice != null) {
-      return _messageBox(
-        icon: Icons.info_outline,
-        color: const Color(0xFF2E7D32),
-        title: '操作完成',
-        body: _notice!,
+      return Padding(
+        padding: const EdgeInsets.only(bottom: PetLifeSpacing.cardGap),
+        child: _messageBox(
+          icon: Icons.info_outline,
+          color: p.success,
+          title: '操作完成',
+          body: _notice!,
+        ),
       );
     }
     return const SizedBox.shrink();
@@ -499,105 +573,113 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     required String title,
     required String body,
   }) =>
-      Card(
+      PetLifeCard(
         color: color.withValues(alpha: 0.06),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Icon(icon, size: 18, color: color),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(title,
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w700, color: color)),
-                    const SizedBox(height: 4),
-                    Text(body, style: const TextStyle(fontSize: 12)),
-                  ],
-                ),
+        borderColor: color.withValues(alpha: 0.4),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(icon, size: 18, color: color),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: PetLifeText.bodySmall,
+                      fontWeight: FontWeight.w700,
+                      color: color,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    body,
+                    style: TextStyle(
+                      fontSize: PetLifeText.caption,
+                      color: PetLifeTheme.of(context).textPrimary,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 
   // --- 未登录 ---
 
   Widget _loginCard() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text('登录到 PetLife 账户',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-            const SizedBox(height: 6),
-            const Text(
-              '不登录也可以正常使用桌宠和本地统计。\n'
-              '登录只是额外把使用数据同步到你自己的服务器，便于多设备查看。',
-              style: TextStyle(fontSize: 12, color: Colors.black54),
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return PetLifeCard(
+      large: true,
+      corner: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const PetLifeSectionTitle(
+            title: '登录到 PetLife 账户',
+            subtitle: '不登录也可以正常使用桌宠和本地统计',
+            marker: false,
+          ),
+          Text(
+            '登录只是额外把使用数据同步到你自己的服务器，便于多设备查看。',
+            style: TextStyle(fontSize: PetLifeText.caption, color: p.textSecondary),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _baseUrl,
+            decoration: const InputDecoration(
+              labelText: '服务端地址',
+              hintText: 'http://127.0.0.1:8000',
+              helperText: '生产环境必须使用 https://',
             ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _baseUrl,
-              decoration: const InputDecoration(
-                labelText: '服务端地址',
-                hintText: 'http://127.0.0.1:8000',
-                helperText: '生产环境必须使用 https://',
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _email,
+            keyboardType: TextInputType.emailAddress,
+            autofillHints: const <String>[AutofillHints.email],
+            decoration: const InputDecoration(labelText: '邮箱'),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _password,
+            // 需求：密码输入框不得回显密码
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+            autofillHints: const <String>[AutofillHints.password],
+            onSubmitted: (_) => _submit(register: false),
+            decoration: const InputDecoration(labelText: '密码（至少 8 位）'),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: <Widget>[
+              PetLifePrimaryButton(
+                label: '登录',
+                icon: Icons.login,
+                busy: _busy,
+                onPressed: _busy ? null : () => _submit(register: false),
               ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
-              autofillHints: const <String>[AutofillHints.email],
-              decoration: const InputDecoration(labelText: '邮箱'),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _password,
-              // 需求：密码输入框不得回显密码
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              autofillHints: const <String>[AutofillHints.password],
-              onSubmitted: (_) => _submit(register: false),
-              decoration: const InputDecoration(labelText: '密码（至少 8 位）'),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: <Widget>[
-                FilledButton.icon(
-                  onPressed: _busy ? null : () => _submit(register: false),
-                  icon: const Icon(Icons.login, size: 16),
-                  label: const Text('登录'),
-                ),
-                const SizedBox(width: 12),
-                OutlinedButton.icon(
-                  onPressed: _busy ? null : () => _submit(register: true),
-                  icon: const Icon(Icons.person_add_alt, size: 16),
-                  label: const Text('注册'),
-                ),
-                const SizedBox(width: 16),
-                if (_busy) const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text(
-              '凭据后端：${_s.credentialStore.backendName}',
-              style: const TextStyle(fontSize: 11, color: Colors.black45),
-            ),
-          ],
-        ),
+              PetLifeSecondaryButton(
+                label: '注册',
+                icon: Icons.person_add_alt,
+                onPressed: _busy ? null : () => _submit(register: true),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '凭据后端：${_s.credentialStore.backendName}',
+            style: TextStyle(fontSize: PetLifeText.captionSmall, color: p.textSecondary),
+          ),
+        ],
       ),
     );
   }
@@ -606,128 +688,220 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
 
   Widget _accountCard() {
     final AccountSession? account = _api.lastAccount;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                const Expanded(
-                  child: Text('账户',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return PetLifeCard(
+      large: true,
+      corner: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: p.accentSoft,
+                  shape: BoxShape.circle,
                 ),
-                TextButton.icon(
-                  onPressed: _busy ? null : _signOut,
-                  icon: const Icon(Icons.logout, size: 16),
-                  label: const Text('退出登录'),
+                child: Icon(Icons.person, size: 20, color: p.onAccentSoft),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      account?.displayName?.isNotEmpty == true
+                          ? account!.displayName!
+                          : '已登录',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: PetLifeText.cardTitle,
+                        fontWeight: FontWeight.w700,
+                        color: p.textPrimary,
+                      ),
+                    ),
+                    Text(
+                      account?.email ?? '—',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: PetLifeText.caption,
+                        color: p.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 4),
-            _kv('显示名称', account?.displayName ?? '—'),
-            _kv('邮箱', account?.email ?? '—'),
-            _kv('服务端', account?.serverBaseUrl ?? '—'),
-            _kv('当前设备', _currentDeviceLabel()),
-            _kv('凭据后端', _s.credentialStore.backendName),
-            const SizedBox(height: 4),
-            const Text(
-              '界面与日志都不会显示完整令牌；令牌保存在系统凭据存储中，退出登录时删除。',
-              style: TextStyle(fontSize: 11, color: Colors.black45),
-            ),
-          ],
-        ),
+              ),
+              PetLifeTag(
+                label: _api.needsReauthentication ? '需要重新登录' : '登录状态正常',
+                color: _api.needsReauthentication ? p.warning : p.success,
+                dense: true,
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          PetLifeSectionTitle(title: '账户信息', marker: false),
+          PetLifeKeyValue(label: '服务端', value: account?.serverBaseUrl ?? '—'),
+          PetLifeKeyValue(label: '凭据后端', value: _s.credentialStore.backendName),
+          const SizedBox(height: 8),
+          Text(
+            '界面与日志都不会显示完整令牌；令牌保存在系统凭据存储中，退出登录时删除。',
+            style: TextStyle(fontSize: PetLifeText.captionSmall, color: p.textSecondary),
+          ),
+          const SizedBox(height: 12),
+          const _DangerDivider(),
+          const SizedBox(height: 10),
+          // 危险操作：单独使用红色，不跟随主题强调色。
+          PetLifeDangerButton(
+            label: '退出登录',
+            icon: Icons.logout,
+            filled: false,
+            onPressed: _busy ? null : _signOut,
+          ),
+        ],
       ),
     );
   }
 
-  String _currentDeviceLabel() {
-    final String? id = _api.deviceServerId;
-    if (id == null) return '未绑定（下次同步时自动注册）';
-    final RemoteDevice? match = _devices
-        .where((RemoteDevice d) => d.id == id)
-        .cast<RemoteDevice?>()
-        .firstWhere((RemoteDevice? d) => true, orElse: () => null);
-    return match == null ? id : '${match.deviceName}（$id）';
-  }
-
   Widget _syncCard() {
     final SyncStatus status = _engine.status;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                const Expanded(
-                  child: Text('同步状态',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-                ),
-                // 注意：这里**不再**放"立即同步"按钮。
-                // 上传与云端查询是两个方向，按钮已拆成下方明确的两个
-                // （见 CloudSyncActionsCard），避免一个含糊的"同步"造成误解。
-                if (_engine.isSyncing)
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+    final PetLifePalette p = PetLifeTheme.of(context);
+    final bool syncing = _syncing || _engine.isSyncing;
+
+    return PetLifeCard(
+      large: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          PetLifeSectionTitle(
+            title: '同步状态',
+            subtitle: '上传与云端查询是两个方向，按钮含义各自明确',
+            marker: false,
+            trailing: syncing
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : null,
+          ),
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final double scale = MediaQuery.textScalerOf(context).scale(1.0);
+              final int columns = constraints.maxWidth < 340 * scale ? 2 : 3;
+              const double gap = 12;
+              final double itemWidth =
+                  (constraints.maxWidth - gap * (columns - 1)) / columns;
+              return Wrap(
+                spacing: gap,
+                runSpacing: 14,
+                children: <Widget>[
+                  SizedBox(
+                    width: itemWidth,
+                    child: PetLifeStat(
+                      value: status.labelZh,
+                      label: '当前同步状态',
+                      valueColor: status == SyncStatus.success ? p.success : null,
                     ),
                   ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 28,
-              runSpacing: 10,
-              children: <Widget>[
-                _stat('同步状态', status.labelZh),
-                _stat('待同步记录', '${_engine.pendingCount} 条'),
-                _stat('上次成功同步', _formatTime(_engine.lastSuccessAt)),
-                _stat('连续失败次数', '${_engine.consecutiveFailures}'),
-                _stat('下次重试', _formatTime(_engine.nextRetryAt)),
-              ],
-            ),
-            if (_engine.lastError != null) ...<Widget>[
-              const SizedBox(height: 12),
-              Row(
+                  SizedBox(
+                    width: itemWidth,
+                    child: PetLifeStat(
+                      value: '${_engine.pendingCount}',
+                      label: '待上传记录',
+                      note: '尚未同步到服务端的变更条数',
+                    ),
+                  ),
+                  SizedBox(
+                    width: itemWidth,
+                    child: PetLifeStat(
+                      value: _formatTime(_engine.lastSuccessAt),
+                      label: '最近同步时间',
+                    ),
+                  ),
+                  SizedBox(
+                    width: itemWidth,
+                    child: PetLifeStat(
+                      value: '${_engine.lastUploadedCount}',
+                      label: '最近上传',
+                      note: '上一次同步上传成功的记录条数',
+                    ),
+                  ),
+                  SizedBox(
+                    width: itemWidth,
+                    child: PetLifeStat(
+                      value: '${_engine.lastDownloadedCount}',
+                      label: '最近下载',
+                      note: '上一次同步拉取到的记录条数',
+                    ),
+                  ),
+                  SizedBox(
+                    width: itemWidth,
+                    child: PetLifeStat(
+                      value: '${_engine.consecutiveFailures}',
+                      label: '连续失败次数',
+                      note: '下次重试 ${_formatTime(_engine.nextRetryAt)}',
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          const SizedBox(height: 12),
+          PetLifeKeyValue(label: '最近同步结果', value: _engine.lastRunSummary),
+          if (_engine.lastError != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Icon(Icons.warning_amber, size: 16, color: Color(0xFFB26A00)),
+                  Icon(Icons.warning_amber, size: 16, color: p.warning),
                   const SizedBox(width: 6),
                   Expanded(
-                    child: Text('最近错误：${_engine.lastError}',
-                        style: const TextStyle(fontSize: 12, color: Color(0xFFB26A00))),
+                    child: Text(
+                      '最近错误：${_engine.lastError}',
+                      style: TextStyle(fontSize: PetLifeText.caption, color: p.textPrimary),
+                    ),
                   ),
                 ],
               ),
-            ],
-            if (_engine.lastRejectedNote != null) ...<Widget>[
-              const SizedBox(height: 6),
-              Text('服务端拒收：${_engine.lastRejectedNote}',
-                  style: const TextStyle(fontSize: 11, color: Colors.black54)),
-            ],
-            const SizedBox(height: 12),
-            // Phase 4B：两个含义明确的动作按钮（上传 / 云端查询）
-            CloudSyncActionsCard(
-              upload: SyncEngineUploadHost(_engine),
-              cloud: CloudControllerRefreshHost(_s.cloudStatistics),
-              deviceName: _deviceDisplayName(),
-              serverBaseUrl: _api.baseUrl,
-              lastError: _engine.lastError,
             ),
-            const SizedBox(height: 10),
-            const Text(
-              '同步在后台进行，关闭本页面或最小化窗口都不会中断；'
-              '同步失败只在页面与日志中展示，不会弹窗打扰，也不影响桌宠与本地采集。',
-              style: TextStyle(fontSize: 11, color: Colors.black45),
+          if (_engine.lastRejectedNote != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                '服务端拒收：${_engine.lastRejectedNote}',
+                style: TextStyle(fontSize: PetLifeText.captionSmall, color: p.textSecondary),
+              ),
             ),
-          ],
-        ),
+          const SizedBox(height: 14),
+          // 强调色主按钮 + 现有防重入（引擎 `_inFlight` 去重 + 按钮禁用）。
+          PetLifePrimaryButton(
+            label: syncing ? '同步中…' : '立即同步',
+            icon: Icons.cloud_upload_outlined,
+            busy: syncing,
+            expand: true,
+            onPressed: syncing ? null : _syncNow,
+          ),
+          const SizedBox(height: 12),
+          // 两个含义明确的方向（上传 / 云端查询）——原有能力完全保留。
+          CloudSyncActionsCard(
+            upload: SyncEngineUploadHost(_engine),
+            cloud: CloudControllerRefreshHost(_s.cloudStatistics),
+            deviceName: _deviceDisplayName(),
+            serverBaseUrl: _api.baseUrl,
+            lastError: _engine.lastError,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '同步在后台进行，关闭本页面或最小化窗口都不会中断；'
+            '同步失败只在页面与日志中展示，不会弹窗打扰，也不影响桌宠与本地采集。',
+            style: TextStyle(fontSize: PetLifeText.captionSmall, color: p.textSecondary),
+          ),
+        ],
       ),
     );
   }
@@ -756,80 +930,120 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
   }
 
   Widget _devicesCard() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                const Expanded(
-                  child: Text('设备列表',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-                ),
-                TextButton.icon(
-                  onPressed: _busy ? null : _refreshDevices,
-                  icon: const Icon(Icons.refresh, size: 16),
-                  label: const Text('刷新'),
-                ),
-                TextButton.icon(
-                  onPressed: _busy ? null : _editCurrentDevice,
-                  icon: const Icon(Icons.edit, size: 16),
-                  label: const Text('修改本机'),
-                ),
-              ],
+    final PetLifePalette p = PetLifeTheme.of(context);
+    final RemoteDevice? current = _currentDevice;
+    final int others =
+        _devices.where((RemoteDevice d) => d.id != _api.deviceServerId).length;
+
+    return PetLifeCard(
+      large: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const PetLifeSectionTitle(
+            title: '当前设备与设备管理',
+            subtitle: '同一账户下的其它设备可以在这里撤销',
+          ),
+          PetLifeKeyValue(
+            label: '当前设备',
+            value: _currentDeviceLabel(),
+          ),
+          PetLifeKeyValue(
+            label: '设备名称',
+            value: current?.deviceName ?? '未设置',
+          ),
+          PetLifeKeyValue(
+            label: '其它设备',
+            value: '$others 台',
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: <Widget>[
+              PetLifeSecondaryButton(
+                label: '刷新设备列表',
+                icon: Icons.refresh,
+                onPressed: _busy ? null : _refreshDevices,
+              ),
+              PetLifeSecondaryButton(
+                label: '修改本机信息',
+                icon: Icons.edit_outlined,
+                onPressed: _busy ? null : _editCurrentDevice,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (_devices.isEmpty)
+            PetLifeEmptyState(
+              icon: Icons.devices_other,
+              title: '暂无设备',
+              message: '登录后同步一次即可完成绑定。',
+              compact: true,
+            )
+          else
+            for (final RemoteDevice device in _devices) _deviceRow(device),
+          if (others > 0) ...<Widget>[
+            const SizedBox(height: 8),
+            Text(
+              '撤销设备会立即使该设备上的登录失效；历史数据仍保留在服务端。',
+              style: TextStyle(fontSize: PetLifeText.captionSmall, color: p.textSecondary),
             ),
-            const SizedBox(height: 4),
-            if (_devices.isEmpty)
-              const Text('暂无设备（登录后同步一次即可完成绑定）',
-                  style: TextStyle(fontSize: 12, color: Colors.black54))
-            else
-              for (final RemoteDevice device in _devices) _deviceRow(device),
           ],
-        ),
+        ],
       ),
     );
   }
 
+  String _currentDeviceLabel() {
+    final String? id = _api.deviceServerId;
+    if (id == null) return '未绑定（下次同步时自动注册）';
+    final RemoteDevice? match = _currentDevice;
+    return match == null ? id : '${match.deviceName}（$id）';
+  }
+
   Widget _deviceRow(RemoteDevice device) {
+    final PetLifePalette p = PetLifeTheme.of(context);
     final bool isCurrent = device.id == _api.deviceServerId;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Icon(
             device.isRevoked
                 ? Icons.block
-                : (isCurrent ? Icons.computer : Icons.devices_other),
-            size: 16,
-            color: device.isRevoked ? Colors.grey : const Color(0xFF2F4A63),
+                : (isCurrent ? Icons.smartphone : Icons.devices_other),
+            size: 18,
+            color: device.isRevoked
+                ? p.textDisabled
+                : (isCurrent ? p.accent : p.textSecondary),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 4,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        device.deviceName,
-                        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-                        overflow: TextOverflow.ellipsis,
+                    Text(
+                      device.deviceName,
+                      style: TextStyle(
+                        fontSize: PetLifeText.bodySmall,
+                        fontWeight: FontWeight.w600,
+                        color: p.textPrimary,
                       ),
                     ),
                     if (isCurrent)
-                      const Padding(
-                        padding: EdgeInsets.only(left: 6),
-                        child: Text('（本机）',
-                            style: TextStyle(fontSize: 11, color: Color(0xFF2E7D32))),
-                      ),
+                      PetLifeTag(label: '本机', color: p.success, dense: true),
                     if (device.isRevoked)
-                      const Padding(
-                        padding: EdgeInsets.only(left: 6),
-                        child: Text('（已撤销）',
-                            style: TextStyle(fontSize: 11, color: Colors.grey)),
+                      PetLifeTag(
+                        label: '已撤销',
+                        color: p.textDisabled,
+                        dense: true,
                       ),
                   ],
                 ),
@@ -837,15 +1051,19 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
                   '${device.platform}/${device.architecture}'
                   '${device.modelName == null || device.modelName!.isEmpty ? '' : ' · ${device.modelName}'}'
                   ' · 最近活跃 ${_formatIso(device.lastSeenAt)}',
-                  style: const TextStyle(fontSize: 11, color: Colors.black54),
+                  style: TextStyle(
+                    fontSize: PetLifeText.captionSmall,
+                    color: p.textSecondary,
+                  ),
                 ),
               ],
             ),
           ),
           if (!isCurrent && !device.isRevoked)
-            TextButton(
+            PetLifeDangerButton(
+              label: '撤销',
+              filled: false,
               onPressed: _busy ? null : () => _revokeDevice(device),
-              child: const Text('撤销', style: TextStyle(fontSize: 12)),
             ),
         ],
       ),
@@ -855,250 +1073,247 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
   // --- 网络连接 ---
 
   Widget _networkCard() {
+    final PetLifePalette p = PetLifeTheme.of(context);
     final ProxyController ctl = _proxyCtl;
     final ProxyResolution res = ctl.resolution;
     final SystemProxyInfo? detected = ctl.detected;
     final bool busy = _busy || ctl.busy;
     final bool manual = _proxyMode == ProxyMode.manualHttp;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                const Expanded(
-                  child: Text('网络连接',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-                ),
-                if (busy)
-                  const SizedBox(
+    return PetLifeCard(
+      large: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          PetLifeSectionTitle(
+            title: '网络连接',
+            subtitle: '长期使用 Clash 时请开启 System Proxy，或在此填写 HTTP/Mixed 端口',
+            marker: false,
+            trailing: busy
+                ? const SizedBox(
                     width: 16,
                     height: 16,
                     child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            const Text(
-              '长期使用 Clash 的用户请让 Clash 开启 System Proxy，或在此选择「手动 HTTP 代理」'
-              '并填写 Clash 的 HTTP/Mixed 端口。\n'
-              '不需要开启 TUN 模式。',
-              style: TextStyle(fontSize: 12, color: Colors.black54),
-            ),
-            const SizedBox(height: 12),
+                  )
+                : null,
+          ),
+          Text(
+            '不需要开启 TUN 模式。SOCKS 端口不能直接当 HTTP 代理使用，'
+            '请在 Clash 里改用 Mixed Port。',
+            style: TextStyle(fontSize: PetLifeText.caption, color: p.textSecondary),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: <Widget>[
+              SizedBox(
+                width: 84,
+                child: Text(
+                  '连接方式',
+                  style: TextStyle(fontSize: PetLifeText.caption, color: p.textSecondary),
+                ),
+              ),
+              Expanded(
+                child: DropdownButton<ProxyMode>(
+                  value: _proxyMode,
+                  isExpanded: true,
+                  onChanged: busy
+                      ? null
+                      : (ProxyMode? m) {
+                          if (m == null) return;
+                          setState(() => _proxyMode = m);
+                        },
+                  items: ProxyMode.values
+                      .map((ProxyMode m) => DropdownMenuItem<ProxyMode>(
+                            value: m,
+                            child: Text(m.labelZh),
+                          ))
+                      .toList(growable: false),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (manual) ...<Widget>[
             Row(
               children: <Widget>[
-                const SizedBox(
-                  width: 84,
-                  child: Text('连接方式',
-                      style: TextStyle(fontSize: 12, color: Colors.black54)),
-                ),
                 Expanded(
-                  child: DropdownButton<ProxyMode>(
-                    value: _proxyMode,
-                    isExpanded: true,
-                    onChanged: busy
-                        ? null
-                        : (ProxyMode? m) {
-                            if (m == null) return;
-                            setState(() => _proxyMode = m);
-                          },
-                    items: ProxyMode.values
-                        .map((ProxyMode m) => DropdownMenuItem<ProxyMode>(
-                              value: m,
-                              child: Text(m.labelZh,
-                                  style: const TextStyle(fontSize: 13)),
-                            ))
-                        .toList(growable: false),
+                  flex: 3,
+                  child: TextField(
+                    controller: _proxyHost,
+                    decoration: const InputDecoration(
+                      labelText: '代理地址',
+                      hintText: '127.0.0.1',
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    controller: _proxyPort,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: '端口',
+                      hintText: '7877',
+                    ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            if (manual) ...<Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: TextField(
-                      controller: _proxyHost,
-                      decoration: const InputDecoration(
-                        labelText: '代理地址',
-                        hintText: '127.0.0.1',
-                        isDense: true,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 2,
-                    child: TextField(
-                      controller: _proxyPort,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: '端口',
-                        hintText: '7877',
-                        isDense: true,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _proxyUsername,
-                decoration: const InputDecoration(
-                  labelText: '用户名（可选）',
-                  isDense: true,
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _proxyPassword,
-                // 与登录密码一致：密码框不得回显
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  labelText: '密码（可选）',
-                  isDense: true,
-                  helperText: ctl.hasSavedPassword
-                      ? '已保存密码；留空表示不修改。密码保存在系统凭据存储中，不写入本地数据库。'
-                      : '密码保存在系统凭据存储中，不写入本地数据库。',
-                ),
-              ),
-            ],
-            const SizedBox(height: 4),
-            CheckboxListTile(
-              value: _proxyBypassLocalhost,
-              onChanged: busy
-                  ? null
-                  : (bool? v) => setState(() => _proxyBypassLocalhost = v ?? true),
-              dense: true,
-              contentPadding: EdgeInsets.zero,
-              controlAffinity: ListTileControlAffinity.leading,
-              title: const Text('本地地址不走代理（<local>）',
-                  style: TextStyle(fontSize: 12)),
-            ),
-            const SizedBox(height: 4),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: <Widget>[
-                OutlinedButton.icon(
-                  onPressed: busy ? null : _detectSystemProxy,
-                  icon: const Icon(Icons.search, size: 16),
-                  label: const Text('检测系统代理'),
-                ),
-                OutlinedButton.icon(
-                  onPressed: busy ? null : _testProxy,
-                  icon: const Icon(Icons.lan_outlined, size: 16),
-                  label: const Text('测试代理'),
-                ),
-                OutlinedButton.icon(
-                  onPressed: busy ? null : _testServer,
-                  icon: const Icon(Icons.cloud_done_outlined, size: 16),
-                  label: const Text('测试服务端'),
-                ),
-                FilledButton.tonalIcon(
-                  onPressed: busy ? null : _saveProxy,
-                  icon: const Icon(Icons.save, size: 16),
-                  label: const Text('保存并重新连接'),
-                ),
-                if (ctl.hasSavedPassword)
-                  TextButton(
-                    onPressed: busy ? null : _clearProxyPassword,
-                    child: const Text('清除已保存的密码', style: TextStyle(fontSize: 12)),
-                  ),
-              ],
+            TextField(
+              controller: _proxyUsername,
+              decoration: const InputDecoration(labelText: '用户名（可选）'),
             ),
             const SizedBox(height: 12),
-            _kv('检测到的系统代理', _describeDetected(detected)),
-            _kv(
-              '当前实际使用',
-              res.usesProxy
-                  ? '代理 ${res.authority}（${res.sourceLabel}）'
-                  : '直连（${res.sourceLabel}）',
-            ),
-            if (res.blockedReason != null) ...<Widget>[
-              const SizedBox(height: 8),
-              _inlineNote(
-                icon: Icons.error_outline,
-                color: const Color(0xFFB3261E),
-                text: res.blockedReason!,
+            TextField(
+              controller: _proxyPassword,
+              // 与登录密码一致：密码框不得回显
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: InputDecoration(
+                labelText: '密码（可选）',
+                helperText: ctl.hasSavedPassword
+                    ? '已保存密码；留空表示不修改。密码保存在系统凭据存储中，不写入本地数据库。'
+                    : '密码保存在系统凭据存储中，不写入本地数据库。',
               ),
-            ] else if (res.warning != null) ...<Widget>[
-              const SizedBox(height: 8),
-              _inlineNote(
-                icon: Icons.info_outline,
-                color: const Color(0xFFB26A00),
-                text: res.warning!,
-              ),
-            ],
-            if (ctl.error != null) ...<Widget>[
-              const SizedBox(height: 8),
-              _inlineNote(
-                icon: Icons.error_outline,
-                color: const Color(0xFFB3261E),
-                text: ctl.error!,
-              ),
-            ] else if (ctl.notice != null) ...<Widget>[
-              const SizedBox(height: 8),
-              _inlineNote(
-                icon: Icons.check_circle_outline,
-                color: const Color(0xFF2E7D32),
-                text: ctl.notice!,
-              ),
-            ],
-            if (ctl.lastProbe != null) ...<Widget>[
-              const SizedBox(height: 10),
-              Text(
-                ctl.lastProbeIncludedHealth ? '测试服务端结果' : '测试代理结果',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 4),
-              for (final ProxyProbeStep step in ctl.lastProbe!.steps)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Icon(
-                        step.ok ? Icons.check : Icons.close,
-                        size: 14,
-                        color: step.ok ? const Color(0xFF2E7D32) : const Color(0xFFB3261E),
-                      ),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          '${step.label}：${step.detail}',
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-            const SizedBox(height: 10),
-            const Divider(height: 1),
-            const SizedBox(height: 10),
-            const Text('Clash 使用说明',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-            const SizedBox(height: 4),
-            const Text(
-              '• Clash 必须开启 System Proxy，或在本页选择「手动 HTTP 代理」填写 HTTP/Mixed Port。\n'
-              '• 不要求开启 TUN 模式。\n'
-              '• SOCKS 端口不能直接当 HTTP 代理使用；如果只开了 SOCKS5，'
-              '请在 Clash 里改用 Mixed Port（HTTP 与 SOCKS 共用同一个端口）。\n'
-              '• 代理地址一般是 127.0.0.1，端口以 Clash 设置页显示的为准（例如 7877）。\n'
-              '• PetLife 暂不支持 PAC/WPAD 自动配置脚本；检测到时会明确提示并退回直连。',
-              style: TextStyle(fontSize: 11, color: Colors.black54),
             ),
           ],
-        ),
+          const SizedBox(height: 4),
+          CheckboxListTile(
+            value: _proxyBypassLocalhost,
+            onChanged: busy
+                ? null
+                : (bool? v) => setState(() => _proxyBypassLocalhost = v ?? true),
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            controlAffinity: ListTileControlAffinity.leading,
+            title: const Text('本地地址不走代理（<local>）'),
+          ),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: <Widget>[
+              PetLifeSecondaryButton(
+                label: '检测系统代理',
+                icon: Icons.search,
+                onPressed: busy ? null : _detectSystemProxy,
+              ),
+              PetLifeSecondaryButton(
+                label: '测试代理',
+                icon: Icons.lan_outlined,
+                onPressed: busy ? null : _testProxy,
+              ),
+              PetLifeSecondaryButton(
+                label: '测试服务端',
+                icon: Icons.cloud_done_outlined,
+                onPressed: busy ? null : _testServer,
+              ),
+              PetLifePrimaryButton(
+                label: '保存并重新连接',
+                icon: Icons.save,
+                onPressed: busy ? null : _saveProxy,
+              ),
+              if (ctl.hasSavedPassword)
+                PetLifeDangerButton(
+                  label: '清除已保存的密码',
+                  filled: false,
+                  onPressed: busy ? null : _clearProxyPassword,
+                ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          PetLifeKeyValue(label: '检测到的系统代理', value: _describeDetected(detected)),
+          PetLifeKeyValue(
+            label: '当前实际使用',
+            value: res.usesProxy
+                ? '代理 ${res.authority}（${res.sourceLabel}）'
+                : '直连（${res.sourceLabel}）',
+          ),
+          if (res.blockedReason != null) ...<Widget>[
+            const SizedBox(height: 8),
+            _inlineNote(
+              icon: Icons.error_outline,
+              color: p.danger,
+              text: res.blockedReason!,
+            ),
+          ] else if (res.warning != null) ...<Widget>[
+            const SizedBox(height: 8),
+            _inlineNote(icon: Icons.info_outline, color: p.warning, text: res.warning!),
+          ],
+          if (ctl.error != null) ...<Widget>[
+            const SizedBox(height: 8),
+            _inlineNote(icon: Icons.error_outline, color: p.danger, text: ctl.error!),
+          ] else if (ctl.notice != null) ...<Widget>[
+            const SizedBox(height: 8),
+            _inlineNote(
+              icon: Icons.check_circle_outline,
+              color: p.success,
+              text: ctl.notice!,
+            ),
+          ],
+          if (ctl.lastProbe != null) ...<Widget>[
+            const SizedBox(height: 10),
+            Text(
+              ctl.lastProbeIncludedHealth ? '测试服务端结果' : '测试代理结果',
+              style: TextStyle(
+                fontSize: PetLifeText.bodySmall,
+                fontWeight: FontWeight.w600,
+                color: p.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 4),
+            for (final ProxyProbeStep step in ctl.lastProbe!.steps)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Icon(
+                      step.ok ? Icons.check : Icons.close,
+                      size: 14,
+                      color: step.ok ? p.success : p.danger,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        '${step.label}：${step.detail}',
+                        style: TextStyle(
+                          fontSize: PetLifeText.caption,
+                          color: p.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+          const SizedBox(height: 12),
+          Text(
+            'Clash 使用说明',
+            style: TextStyle(
+              fontSize: PetLifeText.bodySmall,
+              fontWeight: FontWeight.w600,
+              color: p.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '• Clash 必须开启 System Proxy，或在本页选择「手动 HTTP 代理」填写 HTTP/Mixed Port。\n'
+            '• 不要求开启 TUN 模式。\n'
+            '• SOCKS 端口不能直接当 HTTP 代理使用；如果只开了 SOCKS5，'
+            '请在 Clash 里改用 Mixed Port（HTTP 与 SOCKS 共用同一个端口）。\n'
+            '• 代理地址一般是 127.0.0.1，端口以 Clash 设置页显示的为准（例如 7877）。\n'
+            '• PetLife 暂不支持 PAC/WPAD 自动配置脚本；检测到时会明确提示并退回直连。',
+            style: TextStyle(
+              fontSize: PetLifeText.captionSmall,
+              color: p.textSecondary,
+              height: 1.5,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1126,104 +1341,91 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
           Icon(icon, size: 14, color: color),
           const SizedBox(width: 6),
           Expanded(
-            child: Text(text, style: TextStyle(fontSize: 12, color: color)),
+            child: Text(
+              text,
+              style: TextStyle(fontSize: PetLifeText.caption, color: color),
+            ),
           ),
         ],
       );
 
-  Widget _privacyCard() => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text('上传了什么',
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
-              const SizedBox(height: 6),
-              const Text(
-                '只上传：应用使用时间段（应用名、分类、起止时间、活跃秒数）、'
-                '每日用量快照（会话/活跃/空闲秒数）、应用库的分类与显示名、设备名称等自报信息。\n\n'
-                '绝不上传：窗口标题、文档名、网页标题或网址、本地文件完整路径、'
-                '键盘输入、鼠标内容、剪贴板、截图、素材文件与日志文件。',
-                style: TextStyle(fontSize: 12, color: Colors.black87),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                '服务端地址可随时修改；退出登录只清理认证信息与**云端统计缓存**，'
-                '不会删除本地使用记录与桌宠素材。',
-                style: TextStyle(fontSize: 11, color: Colors.black54),
-              ),
-              const SizedBox(height: 10),
-              const Divider(height: 1),
-              const SizedBox(height: 10),
-              const Text('云同步能力（当前真实状态）',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-              const SizedBox(height: 6),
-              // 这里只展示**真实能力**：不提供没有实际效果的开关。
-              _capabilityRow('上传应用名称', '已启用'),
-              _capabilityRow('上传应用标识', '已启用'),
-              _capabilityRow('上传详细时间线', '已启用'),
-              _capabilityRow('窗口标题', '当前版本不上传'),
-              const SizedBox(height: 6),
-              const Text(
-                '说明：详细时间线是「云端统计里能看到具体使用时间段」的前提。'
-                '当前协议尚未支持按开关切换为"仅上传每日聚合"，因此本版本**不提供**'
-                '该开关（避免做出一个没有实际效果的按钮）；相关能力列为后续支持。',
-                style: TextStyle(fontSize: 11, color: Colors.black54),
-              ),
-            ],
+  Widget _privacyCard() {
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return PetLifeCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          PetLifeSectionTitle(
+            title: '上传了什么',
+            subtitle: '只上传使用时间段、每日用量快照与自报信息',
+            marker: false,
           ),
-        ),
-      );
-
-  Widget _capabilityRow(String label, String state) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              width: 120,
-              child: Text(label, style: const TextStyle(fontSize: 12)),
+          Text(
+            '只上传：应用使用时间段（应用名、分类、起止时间、活跃秒数）、'
+            '每日用量快照（会话/活跃/空闲秒数）、应用库的分类与显示名、设备名称等自报信息。\n\n'
+            '绝不上传：窗口标题、文档名、网页标题或网址、本地文件完整路径、'
+            '键盘输入、鼠标内容、剪贴板、截图、素材文件与日志文件。',
+            style: TextStyle(
+              fontSize: PetLifeText.caption,
+              color: p.textPrimary,
+              height: 1.5,
             ),
-            Expanded(
-              child: Text(
-                state,
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '云同步能力（当前真实状态）',
+            style: TextStyle(
+              fontSize: PetLifeText.bodySmall,
+              fontWeight: FontWeight.w600,
+              color: p.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 6),
+          // 这里只展示**真实能力**：不提供没有实际效果的开关。
+          _capabilityRow('上传应用名称', '已启用'),
+          _capabilityRow('上传应用标识', '已启用'),
+          _capabilityRow('上传详细时间线', '已启用'),
+          _capabilityRow('窗口标题', '当前版本不上传'),
+          const SizedBox(height: 6),
+          Text(
+            '说明：详细时间线是「云端统计里能看到具体使用时间段」的前提。'
+            '当前协议尚未支持按开关切换为"仅上传每日聚合"，因此本版本不提供'
+            '该开关（避免做出一个没有实际效果的按钮）；相关能力列为后续支持。',
+            style: TextStyle(fontSize: PetLifeText.captionSmall, color: p.textSecondary),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _capabilityRow(String label, String state) {
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            width: 120,
+            child: Text(
+              label,
+              style: TextStyle(fontSize: PetLifeText.caption, color: p.textSecondary),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              state,
+              style: TextStyle(
+                fontSize: PetLifeText.caption,
+                fontWeight: FontWeight.w600,
+                color: p.textPrimary,
               ),
             ),
-          ],
-        ),
-      );
-
-  Widget _kv(String label, String value) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              width: 84,
-              child: Text(label,
-                  style: const TextStyle(fontSize: 12, color: Colors.black54)),
-            ),
-            Expanded(
-              child: SelectableText(value, style: const TextStyle(fontSize: 12)),
-            ),
-          ],
-        ),
-      );
-
-  Widget _stat(String label, String value) => SizedBox(
-        width: 150,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(value,
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
-            Text(label,
-                style: const TextStyle(fontSize: 11, color: Colors.black54)),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 
   static String _formatTime(DateTime? time) {
     if (time == null) return '—';
@@ -1242,5 +1444,29 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     String two(int v) => v.toString().padLeft(2, '0');
     return '${local.year}-${two(local.month)}-${two(local.day)} '
         '${two(local.hour)}:${two(local.minute)}';
+  }
+}
+
+/// 危险区的分隔线：一条极淡的线 + 左侧红色短线，替代大片灰色分割。
+class _DangerDivider extends StatelessWidget {
+  const _DangerDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return Row(
+      children: <Widget>[
+        Container(
+          width: 22,
+          height: 3,
+          decoration: BoxDecoration(
+            color: p.danger,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(child: Container(height: 1, color: p.divider)),
+      ],
+    );
   }
 }

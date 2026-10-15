@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../activity_tracking/activity_state_mapper.dart';
-import '../../activity_tracking/activity_tracker.dart';
 import '../../app/app_scope.dart';
 import '../../character/models/character_model.dart';
 import '../../character/models/emotion_asset.dart';
@@ -13,7 +13,6 @@ import '../../core/logger.dart';
 import '../../core/paths.dart';
 import '../../navigation/app_navigation.dart';
 import '../../platform/android/android_overlay_menu_bridge.dart';
-import '../../platform/overlay_pet.dart';
 import '../../platform/overlay_state_mapping.dart';
 import '../../state_engine/state_snapshot.dart';
 import '../../state_engine/system_state.dart';
@@ -25,18 +24,22 @@ import '../pages/asset_library_page.dart';
 import '../pages/settings_page.dart';
 import '../pages/state_asset_mapping_page.dart';
 import '../pages/usage_stats_page.dart';
-import '../pet/pet_view.dart';
-import 'mobile_platform_notice.dart';
+import '../theme/petlife_theme.dart';
+import '../widgets/petlife/petlife_nav.dart';
+import '../widgets/petlife/petlife_page.dart';
+import 'mobile_home_page.dart';
+import 'root_pages.dart';
 
-/// Android 外壳（Phase 4A）：普通 Material 应用 + 底部导航。
+/// Android 外壳：统一的二次元卡片式控制面板 + 底部导航。
 ///
-/// 与桌面外壳的区别（需求「Phase 4A 第 5 项」）：
-/// * 没有桌宠窗口、没有托盘、没有鼠标穿透 —— 那些是 Windows 专属；
-/// * 页面用底部导航切换：桌宠 / 使用统计 / 账户与同步 / 素材库 / 设置；
-/// * **不申请任何权限**：Phase 4A 不采集应用使用时长，
-///   因此"使用情况访问权限"完全不需要（Phase 4B 才引入）。
+/// 视觉（本轮增量）：P3P 图形语言 + Animeko 信息层级 + Kazumi 卡片布局；
+/// 白底为主色、P3P 粉为强调色；**所有颜色都来自统一主题对象**，
+/// 页面里不允许硬编码粉色。
 ///
-/// 启动顺序与桌面保持一致：恢复角色 → 启动渲染 → 采集（本阶段为不可用）→ 同步。
+/// 业务上与本轮改造前完全一致：
+/// * 五个根入口与既有路由不变：桌宠 / 使用统计 / 账户与同步 / 素材库 / 设置；
+/// * 启动顺序不变：恢复角色 → 启动渲染 → 采集 → 同步；
+/// * 所有业务控制器、服务与数据模型继续复用，没有为了新界面重写任何逻辑。
 class MobileShell extends StatefulWidget {
   const MobileShell({super.key, required this.services});
 
@@ -52,10 +55,10 @@ class _MobileShellState extends State<MobileShell> {
   int _index = 0;
   late final LibraryController _library;
 
-  /// Android 悬浮桌宠协调器（Phase 4C）。仅当平台具备该能力时创建。
+  /// Android 悬浮桌宠协调器。仅当平台具备该能力时创建。
   OverlayPetController? _overlay;
 
-  /// 应用级跳转请求控制器（Phase 4C-6B-2：轮盘菜单 → 页面）。
+  /// 应用级跳转请求控制器（轮盘菜单 → 页面）。
   ///
   /// 外壳只**订阅**它，绝不把自己的下标暴露给调用方；页面未就绪时请求留在
   /// 控制器里，等外壳起来后再消费。
@@ -66,7 +69,7 @@ class _MobileShellState extends State<MobileShell> {
   final GlobalKey<UsageStatsPageState> _usageStatsKey =
       GlobalKey<UsageStatsPageState>();
 
-  /// 原生轮盘菜单的待处理请求消费者（Phase 4C-6B-2）。仅 Android 创建。
+  /// 原生轮盘菜单的待处理请求消费者。仅 Android 创建。
   OverlayMenuRequestConsumer? _menuConsumer;
 
   @override
@@ -90,14 +93,15 @@ class _MobileShellState extends State<MobileShell> {
     unawaited(_bootstrap());
   }
 
-  /// 订阅跳转请求。`AppDestination` 的语义与桌面外壳相同（若桌面需要，
-  /// 映射到它自己的面板即可），但**不共享任何 widget 状态**。
+  /// 订阅跳转请求。`AppDestination` 的语义与桌面外壳相同，
+  /// 但**不共享任何 widget 状态**。
   void _setupNavigation() {
     _navigation = AppNavigationController();
-    _navigationSub = _navigation.requests.listen((AppDestination _) => _drainNavigation());
+    _navigationSub =
+        _navigation.requests.listen((AppDestination _) => _drainNavigation());
   }
 
-  /// 原生轮盘菜单 → 页面/动作（Phase 4C-6B-2）。
+  /// 原生轮盘菜单 → 页面/动作。
   ///
   /// 只在具备系统级悬浮桌宠能力的平台装配（即 Android）：
   /// 其它平台根本没有这条原生通道，装配了只会得到"通道不存在"的日志噪音。
@@ -182,7 +186,7 @@ class _MobileShellState extends State<MobileShell> {
     );
   }
 
-  /// 建立"状态引擎 → 原生悬浮窗"的联动（Phase 4C-2）。
+  /// 建立"状态引擎 → 原生悬浮窗"的联动。
   ///
   /// attach() 会立刻同步一次，因此**应用重启后**（悬浮服务仍在运行时）
   /// 也能把当前角色/素材推回原生层。
@@ -193,7 +197,7 @@ class _MobileShellState extends State<MobileShell> {
       snapshots: _s.stateEngineSnapshot,
       // 原生侧只允许加载这个目录下的文件，因此这里给它同一个根。
       privateAssetsRoot: () => AppPaths.instance.assetsRoot.path,
-      // Phase 4C-5：状态 → 素材快照由**数据库**读出来交给原生，
+      // 状态 → 素材快照由**数据库**读出来交给原生，
       // 这样 Flutter 退出后前台服务仍能按它继续联动。
       stateMappingLoader: _loadStateMapping,
     )..attach();
@@ -218,7 +222,7 @@ class _MobileShellState extends State<MobileShell> {
       renderableAssets: assets,
       mappings: mappings,
       revision: revision,
-      // Phase 4C-6A：规则与开关随快照一起下发（原生不需要另存一份规则）。
+      // 规则与开关随快照一起下发（原生不需要另存一份规则）。
       automaticStateEnabled: _s.settings.settings.overlayAutomaticState,
       defaultStateKey: SystemState.defaultState.wireName,
       categoryStateRules: ActivityStateMapper.categoryStateRules,
@@ -267,12 +271,7 @@ class _MobileShellState extends State<MobileShell> {
       }
 
       await _s.presenter.start();
-
-      // 采集：Phase 4A 的 Android 平台提供者是"不可用"实现，
-      // 采集器据此不会驱动桌宠状态，也绝不会申请权限。
       await _s.startActivityTracking();
-
-      // 同步：未登录时引擎停在 signedOut，不做任何网络请求。
       await _s.startSync();
     } catch (e, st) {
       ErrorHandler.record('MobileShell.bootstrap', e, st);
@@ -282,215 +281,72 @@ class _MobileShellState extends State<MobileShell> {
   @override
   Widget build(BuildContext context) {
     final bool collecting = _s.platform.capabilities.supportsSystemActivityTracking;
+    final PetLifePalette p = PetLifeTheme.of(context);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF4F6F9),
-      body: SafeArea(
-        child: IndexedStack(
-          index: _index,
-          children: <Widget>[
-            _MobilePetPage(
-              services: _s,
-              // 4C-6A：桌宠状态在 Android 上由**原生**决定，页面显示原生真值。
-              overlay: _overlay,
-              onOpenLibrary: () => setState(() => _index = 3),
-            ),
-            UsageStatsPage(
-              key: _usageStatsKey,
-              services: _s,
-              // 云端统计未登录时"去登录" → 切到「账户与同步」
-              onOpenAccount: () => setState(() => _index = 2),
-              overlay: _overlay,
-            ),
-            AccountSyncPage(services: _s),
-            AssetLibraryPage(
-              ownerId: _s.ownerId,
-              importer: _s.importer,
-              fileImportProvider: _s.fileImportProvider,
-              library: _library,
-              // 设为当前桌宠角色成功后立刻切回"桌宠"页，让用户马上看到效果。
-              onActivated: () => setState(() => _index = 0),
-              // Phase 4C-6A.1：状态映射编辑器的「预览」要用到悬浮控制器。
-              overlay: _overlay,
-            ),
-            SettingsPage(services: _s, overlay: _overlay, library: _library),
-          ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      // 状态栏与导航栏颜色跟随主题（需求 §2.1）。
+      value: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness:
+            p.isDark ? Brightness.light : Brightness.dark,
+        statusBarBrightness: p.isDark ? Brightness.dark : Brightness.light,
+        systemNavigationBarColor: p.surface,
+        systemNavigationBarIconBrightness:
+            p.isDark ? Brightness.light : Brightness.dark,
+        systemNavigationBarDividerColor: p.divider,
+      ),
+      child: Scaffold(
+        backgroundColor: p.surface,
+        body: SafeArea(
+          bottom: false,
+          child: PetLifePageSwitcher(
+            index: _index,
+            children: <Widget>[
+              MobileHomePage(
+                services: _s,
+                library: _library,
+                overlay: _overlay,
+                onOpenLibrary: () => _go(3),
+              ),
+              UsageStatsPage(
+                key: _usageStatsKey,
+                services: _s,
+                // 云端统计未登录时"去登录" → 切到「账户与同步」
+                onOpenAccount: () => _go(2),
+                overlay: _overlay,
+                showActivityQualifier: !collecting,
+              ),
+              AccountSyncPage(services: _s),
+              AssetLibraryPage(
+                ownerId: _s.ownerId,
+                importer: _s.importer,
+                fileImportProvider: _s.fileImportProvider,
+                library: _library,
+                // 设为当前桌宠角色成功后立刻切回"桌宠"页，让用户马上看到效果。
+                onActivated: () => _go(0),
+                overlay: _overlay,
+              ),
+              SettingsPage(
+                services: _s,
+                overlay: _overlay,
+                library: _library,
+                onOpenAccount: () => _go(2),
+              ),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (int i) => setState(() => _index = i),
-        destinations: <NavigationDestination>[
-          NavigationDestination(
-            icon: const Icon(Icons.pets_outlined),
-            selectedIcon: const Icon(Icons.pets),
-            label: '桌宠',
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.bar_chart_outlined),
-            selectedIcon: const Icon(Icons.bar_chart),
-            // 采集能力未启用时明确标注"（本机）"，避免与服务器汇总混淆。
-            label: collecting ? '使用统计' : '使用统计（本机）',
-          ),
-          const NavigationDestination(
-            icon: Icon(Icons.sync_outlined),
-            selectedIcon: Icon(Icons.sync),
-            label: '账户与同步',
-          ),
-          const NavigationDestination(
-            icon: Icon(Icons.folder_outlined),
-            selectedIcon: Icon(Icons.folder),
-            label: '素材库',
-          ),
-          const NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: '设置',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// 应用内桌宠页（Phase 4A 只做展示；系统悬浮窗属于 Phase 4D）。
-class _MobilePetPage extends StatelessWidget {
-  const _MobilePetPage({
-    required this.services,
-    required this.onOpenLibrary,
-    this.overlay,
-  });
-
-  final AppServices services;
-  final VoidCallback onOpenLibrary;
-
-  /// Android 悬浮桌宠协调器（4C-6A）：桌宠状态由原生决定，这里只读它显示。
-  final OverlayPetController? overlay;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: overlay == null
-          ? services.settings
-          : Listenable.merge(<Listenable>[services.settings, overlay!]),
-      builder: (BuildContext context, Widget? _) {
-        // 直接监听状态引擎快照：角色被"设为当前桌宠角色"后，桌宠必须立即重建，
-        // 不能等用户切页、重开页面或重启应用（对应缺陷：激活后仍显示旧角色）。
-        return ValueListenableBuilder<StateSnapshot>(
-          valueListenable: services.stateEngineSnapshot,
-          builder: (BuildContext context, StateSnapshot snapshot, Widget? __) {
-            return ListView(
-              padding: const EdgeInsets.all(16),
-              children: <Widget>[
-                SizedBox(
-                  height: 320,
-                  child: Center(
-                    // 复用同一套渲染组件；Android 只把它放进应用页面里，
-                    // 不操作任何原生窗口（manageWindowSize: false）。
-                    // 素材由 PetPresenter 按最新 snapshot 驱动，这里不缓存任何角色/素材。
-                    child: PetView(
-                      renderer: services.renderer,
-                      scale: services.settings.settings.scale,
-                      smoothScaling: services.settings.settings.smoothScaling,
-                      opacity: services.settings.settings.opacity,
-                      lockPosition: true,
-                      manageWindowSize: false,
-                      onDoubleTap: onOpenLibrary,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                _statusCard(context, snapshot),
-                const SizedBox(height: 12),
-                MobilePlatformNotice(
-                  collecting:
-                      services.platform.capabilities.supportsSystemActivityTracking,
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _statusCard(BuildContext context, StateSnapshot snapshot) {
-    final tracker = services.activityTracker;
-    final AppServices s = services;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text('当前状态',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-            const SizedBox(height: 8),
-            // Android：桌宠状态由**原生**悬浮服务决定（显示原生真值），
-            // Flutter 状态引擎在该平台不会被前台事件驱动 —— 读它只会永远显示"默认"。
-            _kv('桌宠状态', _petStateLabel(snapshot)),
-            _kv('当前角色', snapshot.currentCharacter?.displayName ?? '未选择'),
-            _kv('当前应用', _currentAppLabel(tracker)),
-            _kv('今日活跃', '${tracker.todayActiveSeconds} 秒'),
-            _kv('同步状态', s.syncEngine.status.labelZh),
-            _kv('待同步', '${s.syncEngine.pendingCount} 条'),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: <Widget>[
-                OutlinedButton.icon(
-                  onPressed: onOpenLibrary,
-                  icon: const Icon(Icons.add_photo_alternate_outlined, size: 16),
-                  label: const Text('导入素材'),
-                ),
-                OutlinedButton.icon(
-                  onPressed: () async {
-                    await s.saveTrackingSettings(
-                      tracker.settings.copyWith(paused: !tracker.isPaused),
-                    );
-                  },
-                  icon: Icon(tracker.isPaused ? Icons.play_arrow : Icons.pause, size: 16),
-                  label: Text(tracker.isPaused ? '恢复记录' : '暂停记录'),
-                ),
-              ],
-            ),
-          ],
+        bottomNavigationBar: PetLifeBottomNav(
+          selectedIndex: _index,
+          onSelected: _go,
+          // 五个根入口的唯一真相在 root_pages.dart（导航测试直接断言它）。
+          destinations: kPetLifeRootDestinations,
         ),
       ),
     );
   }
 
-  /// 桌宠状态：Android 读**原生**真值（与设置页 / 统计页同源），其它平台读状态引擎。
-  String _petStateLabel(StateSnapshot snapshot) {
-    final OverlayStateDiagnostics? d = overlay?.stateDiagnostics;
-    if (d != null && d.stateId.isNotEmpty) {
-      return '${d.stateLabel}（${d.stateId}）';
-    }
-    return snapshot.state.descriptionZh;
+  void _go(int index) {
+    if (index == _index) return;
+    setState(() => _index = index);
   }
-
-  /// 当前应用：Android 读原生共享快照（与统计页显示的是同一份，不会两页不一致）。
-  String _currentAppLabel(ActivityTracker tracker) {
-    final String? label = overlay?.stateDiagnostics.foregroundAppLabel;
-    if (label != null && label.isNotEmpty) return label;
-    return tracker.currentAppDisplayName ?? '—';
-  }
-
-  Widget _kv(String key, String value) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              width: 76,
-              child: Text(key,
-                  style: const TextStyle(fontSize: 12, color: Colors.black54)),
-            ),
-            Expanded(
-              child: Text(value, style: const TextStyle(fontSize: 12)),
-            ),
-          ],
-        ),
-      );
 }

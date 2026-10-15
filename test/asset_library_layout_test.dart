@@ -11,15 +11,20 @@ import 'package:petlife/core/result.dart';
 import 'package:petlife/platform/file_import_provider.dart';
 import 'package:petlife/ui/library_controller.dart';
 import 'package:petlife/ui/pages/asset_library_page.dart';
+import 'package:petlife/ui/theme/design_tokens.dart';
+import 'package:petlife/ui/theme/petlife_theme.dart';
 
-/// Phase 4A 真机缺陷三：**Android 素材库布局溢出**。
+/// Android 素材库布局回归（本轮 UI 增量后重写）。
 ///
-/// 根因是素材库在手机上仍用桌面布局：固定 260px 左栏 + 右侧素材网格，
-/// 手机剩余宽度放不下，真机出现
-/// `RIGHT OVERFLOWED BY 88 PIXELS` / `OVERFLOWED BY 134 PIXELS`。
+/// 原来的用例断言的是**旧布局**（窄屏"设为当前桌宠角色"按钮 + 卡片上的
+/// star/delete 图标 + 宽屏 260px 左栏）。本轮需求把素材库改成
+/// 「视觉优先 → 两列大卡片 → 操作收进更多菜单」，因此这里同步更新断言，
+/// 但**保留原本真正要守住的契约**：
 ///
-/// 这里用真实 Widget 渲染，在各种宽度 / 横屏 / 字体放大下断言**没有 overflow**，
-/// 并确认窄屏走纵向流程、宽屏保留分栏。
+/// * 任何宽度 / 任何字体倍率下都不得出现 RenderFlex overflow；
+/// * 卡片上的关键操作必须仍然可达（收藏 / 使用中 / 更多菜单）；
+/// * 窄屏走纵向流程，宽屏保留作品包 / 角色结构；
+/// * 素材图片用 `BoxFit.contain`，不得变形（新增断言）。
 void main() {
   final DateTime now = DateTime(2026, 9, 29);
 
@@ -87,7 +92,7 @@ void main() {
     );
   }
 
-  Future<LibraryController> loadedLibrary(WidgetTester tester) async {
+  Future<LibraryController> loadedLibrary() async {
     final LibraryController library = LibraryController(
       repository: _FakeRepository(buildSnapshot()),
       ownerId: 'test.owner',
@@ -108,9 +113,15 @@ void main() {
     addTearDown(tester.view.reset);
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
 
-    final LibraryController library = await loadedLibrary(tester);
+    final LibraryController library = await loadedLibrary();
     await tester.pumpWidget(
       MaterialApp(
+        // 与真实应用一致：页面必须是新主题，颜色才能从统一主题对象取到。
+        theme: buildPetLifeThemeData(
+          primary: PetLifeColors.primaryDefault,
+          accent: PetLifeColors.accentDefault,
+          brightness: Brightness.light,
+        ),
         home: Scaffold(
           body: AssetLibraryPage(
             ownerId: 'test.owner',
@@ -131,13 +142,36 @@ void main() {
 
         expect(tester.takeException(), isNull,
             reason: '${width.toInt()}px 下出现了 RenderFlex overflow');
-        // 窄屏必须走纵向流程：有"设为当前桌宠角色"按钮，而不是固定左栏。
+        // 窄屏纵向流程：顶部的角色操作与筛选入口都在。
         expect(find.text('设为当前桌宠角色'), findsOneWidget);
-        // 素材卡片上的三个操作按钮必须都可见（曾经被挤出屏幕）。
-        expect(find.byIcon(Icons.star_border), findsWidgets);
-        expect(find.byIcon(Icons.delete_outline), findsWidgets);
+        expect(find.byTooltip('筛选素材'), findsOneWidget);
+        expect(find.text('状态映射'), findsWidgets);
+        expect(find.text('导入'), findsOneWidget);
+        // 素材卡片上的操作仍然可达（收藏 / 使用中 / 更多菜单）。
+        expect(find.byIcon(Icons.bookmark_border), findsWidgets);
+        expect(find.byTooltip('更多操作'), findsWidgets);
       });
     }
+  });
+
+  testWidgets('手机窄屏素材网格是两列（需求：手机默认两列大卡片）',
+      (WidgetTester tester) async {
+    await pumpPage(tester, size: const Size(412, 915));
+
+    final GridView grid = tester.widget<GridView>(find.byType(GridView));
+    final SliverGridDelegateWithFixedCrossAxisCount delegate =
+        grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount;
+    expect(delegate.crossAxisCount, 2);
+  });
+
+  testWidgets('宽屏素材网格自动增加列数（需求：按宽度自动切换列数）',
+      (WidgetTester tester) async {
+    await pumpPage(tester, size: const Size(1280, 900));
+
+    final GridView grid = tester.widget<GridView>(find.byType(GridView));
+    final SliverGridDelegateWithFixedCrossAxisCount delegate =
+        grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount;
+    expect(delegate.crossAxisCount, greaterThan(2));
   });
 
   testWidgets('横屏（780×360）：无 overflow，并回到宽屏分栏', (WidgetTester tester) async {
@@ -146,13 +180,26 @@ void main() {
     expect(tester.takeException(), isNull);
     // 780 >= 720 → 宽屏分栏：出现左侧"角色"树标题。
     expect(find.text('角色'), findsOneWidget);
+    expect(find.text('作品包'), findsOneWidget);
   });
 
-  testWidgets('窄窗口但支持文件夹导入：工具栏不得溢出', (WidgetTester tester) async {
+  testWidgets('窄窗口但支持文件夹导入：统一操作栏不溢出，导入能力收进弹窗',
+      (WidgetTester tester) async {
     await pumpPage(tester, size: const Size(360, 780), folderImport: true);
 
     expect(tester.takeException(), isNull);
+    // 顶部统一操作栏只有一个导入入口（不会把按钮挤成横向溢出）。
+    expect(find.text('导入'), findsOneWidget);
+
+    // 点开后，四种导入能力与"按路径导入"都仍然存在。
+    await tester.tap(find.text('导入'));
+    await tester.pumpAndSettle();
     expect(find.text('导入文件夹'), findsOneWidget);
+    expect(find.text('导入多张图片'), findsOneWidget);
+    expect(find.text('导入单张图片'), findsOneWidget);
+    expect(find.text('导入 ZIP 素材包'), findsOneWidget);
+    expect(find.text('按路径导入'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   group('系统字体放大', () {
@@ -167,7 +214,8 @@ void main() {
     }
   });
 
-  testWidgets('桌面宽屏（1280×800）：保留左右分栏，布局不退化', (WidgetTester tester) async {
+  testWidgets('桌面宽屏（1280×800）：保留左右分栏，布局不退化',
+      (WidgetTester tester) async {
     await pumpPage(tester, size: const Size(1280, 800));
 
     expect(tester.takeException(), isNull);
@@ -176,7 +224,7 @@ void main() {
     expect(find.text('角色'), findsOneWidget);
     expect(find.text('Maya'), findsOneWidget);
     expect(find.text('Edgeworth'), findsOneWidget);
-    // 窄屏才有的"设为当前桌宠角色"按钮在宽屏不出现（宽屏用角色行尾的播放按钮）。
+    // 窄屏才有的顶部"设为当前桌宠角色"按钮在宽屏不出现（宽屏用角色行尾的播放按钮）。
     expect(find.text('设为当前桌宠角色'), findsNothing);
     expect(find.byIcon(Icons.play_circle_outline), findsWidgets);
   });
