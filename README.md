@@ -4,7 +4,7 @@
   <p>Windows 悬浮桌宠 · Android 悬浮窗 · 使用统计 · 多设备同步 · 自托管服务端</p>
 
   <p>
-    <a href="https://github.com/Yamabuki-Kirio/DesktopPet/releases/tag/v0.1.0-preview.1"><img src="https://img.shields.io/badge/下载-v0.1.0--preview.1-F24D96?style=for-the-badge" alt="下载最新预览版"></a>
+    <a href="https://github.com/Yamabuki-Kirio/DesktopPet/releases/tag/v0.1.0-preview.2"><img src="https://img.shields.io/badge/下载-v0.1.0--preview.2-F24D96?style=for-the-badge" alt="下载最新预览版"></a>
     <img src="https://img.shields.io/badge/Flutter-stable-02569B?style=for-the-badge&logo=flutter" alt="Flutter stable">
     <img src="https://img.shields.io/badge/平台-Windows%20%7C%20Android-6C63FF?style=for-the-badge" alt="Windows 和 Android">
   </p>
@@ -45,18 +45,18 @@ PetLife 将桌宠、数字生活记录与多设备同步放在同一个应用里
 
 ## 下载与安装
 
-前往 [PetLife v0.1.0-preview.1](https://github.com/Yamabuki-Kirio/DesktopPet/releases/tag/v0.1.0-preview.1) 下载适合你的版本。
+前往 [PetLife v0.1.0-preview.2](https://github.com/Yamabuki-Kirio/DesktopPet/releases/tag/v0.1.0-preview.2) 下载适合你的版本。
 
 | 平台 | 下载文件 | 使用方式 |
 | --- | --- | --- |
-| Windows 10/11 x64 | `PetLife-Windows-x64-v0.1.0-preview.1.zip` | 解压完整目录，运行 `petlife.exe`；不要只复制 EXE |
-| Android | `PetLife-Android-v0.1.0-preview.1.apk` | 允许安装未知来源应用后安装；悬浮桌宠需手动授予悬浮窗权限 |
-| Server | `PetLife-Server-v0.1.0-preview.1.zip` | 解压、配置 `.env`，然后使用 Docker Compose 部署 |
+| Windows 10/11 x64 | `PetLife-Windows-x64-v0.1.0-preview.2.zip` | 解压完整目录，运行 `petlife.exe`；不要只复制 EXE |
+| Android | `PetLife-Android-v0.1.0-preview.2.apk` | 允许安装未知来源应用后安装；悬浮桌宠需手动授予悬浮窗权限 |
+| Server | `PetLife-Server-v0.1.0-preview.2.zip` | 解压、配置 `.env`，然后使用 Docker Compose 部署 |
 
 发布页同时提供 `SHA256SUMS.txt`。下载后可校验文件完整性：
 
 ```powershell
-Get-FileHash .\PetLife-Windows-x64-v0.1.0-preview.1.zip -Algorithm SHA256
+Get-FileHash .\PetLife-Windows-x64-v0.1.0-preview.2.zip -Algorithm SHA256
 ```
 
 ## 主要功能
