@@ -362,35 +362,56 @@ final PetLifePalette petLifeFallbackPalette = PetLifePalette.resolve(
 /// 把调色板挂到 [ThemeData.extensions]，页面用 `PetLifeTheme.of(context)` 取。
 @immutable
 class PetLifeTheme extends ThemeExtension<PetLifeTheme> {
-  const PetLifeTheme({required this.palette});
+  const PetLifeTheme({
+    required this.palette,
+    this.cardEntranceAnimated = true,
+  });
 
   final PetLifePalette palette;
+
+  /// 卡片是否播放"淡入 + 上移"的进场动画。
+  ///
+  /// * Android：`true`（首屏卡片有轻微入场，属于移动端习惯）；
+  /// * Windows 控制面板：`false` —— 需求 §9 明确禁止桌面端
+  ///   「启动时逐卡片依次播放」，桌面要的是"打开即就绪"。
+  ///
+  /// 由主题统一下发，因此**同一份页面代码**在两个平台各自得到正确行为，
+  /// 不需要页面自己判断平台。
+  final bool cardEntranceAnimated;
 
   static PetLifePalette of(BuildContext context) =>
       Theme.of(context).extension<PetLifeTheme>()?.palette ?? petLifeFallbackPalette;
 
   /// 「当前是否安装了 PetLife 主题」。
   ///
-  /// ⚠ 这是 **Windows UI 不受影响** 这条硬边界的判定依据：
-  /// * Android 控制面板的 `MaterialApp` 装了 [PetLifeTheme] → 返回调色板 → 新 UI；
-  /// * Windows 桌面外壳刻意沿用**改造前的主题**（没有这个扩展）→ 返回 null
-  ///   → 共享页面自动回落到改造前的实现。
-  ///
-  /// 四个共享页面（使用统计 / 账户与同步 / 素材库 / 设置）被 Windows 控制面板
-  /// 与 Android 外壳同时复用，因此这个判定必须由**主题**给出，
-  /// 而不能靠调用方传开关 —— 否则漏传一处就会悄悄改变 Windows 的外观。
+  /// 用于诊断与测试；**不再**作为"要不要回退旧界面"的依据 ——
+  /// 回退只由 `useLegacyDesktopControlPanel` 显式开关决定（见
+  /// `ui/desktop/desktop_panel_flags.dart`），不允许静默回退。
   static PetLifePalette? maybeOf(BuildContext context) =>
       Theme.of(context).extension<PetLifeTheme>()?.palette;
 
+  /// 卡片进场动画开关（没有装主题时按"有动画"处理，与移动端默认一致）。
+  static bool cardEntranceAnimatedOf(BuildContext context) =>
+      Theme.of(context).extension<PetLifeTheme>()?.cardEntranceAnimated ?? true;
+
+  /// 当前是否已装配 PetLife 主题（桌面外壳必须装配，见需求 §12）。
+  static bool isInstalled(BuildContext context) =>
+      Theme.of(context).extension<PetLifeTheme>() != null;
+
   @override
-  PetLifeTheme copyWith({PetLifePalette? palette}) =>
-      PetLifeTheme(palette: palette ?? this.palette);
+  PetLifeTheme copyWith({PetLifePalette? palette, bool? cardEntranceAnimated}) =>
+      PetLifeTheme(
+        palette: palette ?? this.palette,
+        cardEntranceAnimated: cardEntranceAnimated ?? this.cardEntranceAnimated,
+      );
 
   @override
   PetLifeTheme lerp(ThemeExtension<PetLifeTheme>? other, double t) {
     if (other is! PetLifeTheme) return this;
     return PetLifeTheme(
       palette: PetLifePalette.lerp(palette, other.palette, t),
+      // 布尔开关不插值：过半即切换，避免动画中途来回跳。
+      cardEntranceAnimated: t < 0.5 ? cardEntranceAnimated : other.cardEntranceAnimated,
     );
   }
 }
@@ -399,14 +420,19 @@ class PetLifeTheme extends ThemeExtension<PetLifeTheme> {
 // ThemeData 生成
 // -----------------------------------------------------------------------------
 
-/// 生成 Android 控制面板使用的完整 [ThemeData]。
+/// 生成 Android / Windows 控制面板共用的完整 [ThemeData]。
 ///
 /// [primary] 控制表面色，[accent] 控制交互高亮；两者**互相独立**——
 /// 任何一处改动都不会覆盖另一处。
+///
+/// [fontFamily] 只有 Windows 需要传（微软雅黑）；Android 传 null 交给系统默认字体，
+/// 否则中文会回退到不含中文的字形而显示成方框。
 ThemeData buildPetLifeThemeData({
   required Color primary,
   required Color accent,
   required Brightness brightness,
+  String? fontFamily,
+  bool cardEntranceAnimated = true,
 }) {
   final PetLifePalette p = PetLifePalette.resolve(
     primary: primary,
@@ -470,6 +496,7 @@ ThemeData buildPetLifeThemeData({
   return ThemeData(
     useMaterial3: true,
     brightness: brightness,
+    fontFamily: fontFamily,
     colorScheme: scheme,
     scaffoldBackgroundColor: p.surface,
     canvasColor: p.surface,
@@ -478,7 +505,9 @@ ThemeData buildPetLifeThemeData({
     shadowColor: p.shadow,
     splashColor: accent.withValues(alpha: 0.10),
     highlightColor: accent.withValues(alpha: 0.06),
-    extensions: <ThemeExtension<dynamic>>[PetLifeTheme(palette: p)],
+    extensions: <ThemeExtension<dynamic>>[
+      PetLifeTheme(palette: p, cardEntranceAnimated: cardEntranceAnimated),
+    ],
     textTheme: text,
     primaryTextTheme: text,
     // 顶部栏不做厚重纯色 AppBar：本应用用自绘标题区，这里只兜底。

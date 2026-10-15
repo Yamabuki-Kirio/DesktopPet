@@ -159,6 +159,64 @@ class _FakeRepository implements CloudStatisticsRepository {
   }
 }
 
+/// 模拟"数据库只读 / WAL 被别的进程占用"的缓存：
+/// 写入一律抛 SQLite code 8，读正常委托给真实实现。
+///
+/// 为什么用自定义异常而不是 sqflite 的 `DatabaseException`：
+/// 这里要验证的是**控制器对写入异常的处理**，与具体的异常类型无关；
+/// 自定义异常的 `toString()` 复刻真机日志里的关键片段（`code 8` +
+/// `readonly database`），因此"日志必须保留完整错误"这条断言依然有效。
+class _ReadOnlyCache extends CloudStatisticsCache {
+  _ReadOnlyCache(super.dao);
+
+  bool failWrites = true;
+
+  Never _readOnly() => throw const _SqliteReadOnlyException();
+
+  @override
+  Future<void> saveSummary({
+    required String accountUserId,
+    required CloudUsageQuery query,
+    required CloudUsageSummary summary,
+    DateTime? fetchedAt,
+  }) async {
+    if (failWrites) _readOnly();
+    return super.saveSummary(
+      accountUserId: accountUserId,
+      query: query,
+      summary: summary,
+      fetchedAt: fetchedAt,
+    );
+  }
+
+  @override
+  Future<void> saveTimeline({
+    required String accountUserId,
+    required CloudUsageQuery query,
+    required List<CloudTimelineEntry> entries,
+    DateTime? fetchedAt,
+  }) async {
+    if (failWrites) _readOnly();
+    return super.saveTimeline(
+      accountUserId: accountUserId,
+      query: query,
+      entries: entries,
+      fetchedAt: fetchedAt,
+    );
+  }
+}
+
+/// 复刻真机上的 SQLite 只读错误文本。
+class _SqliteReadOnlyException implements Exception {
+  const _SqliteReadOnlyException();
+
+  @override
+  String toString() =>
+      'SqfliteFfiException(sqlite_error: 8, SqliteException(8): while executing '
+      'statement, attempt to write a readonly database, attempt to write a '
+      'readonly database (code 8))';
+}
+
 /// 按日期返回不同总时长，用于验证"旧响应不覆盖新结果"。
 typedef CloudStatisticsSummaryBuilder = CloudUsageSummary Function(
     CloudUsageQuery query);
@@ -365,6 +423,102 @@ void main() {
 
       expect(controller.isOfflineData, isFalse);
       expect(controller.status, CloudStatsStatus.loaded);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // 缓存写入失败 ≠ 云端失败（真机缺陷：SQLite code 8 "attempt to write a readonly
+  // database" 被显示成"云端统计刷新失败"，把"数据其实已经拿到了"谎报成失败）
+  // ---------------------------------------------------------------------------
+  group('缓存写入失败不得伪装成云端失败', () {
+    CloudStatisticsController buildWithCache(CloudStatisticsCache c) =>
+        CloudStatisticsController(
+          repository: repository,
+          cache: c,
+          currentAccountUserId: () => account,
+          clock: () => now,
+        );
+
+    test('SQLite code 8：仍然展示本次云端数据，状态 loaded，无 errorMessage', () async {
+      final _ReadOnlyCache readOnly = _ReadOnlyCache(CloudStatisticsCacheDao(db.raw));
+      final CloudStatisticsController controller = buildWithCache(readOnly);
+      addTearDown(controller.dispose);
+
+      final Future<void> init = controller.initialize();
+      await waitUntil(() => controller.status == CloudStatsStatus.loading);
+      await releaseDay('2026-09-29');
+      await init;
+
+      // 1) 数据必须展示出来（这是本次请求真的拿到的数据）。
+      expect(controller.summary, isNotNull);
+      expect(controller.summary!.totalDuration, const Duration(minutes: 85));
+      expect(controller.timeline, isNotEmpty);
+
+      // 2) 状态必须是"已加载"，而不是离线缓存 / 错误。
+      expect(controller.status, CloudStatsStatus.loaded);
+      expect(controller.isOfflineData, isFalse,
+          reason: '展示的是刚拿到的新数据，不能标成离线缓存');
+
+      // 3) 错误信息必须为空 —— 云端请求并没有失败。
+      expect(controller.errorMessage, isNull);
+
+      // 4) 用户能看到一条**非致命**提示，说明缓存没写成功。
+      expect(controller.cacheWarning, isNotNull);
+      expect(controller.cacheWarning, contains('本地缓存保存失败'));
+      expect(controller.cacheWarning, isNot(contains('云端')));
+    });
+
+    test('只有网络 / 解析失败才算云端失败（errorMessage 仍会设置）', () async {
+      final _ReadOnlyCache readOnly = _ReadOnlyCache(CloudStatisticsCacheDao(db.raw));
+      repository.failWithNetwork = true;
+      final CloudStatisticsController controller = buildWithCache(readOnly);
+      addTearDown(controller.dispose);
+
+      await controller.initialize();
+
+      expect(controller.status, CloudStatsStatus.error);
+      expect(controller.errorMessage, contains('网络'));
+      // 网络失败时根本没走到写缓存，因此不该有缓存警告。
+      expect(controller.cacheWarning, isNull);
+    });
+
+    test('缓存恢复后再次刷新，警告会被清除且数据仍是最新的', () async {
+      final _ReadOnlyCache flaky = _ReadOnlyCache(CloudStatisticsCacheDao(db.raw))..failWrites = true;
+      final CloudStatisticsController controller = buildWithCache(flaky);
+      addTearDown(controller.dispose);
+
+      final Future<void> first = controller.initialize();
+      await waitUntil(() => controller.status == CloudStatsStatus.loading);
+      await releaseDay('2026-09-29');
+      await first;
+      expect(controller.cacheWarning, isNotNull);
+
+      // 缓存恢复正常（例如重启后 SQLite 句柄不再被争用）。
+      flaky.failWrites = false;
+      final Future<void> second = controller.refresh(manual: true);
+      await releaseDay('2026-09-29');
+      await second;
+
+      expect(controller.cacheWarning, isNull);
+      expect(controller.status, CloudStatsStatus.loaded);
+      expect(controller.errorMessage, isNull);
+    });
+
+    test('缓存写入失败的完整 SQLite 错误会写进日志（便于定位只读库 / WAL 争用）',
+        () async {
+      final _ReadOnlyCache readOnly = _ReadOnlyCache(CloudStatisticsCacheDao(db.raw));
+      final CloudStatisticsController controller = buildWithCache(readOnly);
+      addTearDown(controller.dispose);
+
+      final Future<void> init = controller.initialize();
+      await waitUntil(() => controller.status == CloudStatsStatus.loading);
+      await releaseDay('2026-09-29');
+      await init;
+
+      final String log = AppLog.exportRecentLogText();
+      expect(log, contains('本地缓存写入失败'));
+      expect(log, contains('readonly database'));
+      expect(log, contains('code 8'));
     });
   });
 

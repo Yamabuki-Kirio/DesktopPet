@@ -31,7 +31,6 @@ import 'windows_credential_store_factory.dart';
 import 'windows_database.dart';
 import 'windows_file_import_provider.dart';
 import 'windows_pet_host.dart';
-import 'windows_single_instance.dart';
 import 'windows_startup_registrar.dart';
 import 'windows_tray_service.dart';
 
@@ -92,10 +91,9 @@ class WindowsPlatformServices implements PlatformServices {
 
   @override
   Future<bool> prepareForStartup() async {
-    // 单实例互斥体必须最先判定：两个实例同时写 activity_segments 会把
-    // 同一段时间记录两次，而且第二个实例打开 SQLite 也可能与第一个抢锁。
-    final bool? single = WindowsSingleInstanceGuard.checkAtStartup();
-    if (single == false) return false;
+    // Windows 单实例保护已前移到 runner 的 wWinMain，在 Flutter 引擎、插件、
+    // 日志和 SQLite 初始化之前完成。这里不再创建线程所有权互斥体，避免
+    // Dart 工作线程退出后互斥体进入 abandoned 状态而错误放行新实例。
 
     await database.configure();
 

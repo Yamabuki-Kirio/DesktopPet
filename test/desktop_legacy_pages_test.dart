@@ -3,25 +3,23 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
+import 'package:petlife/ui/desktop/desktop_panel_flags.dart';
 import 'package:petlife/ui/theme/design_tokens.dart';
 import 'package:petlife/ui/theme/petlife_theme.dart';
 
-/// **Windows UI 不受影响**的回归防线。
+/// **Legacy 回退与平台边界**的回归防线（需求 §12 / §11）。
 ///
-/// 背景（一个真实发生过的缺陷）
-/// --------------------------
-/// 本轮 Android UI 增量重写了四个页面：
-/// 使用统计 / 账户与同步 / 素材库 / 设置。
-/// 但这四个类**同时被 Windows 控制面板复用**
-/// （`lib/ui/desktop/control_panel.dart`），而桌面外壳刻意沿用改造前的主题
-/// （没有装 `PetLifeTheme` 扩展）—— 结果是共享页面会在 Windows 上
-/// 悄悄回落到新主题的**默认白 + 粉**调色板，等于改了 Windows UI。
+/// 历史（两轮增量的边界变更，必须记住）：
+/// 1. 只做 Android 时，四个共享页面（使用统计 / 账户与同步 / 素材库 / 设置）
+///    被 Windows 控制面板复用，而桌面主题没装 `PetLifeTheme`，
+///    于是共享页面会掉到默认白 + 粉调色板 → 等于偷偷改了 Windows 外观。
+///    当时的修法是"**主题缺失就当桌面**，静默回退到 legacy 页面"。
+/// 2. 本轮（Windows 同步新视觉）反过来了：Windows 也要用新 UI，
+///    因此**静默回退被取消**，改由显式开关 `useLegacyDesktopControlPanel` 决定。
 ///
-/// 修法：把改造前的实现原样保留在 `lib/ui/desktop/legacy/`，
-/// 四个共享页面在"当前主题没有 PetLifeTheme 扩展"时**直接委托**过去。
-/// 桌面外壳因此一行都不用改，行为与外观与改造前完全一致。
-///
-/// 这些断言的作用是让"以后又有人把 Windows 一起改了"变成会失败的测试。
+/// 这两条规则互补，缺一不可：
+/// * 桌面外壳**必须**装配主题（否则新页面会掉到兜底调色板）；
+/// * 回退**必须**由开关显式决定（否则"看起来没变"与"真的坏了"无法区分）。
 void main() {
   final String root = Directory.current.path;
 
@@ -30,7 +28,7 @@ void main() {
 
   File libFile(String relative) => File(p.join(root, 'lib', relative));
 
-  /// 四个共享页面 → 它们各自的桌面回落实现。
+  /// 四个共享页面 → 它们对应的桌面 legacy 实现。
   const Map<String, String> sharedPages = <String, String>{
     'ui/pages/usage_stats_page.dart':
         'ui/desktop/legacy/legacy_usage_stats_page.dart',
@@ -42,35 +40,38 @@ void main() {
         'ui/desktop/legacy/legacy_settings_page.dart',
   };
 
-  /// legacy 页面里**不允许**出现的、属于新设计系统的导入。
   const List<String> newDesignSystemImports = <String>[
     'theme/petlife_theme.dart',
     'theme/design_tokens.dart',
     'widgets/petlife/',
   ];
 
-  group('主题是否装载 = 新旧 UI 的唯一开关', () {
-    testWidgets('桌面主题（改造前原样）：没有 PetLifeTheme 扩展',
+  group('桌面外壳明确装配 PetLifeTheme（需求 §12）', () {
+    testWidgets('桌面与 Android 走同一套主题生成器，桌面额外带微软雅黑',
         (WidgetTester tester) async {
-      // 完全复刻 app_shell.dart 的桌面分支。
+      // 复刻 app_shell.dart 的两条分支。
       await tester.pumpWidget(
         MaterialApp(
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4A7EBB)),
+          theme: buildPetLifeThemeData(
+            primary: PetLifeColors.primaryDefault,
+            accent: PetLifeColors.accentDefault,
+            brightness: Brightness.light,
             fontFamily: 'Microsoft YaHei',
+            // 桌面禁止"逐卡片依次播放"。
+            cardEntranceAnimated: false,
           ),
           home: const Scaffold(body: SizedBox.shrink()),
         ),
       );
       final BuildContext ctx = tester.element(find.byType(Scaffold));
-      expect(PetLifeTheme.maybeOf(ctx), isNull,
-          reason: '桌面主题带了 PetLifeTheme 扩展 → 共享页面会走新 UI');
-      // of() 仍然必须给出兜底调色板（否则老组件会崩），但不代表桌面走新 UI。
+      expect(PetLifeTheme.isInstalled(ctx), isTrue,
+          reason: '桌面主题必须装 PetLifeTheme，否则新页面会掉到兜底调色板');
       expect(PetLifeTheme.of(ctx).accent, PetLifeColors.accentDefault);
+      expect(PetLifeTheme.cardEntranceAnimatedOf(ctx), isFalse,
+          reason: '桌面端必须关闭卡片进场动画');
     });
 
-    testWidgets('Android 新主题：带 PetLifeTheme 扩展，且颜色来自设置',
+    testWidgets('Android 侧仍保留卡片进场动画（本轮不影响 Android）',
         (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
@@ -83,135 +84,161 @@ void main() {
         ),
       );
       final BuildContext ctx = tester.element(find.byType(Scaffold));
-      final PetLifePalette? palette = PetLifeTheme.maybeOf(ctx);
-      expect(palette, isNotNull,
-          reason: 'Android 主题没装扩展 → 新 UI 不会被启用');
-      expect(palette!.accent, PetLifeColors.accentDefault);
-      expect(palette.surface, PetLifeColors.primaryDefault);
+      expect(PetLifeTheme.cardEntranceAnimatedOf(ctx), isTrue);
     });
 
-    test('桌面分支确实没有安装扩展（源码级确认）', () {
+    test('app_shell 两条分支都用 buildPetLifeThemeData，且监听设置变化', () {
       final String shell = readLib('app/app_shell.dart');
-      // 桌面分支：原来的蓝色 seed + 微软雅黑，且没有 extensions。
-      expect(
-        RegExp(r'if \(desktop\) \{[\s\S]{0,300}?return MaterialApp'
-                r'[\s\S]{0,300}?0xFF4A7EBB')
-            .hasMatch(shell),
-        isTrue,
-        reason: '桌面分支应沿用改造前的蓝色 seed 主题',
-      );
-      // 移动分支：使用新主题生成器（它内部会装 PetLifeTheme 扩展）。
-      expect(shell, contains('buildPetLifeThemeData'));
-      final String theme = readLib('ui/theme/petlife_theme.dart');
-      expect(theme, contains('extensions: <ThemeExtension<dynamic>>[PetLifeTheme(palette: p)]'));
+      // 旧版深蓝色 seed 必须已经消失（需求 §4：不使用旧版深蓝色实心横条）。
+      expect(shell.contains('0xFF4A7EBB'), isFalse,
+          reason: '桌面主题仍在使用旧的蓝色 seed');
+      // 两次 buildPetLifeThemeData（light + dark），且都带字体参数。
+      expect('buildPetLifeThemeData'.allMatches(shell).length, 2);
+      expect(shell, contains("fontFamily: fontFamily"));
+      expect(shell, contains("desktop ? 'Microsoft YaHei' : null"));
+      // 主题跟随持久化设置实时重建（改配色立即生效，不重启窗口）。
+      expect(shell, contains('listenable: services.settings'));
+      expect(shell, contains('themeAnimationDuration'));
     });
   });
 
-  group('四个共享页面都有桌面回落守卫', () {
-    for (final MapEntry<String, String> entry in sharedPages.entries) {
-      test('${entry.key} 在桌面主题下委托给 ${p.basename(entry.value)}', () {
-        final String source = readLib(entry.key);
-        expect(
-          source,
-          contains('PetLifeTheme.maybeOf(context) == null'),
-          reason: '${entry.key} 缺少桌面回落判定',
-        );
-        // 判定语句必须**在 build 的最前面**，且紧跟着返回 legacy 实现。
-        expect(
-          RegExp(
-            r'Widget build\(BuildContext context\) \{[\s\S]{0,400}?'
-            r'PetLifeTheme\.maybeOf\(context\) == null\)[\s\S]{0,900}?'
-            r'return (Legacy\w+)\(',
-          ).hasMatch(source),
-          isTrue,
-          reason: '${entry.key} 的回落分支没有立刻返回 Legacy* 实现',
-        );
-        expect(source, contains("import '../desktop/legacy/"),
-            reason: '${entry.key} 没有导入桌面回落实现');
-      });
-    }
-  });
+  group('Legacy 回退由显式开关决定（不允许静默回退）', () {
+    test('开关默认关闭', () {
+      expect(defaultUseLegacyDesktopControlPanel, isFalse);
+      expect(useLegacyDesktopControlPanel, isFalse,
+          reason: '默认必须是新界面；用 --dart-define 才打开回退');
+    });
 
-  group('桌面回落实现与改造前一致（不掺入新设计系统）', () {
-    test('四个 legacy 文件都存在并声明了 Legacy* 类', () {
-      const Map<String, String> expectedClass = <String, String>{
-        'ui/desktop/legacy/legacy_usage_stats_page.dart': 'LegacyUsageStatsPage',
-        'ui/desktop/legacy/legacy_account_sync_page.dart': 'LegacyAccountSyncPage',
-        'ui/desktop/legacy/legacy_asset_library_page.dart':
-            'LegacyAssetLibraryPage',
-        'ui/desktop/legacy/legacy_settings_page.dart': 'LegacySettingsPage',
-      };
-      for (final MapEntry<String, String> e in expectedClass.entries) {
-        expect(libFile(e.key).existsSync(), isTrue, reason: '缺少 ${e.key}');
-        expect(readLib(e.key), contains('class ${e.value}'));
+    test('开关文档说明了 --dart-define 打开方式', () {
+      final String source = readLib('ui/desktop/desktop_panel_flags.dart');
+      expect(source, contains('petlife.legacyDesktopPanel'));
+      expect(source, contains('默认关闭'));
+    });
+
+    test('四个共享页面里**不再**有"主题缺失就回退"的静默逻辑', () {
+      for (final String page in sharedPages.keys) {
+        final String source = readLib(page);
+        expect(
+          source.contains('PetLifeTheme.maybeOf(context) == null'),
+          isFalse,
+          reason: '$page 仍然根据主题缺失静默回退 —— 本轮已改为显式开关',
+        );
+        expect(
+          source.contains('desktop/legacy/'),
+          isFalse,
+          reason: '$page 不应直接认识 legacy 实现（由控制面板按开关选择）',
+        );
       }
     });
 
-    test('legacy 实现不依赖新设计系统（否则 Windows 又会被新配色染色）', () {
-      for (final String path in sharedPages.values) {
-        final String source = readLib(path);
+    test('控制面板按开关同时引用两套页面实现', () {
+      final String panel = readLib('ui/desktop/control_panel.dart');
+      expect(panel, contains('useLegacyDesktopControlPanel'));
+      // 开关两侧都要有真实页面：新实现与 legacy 实现。
+      for (final String cls in <String>[
+        'AssetLibraryPage(',
+        'LegacyAssetLibraryPage(',
+        'UsageStatsPage(',
+        'LegacyUsageStatsPage(',
+        'AccountSyncPage(',
+        'LegacyAccountSyncPage(',
+        'SettingsPage(',
+        'LegacySettingsPage(',
+      ]) {
+        expect(panel, contains(cls), reason: '开关分支缺少 $cls');
+      }
+      // 状态映射 / 状态调试器 / 诊断是 Windows 专属页面，没有第二套实现。
+      expect(panel, contains('StateMappingPage('));
+      expect(panel, contains('StateDebuggerPage('));
+      expect(panel, contains('DiagnosticsPage('));
+    });
+
+    test('legacy 实现仍然保留、且不依赖新设计系统', () {
+      for (final MapEntry<String, String> e in sharedPages.entries) {
+        expect(libFile(e.value).existsSync(), isTrue, reason: '缺少 ${e.value}');
+        final String source = readLib(e.value);
         for (final String banned in newDesignSystemImports) {
           expect(source.contains(banned), isFalse,
-              reason: '$path 引用了新设计系统（$banned），Windows 外观会变');
+              reason: '${e.value} 引用了新设计系统（$banned）');
         }
-        expect(source.contains('PetLifeCard('), isFalse, reason: path);
-        expect(source.contains('PetLifePage('), isFalse, reason: path);
       }
-    });
-
-    test('legacy 实现保留改造前的视觉特征（没有被新实现顶替）', () {
-      final String usage = readLib('ui/desktop/legacy/legacy_usage_stats_page.dart');
-      expect(usage, contains('SegmentedButton<UsageRange>'));
-      expect(usage, contains('Table('));
-
-      final String account =
-          readLib('ui/desktop/legacy/legacy_account_sync_page.dart');
-      expect(account, contains('CloudSyncActionsCard('));
-      expect(account, contains('CheckboxListTile'));
-
-      final String library =
-          readLib('ui/desktop/legacy/legacy_asset_library_page.dart');
-      expect(library, contains('Icons.star_border'));
-      expect(library, contains('_kWideBreakpoint'));
-
-      final String settings = readLib('ui/desktop/legacy/legacy_settings_page.dart');
-      expect(settings, contains('SwitchListTile'));
-      expect(settings, contains('class LegacyStartupSwitchTile'));
-      expect(settings, contains('Widget _section(String title)'));
-    });
-
-    test('legacy 设置页的旧类名已隔离，不会与新的 StartupSwitchTile 冲突', () {
-      final String settings = readLib('ui/desktop/legacy/legacy_settings_page.dart');
-      expect(settings.contains('class StartupSwitchTile'), isFalse,
-          reason: '旧类名会与新设置页的同名类在同一编译单元里冲突');
-      // 新设置页仍然导出 StartupSwitchTile（test/startup_registration_test 依赖它）。
-      expect(readLib('ui/pages/settings_page.dart'),
-          contains('class StartupSwitchTile'));
     });
   });
 
-  group('桌面外壳本身一行未改', () {
-    test('control_panel 仍然调用四个未加前缀的页面类，且不直接依赖 legacy', () {
-      final String panel = readLib('ui/desktop/control_panel.dart');
-      for (final String cls in <String>[
-        'UsageStatsPage(',
-        'AccountSyncPage(',
-        'AssetLibraryPage(',
-        'SettingsPage(',
-      ]) {
-        expect(panel, contains(cls), reason: '桌面外壳的调用点被改动了：$cls');
-      }
-      expect(panel.contains('desktop/legacy/'), isFalse,
-          reason: '桌面外壳不应该直接认识回落实现（回落由页面自己决定）');
-    });
-
-    test('桌面外壳没有误用移动端外壳 / 新组件', () {
-      final String panel = readLib('ui/desktop/control_panel.dart');
-      expect(panel.contains('MobileShell'), isFalse);
-      expect(panel.contains('widgets/petlife/'), isFalse);
-      // 平台隔离测试也检查桌面专属依赖不泄漏到 Android 侧，这里反向钉一次。
+  group('Android 侧不受本轮 Windows 增量影响', () {
+    test('移动端外壳没有引入任何桌面专属文件', () {
       final String shell = readLib('ui/mobile/mobile_shell.dart');
       expect(shell.contains('desktop/'), isFalse);
+      expect(shell.contains('window_manager'), isFalse);
+      final String home = readLib('ui/mobile/mobile_home_page.dart');
+      expect(home.contains('desktop/'), isFalse);
+    });
+
+    test('桌面导航组件本身与平台无关（可在 Android 上编译）', () {
+      final String widgets = readLib('ui/widgets/petlife/petlife_desktop.dart');
+      expect(widgets.contains('package:window_manager'), isFalse);
+      expect(widgets.contains('package:tray_manager'), isFalse);
+      expect(widgets.contains('Platform.isWindows'), isFalse);
+      // 拖拽必须通过回调注入。
+      expect(widgets, contains('onTitleBarDrag'));
+    });
+
+    test('桌面外壳仍然调用同一批页面类（Android 的页面代码没有被 fork）', () {
+      // 共享页面只有**一份**实现：桌面通过主题 + 桌面外壳得到桌面布局，
+      // 而不是复制一份"桌面版页面"。
+      for (final String page in sharedPages.keys) {
+        final String source = readLib(page);
+        // 不允许在页面里挑第二套实现，也不允许散落的平台判定。
+        expect(source.contains('Legacy'), isFalse, reason: page);
+        expect(source.contains('Platform.is'), isFalse, reason: page);
+      }
+    });
+  });
+
+  group('控制面板定位算法与桌宠几何完全冻结（需求 §11）', () {
+    test('panel_layout 没有被改动（定位算法冻结）', () {
+      final String layout = readLib('ui/desktop/panel_layout.dart');
+      // 首选尺寸 / 安全边距 / 下限仍然是改造前的常量。
+      expect(layout, contains('Size(1180, 760)'));
+      expect(layout, contains('edgeMargin = 16'));
+      expect(layout, contains('minWidth = 480'));
+      expect(layout, contains('minHeight = 360'));
+      // 居中公式未变。
+      expect(layout, contains('workArea.left + (workArea.width - size.width) / 2'));
+      expect(layout, contains('workArea.top + (workArea.height - size.height) / 2'));
+    });
+
+    test('控制面板不写任何桌宠坐标 / Region / 轮盘 API', () {
+      final String panel = readLib('ui/desktop/control_panel.dart');
+      for (final String banned in <String>[
+        'setBounds',
+        'rememberWindowPosition',
+        'RegionCoordinator',
+        'wheelMenu',
+        'startDragging()', // 只允许标题栏拖拽；这里用注释外的调用检查
+      ]) {
+        if (banned == 'startDragging()') continue; // 标题栏拖拽是唯一允许的窗口调用
+        expect(panel.contains(banned), isFalse,
+            reason: '控制面板出现了不该有的窗口/Region 调用：$banned');
+      }
+      // 允许的窗口调用只有"标题栏拖拽"。
+      expect('windowManager.'.allMatches(panel).length, 1);
+      expect(panel, contains('windowManager.startDragging()'));
+    });
+
+    test('冻结模块仍然存在且没有被控制面板引用', () {
+      for (final String file in <String>[
+        'menu/region_coordinator.dart',
+        'menu/wheel_menu_geometry.dart',
+        'menu/wheel_canvas_plan.dart',
+        'platform/overlay_pet.dart',
+        'ui/pet/pet_view.dart',
+      ]) {
+        expect(libFile(file).existsSync(), isTrue, reason: '冻结模块丢失：$file');
+      }
+      final String panel = readLib('ui/desktop/control_panel.dart');
+      expect(panel.contains('menu/'), isFalse);
+      expect(panel.contains('region_coordinator'), isFalse);
     });
   });
 }

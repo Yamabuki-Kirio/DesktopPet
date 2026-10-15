@@ -125,6 +125,17 @@ abstract final class PetLifeDurations {
 
   /// 卡片出现用「先快后缓」的减速曲线。
   static const Curve cardEasing = Curves.easeOutQuad;
+
+  // --- 桌面（Windows 控制面板）---
+
+  /// 桌面导航选中：180ms（需求 §9）。
+  static const Duration desktopNavSelect = Duration(milliseconds: 180);
+
+  /// 桌面页面切换：180ms。桌面刻意**只淡入不做位移**（禁止页面大幅滑动）。
+  static const Duration desktopPageSwitch = Duration(milliseconds: 180);
+
+  /// 桌面卡片出现：160ms 淡入。
+  static const Duration desktopCardIn = Duration(milliseconds: 160);
 }
 
 /// 字阶（需求 §3「字体层级」）。

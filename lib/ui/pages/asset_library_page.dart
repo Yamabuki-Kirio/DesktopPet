@@ -15,7 +15,6 @@ import '../../core/result.dart';
 import '../../platform/file_import_provider.dart';
 import '../../state_engine/system_state.dart';
 import '../dialogs/asset_import_form_dialog.dart';
-import '../desktop/legacy/legacy_asset_library_page.dart';
 import '../library_controller.dart';
 import '../overlay_pet_controller.dart';
 import '../theme/design_tokens.dart';
@@ -118,19 +117,6 @@ class _AssetLibraryPageState extends State<AssetLibraryPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ⚠ Windows 控制面板与本页共用同一个类：桌面主题里没有 PetLifeTheme 扩展时
-    // 原样回落到改造前的实现，保证「Windows UI 不受影响」。
-    if (PetLifeTheme.maybeOf(context) == null) {
-      return LegacyAssetLibraryPage(
-        ownerId: widget.ownerId,
-        importer: widget.importer,
-        fileImportProvider: widget.fileImportProvider,
-        library: widget.library,
-        onActivated: widget.onActivated,
-        overlay: widget.overlay,
-      );
-    }
-
     final LibraryController lib = widget.library;
     final LibrarySnapshot? snap = lib.snapshot;
     final bool empty = snap == null || snap.isEmpty;

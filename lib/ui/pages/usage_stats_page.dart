@@ -16,7 +16,6 @@ import '../../platform/overlay_pet.dart';
 import '../../settings/app_settings.dart';
 import '../../state_engine/system_state.dart';
 import '../dialogs/text_input_dialog.dart';
-import '../desktop/legacy/legacy_usage_stats_page.dart';
 import '../overlay_pet_controller.dart';
 import '../theme/design_tokens.dart';
 import '../theme/petlife_theme.dart';
@@ -197,17 +196,6 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
 
   @override
   Widget build(BuildContext context) {
-    // ⚠ Windows 控制面板与本页**共用同一个类**，但需求要求「Windows UI 不受影响」。
-    // 桌面外壳的主题里没有 PetLifeTheme 扩展 → 这里原样回落到改造前的实现，
-    // Windows 的外观与行为与改造前**逐字节一致**（见 test/desktop_legacy_pages_test.dart）。
-    if (PetLifeTheme.maybeOf(context) == null) {
-      return LegacyUsageStatsPage(
-        services: widget.services,
-        onOpenAccount: widget.onOpenAccount,
-        overlay: widget.overlay,
-      );
-    }
-
     final AppServices s = widget.services;
     final ActivityTracker tracker = s.activityTracker;
 
@@ -268,15 +256,10 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
               else ...<Widget>[
                 PetLifeCardEntrance(child: _overviewCard()),
                 const SizedBox(height: PetLifeSpacing.cardGap),
-                PetLifeCardEntrance(
-                  delay: const Duration(milliseconds: 40),
-                  child: _appRankingCard(),
-                ),
-                const SizedBox(height: PetLifeSpacing.cardGap),
-                PetLifeCardEntrance(
-                  delay: const Duration(milliseconds: 80),
-                  child: _timelineCard(),
-                ),
+                // 宽屏（桌面）把「应用排行」与「时间线」并排成双栏；
+                // 窄屏仍然上下堆叠。**内容宽度上限由外层
+                // PetLifeDesktopContentWidth 负责**，这里只负责分栏。
+                _rankingAndTimeline(),
                 const SizedBox(height: PetLifeSpacing.cardGap),
                 _categoryCard(),
               ],
@@ -319,6 +302,49 @@ class UsageStatsPageState extends State<UsageStatsPage> with WidgetsBindingObser
           ),
         ],
       ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // 应用排行 + 时间线（宽屏双栏 / 窄屏单栏）
+  // ---------------------------------------------------------------------------
+
+  /// 桌面宽屏下把「应用排行」与「时间线」并排；窄屏上下堆叠。
+  ///
+  /// 断点取在 1180：低于该宽度时两栏各自不足 ~560px，表格与进度条会挤在一起，
+  /// 反而不如单栏可读。
+  Widget _rankingAndTimeline() {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final double scale = MediaQuery.textScalerOf(context).scale(1.0);
+        final bool twoColumns = constraints.maxWidth >= 1180 * scale;
+        if (!twoColumns) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              PetLifeCardEntrance(child: _appRankingCard()),
+              const SizedBox(height: PetLifeSpacing.cardGap),
+              PetLifeCardEntrance(
+                delay: const Duration(milliseconds: 40),
+                child: _timelineCard(),
+              ),
+            ],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(child: PetLifeCardEntrance(child: _appRankingCard())),
+            const SizedBox(width: PetLifeSpacing.cardGap),
+            Expanded(
+              child: PetLifeCardEntrance(
+                delay: const Duration(milliseconds: 40),
+                child: _timelineCard(),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

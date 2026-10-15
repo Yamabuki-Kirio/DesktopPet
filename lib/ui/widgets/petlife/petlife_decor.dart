@@ -243,6 +243,10 @@ class _MarkerPainter extends CustomPainter {
 ///
 /// 用 [TweenAnimationBuilder] 而不是隐式动画控制器：它**只在首次出现时**播放，
 /// 不会在父级因任何 setState 重建时重新播放（那会让界面一直闪）。
+///
+/// 桌面（Windows 控制面板）由主题把 [PetLifeTheme.cardEntranceAnimated] 设为
+/// `false`，此时直接返回原样内容：需求 §9 禁止桌面端"逐卡片依次播放"，
+/// 桌面要的是打开即就绪。
 class PetLifeCardEntrance extends StatelessWidget {
   const PetLifeCardEntrance({
     super.key,
@@ -257,6 +261,7 @@ class PetLifeCardEntrance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!PetLifeTheme.cardEntranceAnimatedOf(context)) return child;
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0, end: 1),
       duration: PetLifeDurations.cardIn + delay,

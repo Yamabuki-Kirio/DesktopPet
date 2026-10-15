@@ -11,7 +11,6 @@ import '../../sync/proxy/proxy_probe.dart';
 import '../../sync/proxy/system_proxy.dart';
 import '../../sync/sync_engine.dart';
 import '../dialogs/device_edit_dialog.dart';
-import '../desktop/legacy/legacy_account_sync_page.dart';
 import '../theme/design_tokens.dart';
 import '../theme/petlife_theme.dart';
 import '../widgets/cloud_sync_actions.dart';
@@ -481,11 +480,6 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ⚠ Windows 控制面板与本页共用同一个类：桌面主题里没有 PetLifeTheme 扩展时
-    // 原样回落到改造前的实现，保证「Windows UI 不受影响」。
-    if (PetLifeTheme.maybeOf(context) == null) {
-      return LegacyAccountSyncPage(services: widget.services);
-    }
     final bool signedIn = _api.isSignedIn;
     return PetLifePage(
       title: '账户与同步',

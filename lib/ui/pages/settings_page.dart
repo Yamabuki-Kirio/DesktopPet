@@ -7,7 +7,6 @@ import '../../core/constants.dart';
 import '../../platform/startup_registrar.dart';
 import '../../settings/app_settings.dart';
 import '../../settings/startup_registration_service.dart';
-import '../desktop/legacy/legacy_settings_page.dart';
 import '../library_controller.dart';
 import '../overlay_pet_controller.dart';
 import '../theme/design_tokens.dart';
@@ -55,15 +54,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ⚠ Windows 控制面板与本页共用同一个类：桌面主题里没有 PetLifeTheme 扩展时
-    // 原样回落到改造前的实现，保证「Windows UI 不受影响」。
-    if (PetLifeTheme.maybeOf(context) == null) {
-      return LegacySettingsPage(
-        services: services,
-        overlay: overlay,
-        library: library,
-      );
-    }
     return ListenableBuilder(
       listenable: services.settings,
       builder: (BuildContext context, Widget? _) {
@@ -140,6 +130,7 @@ class SettingsPage extends StatelessWidget {
         builder: (BuildContext _) => DiagnosticsPage(
           services: services,
           library: lib,
+          overlay: overlay,
         ),
       ),
     );

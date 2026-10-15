@@ -284,6 +284,41 @@ void main() {
       expect(find.text('重试'), findsOneWidget);
     });
 
+    testWidgets('带自定义颜色的标签：文字必须真的看得见（半透明底要先合成）',
+        (WidgetTester tester) async {
+      // 回归：曾经把 `color.withValues(alpha: 0.12)` 直接当背景去算对比度，
+      // 而 computeLuminance() 忽略 alpha → 文字被推向白色 → 渲染成看不见的白字
+      // （Windows 顶部栏的同步状态标签就是这么变成空胶囊的）。
+      for (final Color tone in <Color>[
+        PetLifeColors.successDefault,
+        PetLifeColors.dangerDefault,
+        PetLifeColors.textSecondaryDefault,
+        PetLifeColors.warningDefault,
+      ]) {
+        await pump(
+          tester,
+          Center(child: PetLifeTag(label: '状态', color: tone)),
+          size: const Size(300, 120),
+        );
+
+        final AnimatedContainer container = tester
+            .widget<AnimatedContainer>(find.byType(AnimatedContainer).first);
+        final BoxDecoration decoration = container.decoration! as BoxDecoration;
+        final Text label = tester.widget<Text>(find.text('状态'));
+
+        // 背景先合成到卡片底上（与渲染时的观感一致），再算对比度。
+        final Color composited = Color.alphaBlend(
+          decoration.color!,
+          PetLifeColors.primaryDefault,
+        );
+        expect(
+          petLifeContrastRatio(label.style!.color!, composited),
+          greaterThanOrEqualTo(3.0),
+          reason: '标签文字与背景的对比度不足：$tone',
+        );
+      }
+    });
+
     testWidgets('设置行：窄屏 + 1.5 倍字体自动改成上下两段（不截断）',
         (WidgetTester tester) async {
       await pump(

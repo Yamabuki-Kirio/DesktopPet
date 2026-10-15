@@ -76,6 +76,18 @@ class CloudStatisticsController extends ChangeNotifier {
   DateTime? _fetchedAt;
   DateTime? _lastRefreshedAt;
 
+  /// 「数据拿到了，但本地缓存没写成功」的**非致命**提示。
+  ///
+  /// 与 [errorMessage] 严格区分：
+  /// * [errorMessage] = **没拿到**云端数据（网络失败 / 响应解析失败 / 登录失效）；
+  /// * [cacheWarning] = 云端数据**已经拿到并正在展示**，只是写本地缓存失败
+  ///   （典型是 SQLite code 8 `attempt to write a readonly database`：
+  ///   多实例争用同一个 db / WAL，或磁盘 I/O 异常）。
+  ///
+  /// 这两件事绝不能被显示成同一句话 —— 否则"数据其实已经刷新成功"会被
+  /// 伪装成"云端统计失败"，用户会去做无效的重试甚至排查网络。
+  String? _cacheWarning;
+
   /// 查询代次：任何查询条件变化都会 +1，旧代次的响应直接丢弃。
   int _epoch = 0;
   int _sessionEpoch = 0;
@@ -115,6 +127,11 @@ class CloudStatisticsController extends ChangeNotifier {
   List<CloudTimelineEntry> get timeline => _timeline;
 
   String? get errorMessage => _errorMessage;
+
+  /// 云端数据已获取、但本地缓存写入失败时的提示（非致命，界面用黄色横幅）。
+  ///
+  /// 为 null 表示缓存写入正常（或本次没有写缓存）。
+  String? get cacheWarning => _cacheWarning;
 
   /// true = 当前展示的是离线缓存（界面需要显示"离线数据"）。
   bool get isOfflineData => _isOfflineData;
@@ -282,6 +299,7 @@ class CloudStatisticsController extends ChangeNotifier {
   }) async {
     final int epoch = _epoch;
     _errorMessage = null;
+    _cacheWarning = null;
     if (!hasData) {
       _status = CloudStatsStatus.loading;
     } else {
@@ -309,16 +327,18 @@ class CloudStatisticsController extends ChangeNotifier {
       _fetchedAt = _clock();
       _lastRefreshedAt = _fetchedAt;
 
-      // 成功后覆盖缓存（先读后写，任何失败都不影响已展示的数据）。
-      await _cache.saveSummary(
-        accountUserId: account,
+      // 成功后覆盖缓存 —— **尽力而为**。
+      //
+      // 这里刻意**不再让缓存异常冒泡到下面的 catch**：云端数据已经拿到并赋值
+      // 给 _summary / _timeline，缓存只是加速下次首屏的优化项。
+      // 历史上缓存写失败（SQLite code 8）会走到通用 catch，把状态改成
+      // offlineCache / error 并显示"云端统计刷新失败"，等于用"缓存坏了"
+      // 谎报"云端失败" —— 用户会去重试网络，而真正的问题在本地磁盘。
+      _cacheWarning = await _saveToCacheQuietly(
+        account: account,
         query: query,
         summary: summary,
-      );
-      await _cache.saveTimeline(
-        accountUserId: account,
-        query: query,
-        entries: timeline,
+        timeline: timeline,
       );
 
       _status = (summary.totalDuration.inSeconds == 0 && timeline.isEmpty)
@@ -350,6 +370,55 @@ class CloudStatisticsController extends ChangeNotifier {
     }
   }
 
+  /// 把本次结果写进本地缓存，**任何失败都不抛出**。
+  ///
+  /// 返回非 null 表示"至少有一部分没写成功"，调用方据此给出非致命提示。
+  ///
+  /// 两个写入**各自独立 try/catch**：摘要写失败不应该连累时间线缓存
+  /// （反之亦然），能留下多少就留多少。
+  Future<String?> _saveToCacheQuietly({
+    required String account,
+    required CloudUsageQuery query,
+    required CloudUsageSummary summary,
+    required List<CloudTimelineEntry> timeline,
+  }) async {
+    bool failed = false;
+
+    Future<void> attempt(String what, Future<void> Function() write) async {
+      try {
+        await write();
+      } catch (e, st) {
+        failed = true;
+        // 完整保留底层错误（含 SQLite code 8 的 statement / parameters），
+        // 便于按日志定位"只读库 / WAL 争用 / 磁盘 I/O"这类问题。
+        Loggers.sync.warning(
+          '云端统计已获取，但本地缓存写入失败（$what，不影响本次展示）',
+          e,
+          st,
+        );
+      }
+    }
+
+    await attempt(
+      'summary',
+      () => _cache.saveSummary(
+        accountUserId: account,
+        query: query,
+        summary: summary,
+      ),
+    );
+    await attempt(
+      'timeline',
+      () => _cache.saveTimeline(
+        accountUserId: account,
+        query: query,
+        entries: timeline,
+      ),
+    );
+
+    return failed ? '数据已获取，但本地缓存保存失败' : null;
+  }
+
   /// 拉取设备列表。
   ///
   /// 三条约定：
@@ -370,7 +439,13 @@ class CloudStatisticsController extends ChangeNotifier {
       final bool changed = !_sameDevices(_devices, devices);
       _devices = devices;
       if (changed) {
-        await _cache.saveDevices(accountUserId: account, devices: devices);
+        // 缓存写入是尽力而为：写失败只是"下次首屏少一份缓存"，
+        // **不是**设备列表拉取失败，因此单独兜住、不改 _errorMessage。
+        try {
+          await _cache.saveDevices(accountUserId: account, devices: devices);
+        } catch (e, st) {
+          Loggers.sync.warning('设备列表缓存写入失败（不影响本次展示）', e, st);
+        }
       }
     } catch (e, st) {
       Loggers.sync.warning('刷新设备列表失败（沿用上一次列表）', e, st);
@@ -448,6 +523,7 @@ class CloudStatisticsController extends ChangeNotifier {
     _timeline = const <CloudTimelineEntry>[];
     _fetchedAt = null;
     _errorMessage = null;
+    _cacheWarning = null;
     _isOfflineData = false;
   }
 
@@ -502,7 +578,12 @@ class CloudStatisticsController extends ChangeNotifier {
           : page.items;
       _sessionCursors[appId] = page.nextCursor;
       if (!append) {
-        await _cache.saveSessions(accountUserId: account, query: q, page: page);
+        // 与摘要/时间线一致：缓存写入失败只记日志，不当成"加载时间段失败"。
+        try {
+          await _cache.saveSessions(accountUserId: account, query: q, page: page);
+        } catch (e, st) {
+          Loggers.sync.warning('时间段缓存写入失败（不影响本次展示）', e, st);
+        }
       }
     } on CloudStatisticsException catch (e) {
       if (epoch == _sessionEpoch) _errorMessage = e.message;
@@ -540,6 +621,7 @@ class CloudStatisticsController extends ChangeNotifier {
     _sessionCursors.clear();
     _loadingApps.clear();
     _errorMessage = null;
+    _cacheWarning = null;
     _isOfflineData = false;
     _fetchedAt = null;
     _lastRefreshedAt = null;

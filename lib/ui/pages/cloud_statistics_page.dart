@@ -6,6 +6,7 @@ import '../../core/logger.dart';
 import '../../sync/cloud_statistics_controller.dart';
 import '../../sync/models/cloud_statistics_models.dart';
 import '../../sync/sync_engine.dart';
+import '../theme/petlife_theme.dart';
 
 /// 云端统计子页（Phase 4B）。
 ///
@@ -403,6 +404,9 @@ class _CloudStatisticsPageState extends State<CloudStatisticsPage>
         padding: const EdgeInsets.fromLTRB(12, 12, 12, 32),
         children: <Widget>[
           if (_c.isOfflineData) _offlineBanner(),
+          // 缓存写入失败是**非致命**提示：数据已经拿到并正在展示，
+          // 绝不能与下面的 _errorCard（"没拿到数据"）混为一谈。
+          if (_c.cacheWarning != null) _cacheWarningBanner(),
           // 有错误时错误卡自带「重试」，不再叠加另一个重试卡片
           if (_c.errorMessage != null) _errorCard(),
           if (_c.hasData) ...<Widget>[
@@ -416,6 +420,53 @@ class _CloudStatisticsPageState extends State<CloudStatisticsPage>
           else if (_c.errorMessage == null)
             _emptyCard(),
         ],
+      ),
+    );
+  }
+
+  /// 云端数据已获取、本地缓存写入失败的提示。
+  ///
+  /// 刻意使用**警告色**而不是错误色，并且不提供「重试」——
+  /// 重试解决不了本地磁盘 / 多实例争用的问题，重试按钮只会误导用户。
+  Widget _cacheWarningBanner() {
+    final PetLifePalette p = PetLifeTheme.of(context);
+    return Card(
+      color: p.warning.withValues(alpha: 0.14),
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(Icons.info_outline, size: 18, color: p.textPrimary),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    _c.cacheWarning!,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: p.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '本次云端数据是最新获取的，可以正常查看；'
+                    '只是本地缓存没写成功，下次打开需要重新请求。'
+                    '完整原因已写入日志。',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: p.textSecondary,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

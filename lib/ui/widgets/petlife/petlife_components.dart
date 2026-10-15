@@ -366,9 +366,16 @@ class PetLifeTag extends StatelessWidget {
   Widget build(BuildContext context) {
     final PetLifePalette p = PetLifeTheme.of(context);
     final Color tint = color ?? p.accent;
+    // ⚠ 背景必须先**合成成不透明色**再拿去算对比度。
+    // 曾经的缺陷：直接拿 `tint.withValues(alpha: 0.12)` 当背景，
+    // 而 `computeLuminance()` 会**忽略 alpha** —— 半透明灰被当成实心灰，
+    // 自动配色于是把文字推向白色，最终在浅灰底上渲染出看不见的字
+    // （Windows 顶部栏的同步状态标签就是这么变成一只空胶囊的）。
     final Color background = selected
         ? p.accentSoft
-        : (color == null ? p.muted : tint.withValues(alpha: 0.12));
+        : (color == null
+            ? p.muted
+            : Color.alphaBlend(tint.withValues(alpha: 0.14), p.card));
     final Color foreground = selected
         ? p.onAccentSoft
         : (color == null ? p.textSecondary : petLifeEnsureReadable(tint, background));

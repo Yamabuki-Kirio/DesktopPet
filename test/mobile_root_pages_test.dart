@@ -316,18 +316,26 @@ void main() {
   });
 
   group('Windows 不受影响（本轮增量的硬边界）', () {
-    test('Android 才使用新主题；Windows 沿用原主题', () {
+    test('Windows 已切换到同一套新主题，但 Android 侧代码没有被改动', () {
       final String shell = readLib('app/app_shell.dart');
-      // 桌面分支仍然使用原来的蓝色 seed。
-      expect(shell, contains('0xFF4A7EBB'));
-      // 移动分支使用新主题生成器。
+      // 两个平台共用同一套主题生成器（Windows 同步新视觉那轮之后）。
       expect(shell, contains('buildPetLifeThemeData'));
-      // 桌面主题必须在外壳选择之前返回，不会走到移动分支。
-      expect(
-        RegExp(r'if \(desktop\) \{[\s\S]{0,600}?return MaterialApp')
-            .hasMatch(shell),
-        isTrue,
-      );
+      expect('buildPetLifeThemeData'.allMatches(shell).length, 2);
+      // 桌面侧只多一个字体参数，不再有独立的旧主题分支。
+      expect(shell, contains("desktop ? 'Microsoft YaHei' : null"));
+      expect(shell.contains('0xFF4A7EBB'), isFalse,
+          reason: '旧的深蓝色 seed 应已随 Windows 同步新视觉一并移除');
+    });
+
+    test('Android 外壳与页面没有被 Windows 增量波及', () {
+      // 移动端外壳不引用任何桌面专属文件。
+      final String shell = readLib('ui/mobile/mobile_shell.dart');
+      expect(shell.contains('desktop/'), isFalse);
+      expect(shell.contains('window_manager'), isFalse);
+      // 桌面导航组件本身不含平台分支（因此不会污染 Android 编译单元）。
+      final String widgets = readLib('ui/widgets/petlife/petlife_desktop.dart');
+      expect(widgets.contains('package:window_manager'), isFalse);
+      expect(widgets.contains('Platform.isWindows'), isFalse);
     });
 
     test('桌面专属实现没有泄漏到 Android 编译单元（回归平台隔离）', () {
@@ -335,8 +343,7 @@ void main() {
       for (final String dir in <String>['ui/mobile/', 'ui/theme/', 'ui/widgets/petlife/']) {
         final Directory d = Directory(p.join(root, 'lib', dir));
         if (!d.existsSync()) continue;
-        for (final File f
-            in d.listSync(recursive: true).whereType<File>()) {
+        for (final File f in d.listSync(recursive: true).whereType<File>()) {
           if (!f.path.endsWith('.dart')) continue;
           final String source = f.readAsStringSync();
           expect(source.contains('package:window_manager'), isFalse);

@@ -3,6 +3,7 @@ import 'package:window_manager/window_manager.dart';
 
 import '../../app/app_scope.dart';
 import '../../core/logger.dart';
+import '../../sync/models/sync_models.dart';
 import '../library_controller.dart';
 import '../pages/account_sync_page.dart';
 import '../pages/asset_library_page.dart';
@@ -11,12 +12,28 @@ import '../pages/settings_page.dart';
 import '../pages/state_debugger_page.dart';
 import '../pages/state_mapping_page.dart';
 import '../pages/usage_stats_page.dart';
+import '../theme/design_tokens.dart';
+import '../theme/petlife_theme.dart';
+import '../widgets/petlife/petlife_components.dart';
+import '../widgets/petlife/petlife_desktop.dart';
+import 'control_panel_destinations.dart';
+import 'desktop_panel_flags.dart';
+import 'legacy/legacy_account_sync_page.dart';
+import 'legacy/legacy_asset_library_page.dart';
+import 'legacy/legacy_settings_page.dart';
+import 'legacy/legacy_usage_stats_page.dart';
 
-/// 控制面板。
+/// Windows 控制面板（需求 §3 / §4）。
 ///
-/// 需求「九、阶段 0 页面」要求提供：素材库 / 状态映射 / 状态调试器 / 设置
-/// （外加桌宠窗口本身）。阶段 1 增加「使用统计」页。
-/// 这里把它们做成一个带顶部拖拽条的分页面板。
+/// 结构：**顶部栏 + 左侧导航栏 + 内容区 + 底部状态条**，
+/// 不再使用"七个标签横向挤在一起"的旧顶栏，也不再使用深蓝色实心横条。
+///
+/// 业务边界（本轮未改）：
+/// * 仍然只有一个 [LibraryController]，由本 State 持有，页面切换**不重建**它；
+/// * 页签下标与 [`DesktopShell._tabIndexFor`] 的映射保持不变，
+///   轮盘 / 托盘跳转行为完全一致；
+/// * `useLegacyDesktopControlPanel` 为 true 时切回 `legacy/` 的旧页面
+///   （排障用，不在设置页暴露）。
 class ControlPanel extends StatefulWidget {
   const ControlPanel({
     super.key,
@@ -39,16 +56,19 @@ class ControlPanel extends StatefulWidget {
   /// 状态映射页下标。
   static const int stateMappingTabIndex = 1;
 
-  /// 使用统计页在页签中的下标（阶段 1 新增）。
+  /// 状态调试器页下标。
+  static const int stateDebuggerTabIndex = 2;
+
+  /// 使用统计页在页签中的下标。
   static const int usageStatsTabIndex = 3;
 
-  /// 账户与同步页在页签中的下标（Phase 2 新增）。
+  /// 账户与同步页在页签中的下标。
   static const int accountSyncTabIndex = 4;
 
-  /// 设置页下标（轮盘「完整设置」/桌面宠设置跳转用）。
+  /// 设置页下标（轮盘「完整设置」/桌宠设置跳转用）。
   static const int settingsTabIndex = 5;
 
-  /// 诊断页下标（增量 C2：轮盘 `PanelDestination.diagnostics` 的目标）。
+  /// 诊断页下标（轮盘 `PanelDestination.diagnostics` 的目标）。
   static const int diagnosticsTabIndex = 6;
 
   /// 页签总数。
@@ -60,24 +80,21 @@ class ControlPanel extends StatefulWidget {
 
 /// 公开（而不是 `_` 私有）是为了让外壳可以通过 GlobalKey 切换页签，
 /// 从而支持托盘「打开使用统计」直接定位。
-class ControlPanelState extends State<ControlPanel> with SingleTickerProviderStateMixin {
-  late final TabController _tabs;
+class ControlPanelState extends State<ControlPanel> {
+  late int _index;
   late final LibraryController _library;
 
   /// 切换到指定页签（供外壳 / 托盘调用）。
   void selectTab(int index) {
-    if (index < 0 || index >= _tabs.length) return;
-    _tabs.animateTo(index);
+    if (index < 0 || index >= ControlPanel.tabCount) return;
+    if (index == _index) return;
+    setState(() => _index = index);
   }
 
   @override
   void initState() {
     super.initState();
-    _tabs = TabController(
-      length: ControlPanel.tabCount,
-      vsync: this,
-      initialIndex: widget.initialTab.clamp(0, ControlPanel.tabCount - 1),
-    );
+    _index = widget.initialTab.clamp(0, ControlPanel.tabCount - 1);
     _library = LibraryController(
       repository: widget.services.repository,
       ownerId: widget.services.ownerId,
@@ -107,133 +124,216 @@ class ControlPanelState extends State<ControlPanel> with SingleTickerProviderSta
   void dispose() {
     _library.removeListener(_onLibraryChanged);
     _library.dispose();
-    _tabs.dispose();
     super.dispose();
   }
 
+  // ---------------------------------------------------------------------------
+  // 页面装配
+  // ---------------------------------------------------------------------------
+
+  /// 七个页面。`useLegacyDesktopControlPanel` 打开时用 `legacy/` 的旧实现。
+  List<Widget> _buildPages() {
+    final bool legacy = useLegacyDesktopControlPanel;
+
+    if (legacy) {
+      return <Widget>[
+        LegacyAssetLibraryPage(
+          ownerId: widget.services.ownerId,
+          importer: widget.services.importer,
+          fileImportProvider: widget.services.fileImportProvider,
+          library: _library,
+        ),
+        StateMappingPage(services: widget.services, library: _library),
+        StateDebuggerPage(services: widget.services, library: _library),
+        LegacyUsageStatsPage(
+          services: widget.services,
+          onOpenAccount: () =>
+              selectTab(ControlPanel.accountSyncTabIndex),
+        ),
+        LegacyAccountSyncPage(services: widget.services),
+        LegacySettingsPage(services: widget.services, library: _library),
+        DiagnosticsPage(services: widget.services, library: _library),
+      ];
+    }
+
+    return <Widget>[
+      PetLifeDesktopContentWidth(
+        child: AssetLibraryPage(
+          ownerId: widget.services.ownerId,
+          importer: widget.services.importer,
+          fileImportProvider: widget.services.fileImportProvider,
+          library: _library,
+        ),
+      ),
+      PetLifeDesktopContentWidth(
+        child: StateMappingPage(services: widget.services, library: _library),
+      ),
+      PetLifeDesktopContentWidth(
+        child: StateDebuggerPage(services: widget.services, library: _library),
+      ),
+      PetLifeDesktopContentWidth(
+        child: UsageStatsPage(
+          services: widget.services,
+          // 云端统计未登录时"去登录" → 切到「账户与同步」页
+          onOpenAccount: () => selectTab(ControlPanel.accountSyncTabIndex),
+        ),
+      ),
+      PetLifeDesktopContentWidth(
+        child: AccountSyncPage(services: widget.services),
+      ),
+      // 设置项横跨整屏很难读：单独收窄到 1040px。
+      PetLifeDesktopContentWidth(
+        maxWidth: PetLifeDesktopBreakpoints.settingsContentMaxWidth,
+        child: SettingsPage(services: widget.services, library: _library),
+      ),
+      PetLifeDesktopContentWidth(
+        child: DiagnosticsPage(
+          services: widget.services,
+          library: _library,
+          embedded: true,
+        ),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF4F6F9),
-      body: Column(
-        children: <Widget>[
-          _Header(
-            onClose: () async {
-              await widget.onClose();
-            },
-            onExit: () async {
-              await widget.onExit();
-            },
-          ),
-          Material(
-            color: Colors.white,
-            child: TabBar(
-              controller: _tabs,
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              tabs: const <Widget>[
-                Tab(icon: Icon(Icons.photo_library_outlined), text: '素材库'),
-                Tab(icon: Icon(Icons.account_tree_outlined), text: '状态映射'),
-                Tab(icon: Icon(Icons.bug_report_outlined), text: '状态调试器'),
-                Tab(icon: Icon(Icons.insights_outlined), text: '使用统计'),
-                Tab(icon: Icon(Icons.cloud_sync_outlined), text: '账户与同步'),
-                Tab(icon: Icon(Icons.settings_outlined), text: '设置'),
-                Tab(icon: Icon(Icons.monitor_heart_outlined), text: '诊断'),
-              ],
-            ),
-          ),
-          const Divider(height: 1),
-          Expanded(
-            child: TabBarView(
-              controller: _tabs,
-              children: <Widget>[
-                AssetLibraryPage(
-                  ownerId: widget.services.ownerId,
-                  importer: widget.services.importer,
-                  fileImportProvider: widget.services.fileImportProvider,
-                  library: _library,
-                  // Phase 4C-6A.1：桌面也能打开「状态素材映射」编辑器
-                  //（overlay 为 null：Windows 没有系统级悬浮窗，预览按钮会给出说明）。
+    return ListenableBuilder(
+      listenable: widget.services.syncEngine,
+      builder: (BuildContext context, Widget? _) {
+        return PetLifeDesktopScaffold(
+          destinations: kDesktopPanelDestinations,
+          selectedIndex: _index,
+          onSelected: selectTab,
+          pages: _buildPages(),
+          toolbar: PetLifeDesktopToolbar(
+            title: 'PetLife 控制面板',
+            pageName: kDesktopPanelTitles[_index],
+            statusTag: _syncTag(context),
+            onTitleBarDrag: _startWindowDrag,
+            actions: <Widget>[
+              Tooltip(
+                message: '回到桌宠模式',
+                child: PetLifeSecondaryButton(
+                  label: '回到桌宠',
+                  icon: Icons.arrow_back,
+                  onPressed: () => widget.onClose(),
                 ),
-                StateMappingPage(services: widget.services, library: _library),
-                StateDebuggerPage(services: widget.services, library: _library),
-                UsageStatsPage(
-                  services: widget.services,
-                  // 云端统计未登录时"去登录" → 切到「账户与同步」页
-                  onOpenAccount: () =>
-                      _tabs.animateTo(ControlPanel.accountSyncTabIndex),
+              ),
+              const SizedBox(width: 8),
+              Tooltip(
+                message: '退出 PetLife',
+                child: PetLifeDangerButton(
+                  label: '退出',
+                  icon: Icons.power_settings_new,
+                  onPressed: () => widget.onExit(),
                 ),
-                AccountSyncPage(services: widget.services),
-                SettingsPage(services: widget.services),
-                DiagnosticsPage(services: widget.services, library: _library),
-              ],
-            ),
+              ),
+              const SizedBox(width: 6),
+            ],
           ),
-        ],
-      ),
+          footer: _StatusBar(
+            deviceLabel: widget.services.platform.device.deviceName,
+            pendingCount: widget.services.syncEngine.pendingCount,
+            lastSuccessAt: widget.services.syncEngine.lastSuccessAt,
+          ),
+        );
+      },
     );
+  }
+
+  /// 顶部栏的同步状态小标签。
+  Widget _syncTag(BuildContext context) {
+    final SyncStatus status = widget.services.syncEngine.status;
+    final PetLifePalette p = PetLifeTheme.of(context);
+    final bool syncing = widget.services.syncEngine.isSyncing;
+    return PetLifeTag(
+      label: syncing ? '同步中…' : status.labelZh,
+      icon: Icons.cloud_sync_outlined,
+      color: status == SyncStatus.success ? p.success : p.textSecondary,
+      dense: true,
+    );
+  }
+
+  Future<void> _startWindowDrag() async {
+    try {
+      await windowManager.startDragging();
+    } catch (e) {
+      Loggers.window.fine('面板拖动不可用: $e');
+    }
   }
 }
 
-/// 顶部条：无边框窗口需要自己提供拖拽区与关闭按钮。
-class _Header extends StatelessWidget {
-  const _Header({required this.onClose, required this.onExit});
+/// 底部状态条（需求 §3：可选的当前设备、同步状态或版本信息）。
+class _StatusBar extends StatelessWidget {
+  const _StatusBar({
+    required this.deviceLabel,
+    required this.pendingCount,
+    required this.lastSuccessAt,
+  });
 
-  final Future<void> Function() onClose;
-  final Future<void> Function() onExit;
+  final String deviceLabel;
+  final int pendingCount;
+  final DateTime? lastSuccessAt;
 
   @override
   Widget build(BuildContext context) {
+    final PetLifePalette p = PetLifeTheme.of(context);
     return Material(
-      color: const Color(0xFF2F4A63),
+      color: p.surface,
       child: SizedBox(
-        height: 46,
-        child: Row(
-          children: <Widget>[
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onPanStart: (DragStartDetails _) async {
-                try {
-                  await windowManager.startDragging();
-                } catch (e) {
-                  Loggers.window.fine('面板拖动不可用: $e');
-                }
-              },
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.pets, color: Colors.white, size: 18),
-                    SizedBox(width: 8),
-                    Text(
-                      'PetLife 控制面板',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        height: 30,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: p.divider)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.computer, size: 13, color: p.textSecondary),
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Text(
+                    deviceLabel,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: PetLifeText.captionSmall,
+                      color: p.textSecondary,
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(width: 14),
+                Text(
+                  pendingCount > 0 ? '待同步 $pendingCount 条' : '没有待同步记录',
+                  style: TextStyle(
+                    fontSize: PetLifeText.captionSmall,
+                    color: pendingCount > 0 ? p.onAccentSoft : p.textSecondary,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  lastSuccessAt == null
+                      ? '尚未成功同步'
+                      : '最近同步 ${_format(lastSuccessAt!)}',
+                  style: TextStyle(
+                    fontSize: PetLifeText.captionSmall,
+                    color: p.textSecondary,
+                  ),
+                ),
+              ],
             ),
-            const Spacer(),
-            Tooltip(
-              message: '回到桌宠模式',
-              child: TextButton.icon(
-                onPressed: () async => onClose(),
-                icon: const Icon(Icons.arrow_back, size: 16, color: Colors.white),
-                label: const Text('回到桌宠', style: TextStyle(color: Colors.white)),
-              ),
-            ),
-            const SizedBox(width: 4),
-            Tooltip(
-              message: '退出 PetLife',
-              child: IconButton(
-                onPressed: () async => onExit(),
-                icon: const Icon(Icons.power_settings_new, color: Colors.white, size: 18),
-              ),
-            ),
-            const SizedBox(width: 8),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  static String _format(DateTime time) {
+    final DateTime local = time.toLocal();
+    String two(int v) => v.toString().padLeft(2, '0');
+    return '${local.year}-${two(local.month)}-${two(local.day)} '
+        '${two(local.hour)}:${two(local.minute)}';
   }
 }
