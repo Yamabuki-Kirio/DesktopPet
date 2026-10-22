@@ -37,14 +37,14 @@ class ActivitySegmentService {
     WallClock? wallClock,
     TrackingSettings settings = const TrackingSettings(),
     LocalChangeSink changeSink = const NoopLocalChangeSink(),
-  })  : _activityDao = activityDao,
-        _checkpointDao = checkpointDao,
-        _dailyUsageDao = dailyUsageDao,
-        _applications = applications,
-        _monotonic = monotonicClock ?? StopwatchMonotonicClock(),
-        _wall = wallClock ?? const SystemWallClock(),
-        _settings = settings,
-        _changeSink = changeSink;
+  }) : _activityDao = activityDao,
+       _checkpointDao = checkpointDao,
+       _dailyUsageDao = dailyUsageDao,
+       _applications = applications,
+       _monotonic = monotonicClock ?? StopwatchMonotonicClock(),
+       _wall = wallClock ?? const SystemWallClock(),
+       _settings = settings,
+       _changeSink = changeSink;
 
   final ActivityDao _activityDao;
   final ActivityCheckpointDao _checkpointDao;
@@ -83,6 +83,25 @@ class ActivitySegmentService {
 
   /// 当日设备级累计。
   DailyUsage? _today;
+
+  /// 设备级用量的毫秒余数（**当前日**）。
+  ///
+  /// 采样间隔是 2 秒但可能带任意毫秒（1999ms / 2001ms），如果每个 tick 都
+  /// 各自向下取整，长期会持续少算。这里先累计毫秒，只把完整的 1000ms 转成秒，
+  /// 余数留给下一次采样。
+  ///
+  /// 每一天各自保存自己的余数：跨日时清零，旧日余数绝不带入新日；
+  /// 午夜边界通过 [_splitAtBoundary] 做确定性的整数秒分配。
+  int _sessionRemainderMs = 0;
+  int _activeRemainderMs = 0;
+  int _idleRemainderMs = 0;
+
+  /// 午夜边界把 1 秒判给新日后，新日后续毫秒要先偿还的欠账。
+  ///
+  /// 只用非负余数会丢失“这 1 秒已经提前计入”的信息；用负数又会和 Dart 的
+  /// `%` 语义打架。因此把欠账单独存放，偿还完才重新进入余数。
+  int _activeDebtMs = 0;
+  int _idleDebtMs = 0;
 
   /// 连续活跃毫秒数（空闲超阈 / 锁屏 / 休眠 / 暂停 / 退出后归零）。
   int _continuousActiveMs = 0;
@@ -276,11 +295,9 @@ class ActivitySegmentService {
     _lastMonoMs = sample.monotonicMs;
     _lastWallTime = sample.wallNow;
 
-    // 跨日/首次都要保证当日累计行存在且属于今天。
-    await _ensureDay(sample.wallNow);
-
     // --- 首次采样：只建立基线，不追溯计时 ---
     if (prevMono == null || prevWall == null) {
+      await _ensureDay(sample.wallNow);
       await _considerForeground(sample, creditMs: 0, idleOverMs: 0);
       return;
     }
@@ -289,15 +306,22 @@ class ActivitySegmentService {
     final int wallDelta = sample.wallNow.difference(prevWall).inMilliseconds;
     final int skew = wallDelta - monoDelta;
 
+    // 上一段关闭失败时，先尝试补写关闭，避免旧段一直占着内存状态。
+    // 这不是定时重试：只在有采样时顺带触发，真正的重试仍然由检查点驱动。
+    if (_open?.isClosing == true) {
+      await _flush(force: true);
+    }
+
     // --- A. 中断：休眠 / 进程被冻结 / 采样长时间停摆 ---
     // 这段时间一分一秒都不计入，并按原因结束当前段。
     if (monoDelta > ActivityTracking.maxSampleGapMs ||
         wallDelta > ActivityTracking.maxSampleGapMs) {
+      await _ensureDay(sample.wallNow);
       final SegmentEndReason reason = skew > ActivityTracking.suspendDetectMs
           ? SegmentEndReason.systemSuspend
           : (sample.sessionLocked
-              ? SegmentEndReason.sessionLocked
-              : SegmentEndReason.processUnavailable);
+                ? SegmentEndReason.sessionLocked
+                : SegmentEndReason.processUnavailable);
       await _closeOpen(
         reason: reason,
         endWall: sample.wallNow,
@@ -314,13 +338,17 @@ class ActivitySegmentService {
 
     // 单调时钟异常（倒退）时不给任何计入，避免负数记录。
     final int rawCredit = monoDelta < 0 ? 0 : monoDelta;
-    final int creditMs = math.min(rawCredit, ActivityTracking.maxCreditPerTickMs);
+    final int creditMs = math.min(
+      rawCredit,
+      ActivityTracking.maxCreditPerTickMs,
+    );
 
     // --- B. 系统时间大幅变化：结算后重开一段 ---
     if (skew.abs() > ActivityTracking.clockJumpThresholdMs) {
+      await _ensureDay(sample.wallNow);
       final int idleOver = _idleOverMs(sample);
       // 先把设备计数按正常口径结算，避免这段时间凭空消失。
-      _addDeviceUsage(sample, creditMs: creditMs, idleOverMs: idleOver);
+      await _addDeviceUsage(sample, creditMs: creditMs, idleOverMs: idleOver);
       await _closeOpen(
         reason: SegmentEndReason.clockChanged,
         endWall: sample.wallNow,
@@ -338,10 +366,14 @@ class ActivitySegmentService {
 
     // --- C. 设备级计数（暂停时完全不计）---
     final int idleOverMs = _idleOverMs(sample);
-    _addDeviceUsage(sample, creditMs: creditMs, idleOverMs: idleOverMs);
+    await _addDeviceUsage(sample, creditMs: creditMs, idleOverMs: idleOverMs);
 
     // --- D. 判断应用归属 ---
-    await _considerForeground(sample, creditMs: creditMs, idleOverMs: idleOverMs);
+    await _considerForeground(
+      sample,
+      creditMs: creditMs,
+      idleOverMs: idleOverMs,
+    );
 
     // --- E. 周期落盘 ---
     await _maybeCheckpoint(sample.monotonicMs);
@@ -358,37 +390,242 @@ class ActivitySegmentService {
   ///
   /// 只统计「未锁屏」的时间；休眠与长间隔已在 A 分支里被排除在外，
   /// 因此不会出现「锁屏一夜，早上起来多了 8 小时」的错误数据。
-  void _addDeviceUsage(
+  ///
+  /// 相邻采样跨越本地午夜时，会把这一 tick 的 credit 按**毫秒**拆到前后两天：
+  /// 先累计并落盘旧日，再加载新日累计剩余部分。活动段本身不拆，查询层继续按
+  /// 窗口比例裁剪。
+  Future<void> _addDeviceUsage(
     ActivitySample sample, {
     required int creditMs,
     required int idleOverMs,
-  }) {
+  }) async {
     if (sample.paused || sample.sessionLocked || creditMs <= 0) return;
 
+    final DateTime end = sample.wallNow;
+    final DateTime start = end.subtract(Duration(milliseconds: creditMs));
+    // 活跃区间在 [start, activeEnd)，空闲区间在 [activeEnd, end)。
+    // idleOverMs 可能大于本 tick 的 credit，此时整段都算空闲。
     final int activeMs = math.max(0, creditMs - idleOverMs);
     final int idleMs = creditMs - activeMs;
+    final DateTime activeEnd = end.subtract(
+      Duration(milliseconds: math.min(idleOverMs, creditMs)),
+    );
+
+    final DateTime? midnight = _midnightInWindow(start, end);
+    if (midnight == null) {
+      await _ensureDay(end);
+      _accumulateUsage(
+        at: end,
+        sessionMs: creditMs,
+        activeMs: activeMs,
+        idleMs: idleMs,
+        activeStart: activeMs > 0 ? start : null,
+        activeEnd: activeMs > 0 ? activeEnd : null,
+      );
+      return;
+    }
+
+    // 旧日部分：区间是 [start, midnight)。
+    await _ensureDay(start);
+    final int oldSessionMs = midnight.difference(start).inMilliseconds;
+    final int newSessionMs = end.difference(midnight).inMilliseconds;
+    final int oldActiveMs = _overlapMs(start, activeEnd, start, midnight);
+    final int newActiveMs = activeMs - oldActiveMs;
+    final int oldIdleMs = oldSessionMs - oldActiveMs;
+    final int newIdleMs = newSessionMs - newActiveMs;
+    final DateTime oldActiveEnd = activeEnd.isBefore(midnight)
+        ? activeEnd
+        : midnight;
+
+    // 午夜边界：每一天各自保留自己的毫秒余数，旧日余数不带入新日。
+    // 整数秒按“最大余数”确定性分配：800ms + 1200ms → 旧日 1 秒、新日 1 秒，
+    // 而不是把旧日的 800ms 整体转到新日变成 2 秒。
+    assert(
+      _sessionRemainderMs == _activeRemainderMs + _idleRemainderMs,
+      '跨午夜前会话余数必须等于活跃与空闲余数之和',
+    );
+    final _BoundarySplit activeSplit = _splitAtBoundary(
+      oldRemainderMs: _activeRemainderMs,
+      oldPartMs: oldActiveMs,
+      newPartMs: newActiveMs,
+    );
+    final _BoundarySplit idleSplit = _splitAtBoundary(
+      oldRemainderMs: _idleRemainderMs,
+      oldPartMs: oldIdleMs,
+      newPartMs: newIdleMs,
+    );
+
+    _applyUsageSeconds(
+      at: midnight,
+      activeSeconds: activeSplit.oldSeconds,
+      idleSeconds: idleSplit.oldSeconds,
+      activeStart: oldActiveMs > 0 ? start : null,
+      activeEnd: oldActiveMs > 0 ? oldActiveEnd : null,
+    );
+
+    // _ensureDay(end) 会先把旧日（含刚累计的部分）落盘，再加载新日并清零余数。
+    await _ensureDay(end);
+    _activeRemainderMs = activeSplit.newRemainderMs;
+    _activeDebtMs = activeSplit.newDebtMs;
+    _idleRemainderMs = idleSplit.newRemainderMs;
+    _idleDebtMs = idleSplit.newDebtMs;
+    _sessionRemainderMs = _activeRemainderMs + _idleRemainderMs;
+
+    _applyUsageSeconds(
+      at: end,
+      activeSeconds: activeSplit.newSeconds,
+      idleSeconds: idleSplit.newSeconds,
+      activeStart: newActiveMs > 0 ? midnight : null,
+      activeEnd: newActiveMs > 0 ? activeEnd : null,
+    );
+    _continuousActiveMs += activeMs;
+  }
+
+  /// 把一段毫秒用量并入当前日，只把完整的 1000ms 转成秒。
+  ///
+  /// 会话秒数恒等于活跃秒数 + 空闲秒数。三个桶的毫秒余数各自保留在**当前日**；
+  /// 跨日清零，绝不把旧日余数带到新日。
+  void _accumulateUsage({
+    required DateTime at,
+    required int sessionMs,
+    required int activeMs,
+    required int idleMs,
+    required DateTime? activeStart,
+    required DateTime? activeEnd,
+  }) {
+    if (sessionMs <= 0) return;
+    assert(sessionMs == activeMs + idleMs, '会话毫秒必须等于活跃 + 空闲');
+    final DailyUsage? today = _today;
+    if (today == null) return;
+
+    // 先偿还午夜边界提前计入的 1 秒，再进入当前日的毫秒余数。
+    _activeRemainderMs += _repayDebt(activeMs, active: true);
+    _idleRemainderMs += _repayDebt(idleMs, active: false);
+
+    final int activeAdd = _activeRemainderMs ~/ 1000;
+    _activeRemainderMs %= 1000;
+    final int idleAdd = _idleRemainderMs ~/ 1000;
+    _idleRemainderMs %= 1000;
+    _sessionRemainderMs = _activeRemainderMs + _idleRemainderMs;
+
+    _applyUsageSeconds(
+      at: at,
+      activeSeconds: activeAdd,
+      idleSeconds: idleAdd,
+      activeStart: activeMs > 0 ? activeStart : null,
+      activeEnd: activeMs > 0 ? activeEnd : null,
+    );
+    if (activeMs > 0) _continuousActiveMs += activeMs;
+  }
+
+  /// 用本次毫秒偿还边界欠账，返回剩余可计入余数的毫秒。
+  int _repayDebt(int ms, {required bool active}) {
+    final int debt = active ? _activeDebtMs : _idleDebtMs;
+    final int paid = math.min(ms, debt);
+    final int left = debt - paid;
+    if (active) {
+      _activeDebtMs = left;
+    } else {
+      _idleDebtMs = left;
+    }
+    return ms - paid;
+  }
+
+  /// 把整数秒并入当日行，并按实际活跃区间更新首次 / 最后活跃时刻。
+  void _applyUsageSeconds({
+    required DateTime at,
+    required int activeSeconds,
+    required int idleSeconds,
+    required DateTime? activeStart,
+    required DateTime? activeEnd,
+  }) {
     final DailyUsage? today = _today;
     if (today == null) return;
 
     DateTime? first = today.firstActiveAt;
     DateTime? last = today.lastActiveAt;
-    if (activeMs > 0) {
-      // 活跃区间的起点：本 tick 计入窗口内、空闲开始之前。
-      final DateTime activeStart =
-          sample.wallNow.subtract(Duration(milliseconds: idleOverMs + activeMs));
-      first = (first == null || activeStart.isBefore(first)) ? activeStart : first;
-      last = (last == null || sample.wallNow.isAfter(last)) ? sample.wallNow : last;
-      _continuousActiveMs += activeMs;
+    if (activeStart != null && activeEnd != null) {
+      // 首次活跃取实际活跃区间起点；最后活跃取活跃区间终点，
+      // 不能写成采样结束时刻（后半段可能已经进入空闲）。
+      first = (first == null || activeStart.isBefore(first))
+          ? activeStart
+          : first;
+      last = (last == null || activeEnd.isAfter(last)) ? activeEnd : last;
     }
 
     _today = today.copyWith(
-      sessionSeconds: today.sessionSeconds + (activeMs + idleMs) ~/ 1000,
-      activeSeconds: today.activeSeconds + activeMs ~/ 1000,
-      idleSeconds: today.idleSeconds + idleMs ~/ 1000,
+      sessionSeconds: today.sessionSeconds + activeSeconds + idleSeconds,
+      activeSeconds: today.activeSeconds + activeSeconds,
+      idleSeconds: today.idleSeconds + idleSeconds,
       firstActiveAt: first,
       lastActiveAt: last,
-      updatedAt: sample.wallNow,
+      updatedAt: at,
     );
+  }
+
+  /// 午夜边界上的整数秒分配结果（每一天各自独立，余数不跨日）。
+  static _BoundarySplit _splitAtBoundary({
+    required int oldRemainderMs,
+    required int oldPartMs,
+    required int newPartMs,
+  }) {
+    final int oldRawMs = oldRemainderMs + oldPartMs;
+    final int oldBase = oldRawMs ~/ 1000;
+    final int oldRemainder = oldRawMs % 1000;
+    final int newBase = newPartMs ~/ 1000;
+    final int newRemainder = newPartMs % 1000;
+
+    if (oldRemainder + newRemainder >= 1000) {
+      // 最大余数先拿这 1 秒；平局归旧日，保证结果确定。
+      if (oldRemainder >= newRemainder) {
+        return _BoundarySplit(
+          oldSeconds: oldBase + 1,
+          newSeconds: newBase,
+          newRemainderMs: newRemainder,
+          newDebtMs: 0,
+        );
+      }
+      return _BoundarySplit(
+        oldSeconds: oldBase,
+        newSeconds: newBase + 1,
+        // 新日先拿 1 秒，但它的 900ms 余数不能再用一次；余数从 0 起算，
+        // 后续 1000-900ms 先偿还这 1 秒。
+        newRemainderMs: 0,
+        newDebtMs: 1000 - newRemainder,
+      );
+    }
+    return _BoundarySplit(
+      oldSeconds: oldBase,
+      newSeconds: newBase,
+      newRemainderMs: newRemainder,
+      newDebtMs: 0,
+    );
+  }
+
+  /// `[activeStart, activeEnd)` 与 `[windowStart, windowEnd)` 的重叠毫秒数。
+  static int _overlapMs(
+    DateTime activeStart,
+    DateTime activeEnd,
+    DateTime windowStart,
+    DateTime windowEnd,
+  ) {
+    final DateTime start = activeStart.isAfter(windowStart)
+        ? activeStart
+        : windowStart;
+    final DateTime end = activeEnd.isBefore(windowEnd) ? activeEnd : windowEnd;
+    final int ms = end.difference(start).inMilliseconds;
+    return ms > 0 ? ms : 0;
+  }
+
+  /// 区间 `(start, end]` 内的第一个本地午夜；没有则返回 null。
+  ///
+  /// 用日期分量构造而不是 `add(Duration(days: 1))`，以适配本地时区的夏令时。
+  static DateTime? _midnightInWindow(DateTime start, DateTime end) {
+    final DateTime next = start.isUtc
+        ? DateTime.utc(start.year, start.month, start.day + 1)
+        : DateTime(start.year, start.month, start.day + 1);
+    if (next.isBefore(start) || next.isAfter(end)) return null;
+    return next;
   }
 
   /// 依据当前采样决定「继续计时 / 结束 / 开新段」。
@@ -397,6 +634,10 @@ class ActivitySegmentService {
     required int creditMs,
     required int idleOverMs,
   }) async {
+    // 上一段还在等待补写关闭：旧段状态不能被覆盖，也不能在它之前开新段。
+    // 关闭成功（通常发生在下一次 flush）后，下一轮采样会自然恢复。
+    if (_open?.isClosing == true) return;
+
     // 1. 暂停 → 结束当前段。
     if (sample.paused) {
       await _closeOpen(
@@ -514,7 +755,8 @@ class ActivitySegmentService {
       return;
     }
 
-    if (sample.monotonicMs - candidate.sinceMonoMs < ActivityTracking.switchConfirmMs) {
+    if (sample.monotonicMs - candidate.sinceMonoMs <
+        ActivityTracking.switchConfirmMs) {
       _creditOpen(sample.monotonicMs, creditMs);
       return;
     }
@@ -553,6 +795,11 @@ class ActivitySegmentService {
     required DateTime atWall,
     required int atMono,
   }) async {
+    // 等待关闭的旧段仍占着内存状态；先不覆盖它，避免待关闭信息丢失。
+    if (_open?.isClosing == true) {
+      Loggers.activity.warning('上一活动段仍在等待关闭，暂缓开启新段（$appKey）');
+      return;
+    }
     final String id = Ids.segment(ownerId, deviceLocalId, appKey, atWall);
     final _OpenSegment segment = _OpenSegment(
       id: id,
@@ -561,25 +808,37 @@ class ActivitySegmentService {
       processName: processName,
       startedAt: atWall,
       lastCreditMonoMs: atMono,
+      createdAt: _wall.now(),
     );
     _open = segment;
     try {
-      await _activityDao.insert(ActivitySegment(
-        id: id,
-        ownerId: ownerId,
-        deviceLocalId: deviceLocalId,
-        appKey: appKey,
-        appName: displayName,
-        processName: processName,
-        startedAt: atWall,
-        activeSeconds: 0,
-        createdAt: _wall.now(),
-      ));
-      // 本地写入成功后才声明"这条变了"：保证 outbox 里不会有本地不存在的记录。
-      await _notifySegment(id);
+      await _persistOpen(segment);
     } catch (e, st) {
       // 数据库暂时失败不能中断采集：内存里继续计时，检查点时会再尝试。
+      // 插入成功之前绝不写 outbox，避免队列里出现本地不存在的记录。
       Loggers.activity.warning('写入活动段失败（将继续在内存计时）: $id', e, st);
+    }
+  }
+
+  /// 幂等写入尚未落盘的活动段（首次插入与后续重试共用）。
+  Future<void> _persistOpen(_OpenSegment open, {bool notify = true}) async {
+    await _activityDao.insertIfAbsent(
+      ActivitySegment(
+        id: open.id,
+        ownerId: ownerId,
+        deviceLocalId: deviceLocalId,
+        appKey: open.appKey,
+        appName: open.appName,
+        processName: open.processName,
+        startedAt: open.startedAt,
+        activeSeconds: 0,
+        createdAt: open.createdAt,
+      ),
+    );
+    open.persisted = true;
+    if (notify) {
+      // 本地写入成功后才声明"这条变了"：保证 outbox 里不会有本地不存在的记录。
+      await _notifySegment(open.id);
     }
   }
 
@@ -589,8 +848,7 @@ class ActivitySegmentService {
     required int creditUpToMono,
   }) async {
     final _OpenSegment? open = _open;
-    if (open == null) return;
-    _open = null;
+    if (open == null || open.pendingClose != null) return;
 
     final int delta = math.max(0, creditUpToMono - open.lastCreditMonoMs);
     open.activeMs += math.min(delta, ActivityTracking.maxCreditPerTickMs);
@@ -598,20 +856,46 @@ class ActivitySegmentService {
 
     final int activeSeconds = open.activeMs ~/ 1000;
     // 结束时间不得早于开始时间（时钟回拨 / 边界情况兜底）。
-    final DateTime safeEnd = endWall.isBefore(open.startedAt) ? open.startedAt : endWall;
+    final DateTime safeEnd = endWall.isBefore(open.startedAt)
+        ? open.startedAt
+        : endWall;
+
+    // 关闭成功前**不清空** _open：把结束时间 / 原因 / 最终秒数挂在这段上，
+    // 后续 flush 会优先补写并关闭它。
+    open.pendingClose = _PendingClose(
+      endedAt: safeEnd,
+      activeSeconds: activeSeconds,
+      reason: reason,
+    );
 
     try {
-      await _activityDao.closeSegment(
-        open.id,
-        safeEnd,
-        activeSeconds,
-        reason.wireName,
-      );
-      await _checkpointDao.delete(open.id);
-      await _notifySegment(open.id);
+      await _finishClose(open);
     } catch (e, st) {
-      Loggers.activity.warning('关闭活动段失败: ${open.id}', e, st);
+      Loggers.activity.warning('关闭活动段失败，已保留待关闭状态（下次检查点重试）: ${open.id}', e, st);
     }
+  }
+
+  /// 补写并关闭一段（可重复调用：插入幂等、关闭写同一条记录）。
+  ///
+  /// 成功后才删除检查点、通知同步并清空内存状态；任何一步失败都把状态留在
+  /// 内存里，下一次 flush 继续重试。
+  Future<void> _finishClose(_OpenSegment open) async {
+    final _PendingClose? pending = open.pendingClose;
+    if (pending == null) return;
+    if (!open.persisted) {
+      // 结束时间只在关闭成功后才有，因此补写时先用未关闭行占位。
+      await _persistOpen(open, notify: false);
+    }
+    await _activityDao.closeSegment(
+      open.id,
+      pending.endedAt,
+      pending.activeSeconds,
+      pending.reason.wireName,
+    );
+    await _checkpointDao.delete(open.id);
+    await _notifySegment(open.id);
+    open.pendingClose = null;
+    if (identical(_open, open)) _open = null;
   }
 
   // ---------------------------------------------------------------------------
@@ -619,7 +903,10 @@ class ActivitySegmentService {
   // ---------------------------------------------------------------------------
 
   Future<void> _maybeCheckpoint(int monoNow) async {
-    if (monoNow - _lastCheckpointMonoMs < ActivityTracking.checkpointIntervalMs) return;
+    if (monoNow - _lastCheckpointMonoMs <
+        ActivityTracking.checkpointIntervalMs) {
+      return;
+    }
     _lastCheckpointMonoMs = monoNow;
     await _flush(force: false);
   }
@@ -630,15 +917,26 @@ class ActivitySegmentService {
     try {
       final _OpenSegment? open = _open;
       if (open != null) {
-        final int activeSeconds = open.activeMs ~/ 1000;
-        await _checkpointDao.upsert(ActivityCheckpoint(
-          segmentId: open.id,
-          appKey: open.appKey,
-          wallAt: now,
-          activeSeconds: activeSeconds,
-          updatedAt: now,
-        ));
-        await _activityDao.updateActiveSeconds(open.id, activeSeconds);
+        if (open.pendingClose != null) {
+          // 待关闭状态优先：补写插入 + 关闭 + 清检查点 + 通知同步。
+          await _finishClose(open);
+        } else {
+          // 开段插入失败过的段先做幂等补写，成功后才允许写检查点 / 通知同步。
+          if (!open.persisted) {
+            await _persistOpen(open);
+          }
+          final int activeSeconds = open.activeMs ~/ 1000;
+          await _checkpointDao.upsert(
+            ActivityCheckpoint(
+              segmentId: open.id,
+              appKey: open.appKey,
+              wallAt: now,
+              activeSeconds: activeSeconds,
+              updatedAt: now,
+            ),
+          );
+          await _activityDao.updateActiveSeconds(open.id, activeSeconds);
+        }
       }
       final DailyUsage? today = _today;
       if (today != null) {
@@ -649,8 +947,9 @@ class ActivitySegmentService {
 
       // Phase 2：本地落盘成功后再声明变更（写 outbox）。
       // 顺序很重要——先本地后 outbox，保证队列里不会有本地不存在的记录。
-      if (open != null) {
-        await _notifySegment(open.id);
+      final _OpenSegment? current = _open;
+      if (current != null && current.pendingClose == null) {
+        await _notifySegment(current.id);
       }
       if (today != null) {
         await _notifyDaily(today.dayKey);
@@ -708,16 +1007,30 @@ class ActivitySegmentService {
         Loggers.activity.warning('跨日写入上一日用量失败', e, st);
       }
     }
+    // 每日累计各自保存毫秒余数：普通跨日直接清零，绝不让旧日余数进入新日。
+    _resetUsageRemainders();
     await _loadToday(referenceWall: wallNow);
+  }
+
+  void _resetUsageRemainders() {
+    _sessionRemainderMs = 0;
+    _activeRemainderMs = 0;
+    _idleRemainderMs = 0;
+    _activeDebtMs = 0;
+    _idleDebtMs = 0;
   }
 
   Future<void> _loadToday({DateTime? referenceWall}) async {
     final DateTime wallNow = referenceWall ?? _wall.now();
     final String key = _dayKey(wallNow);
     try {
-      final DailyUsage? existing =
-          await _dailyUsageDao.find(ownerId, deviceLocalId, key);
-      _today = existing ??
+      final DailyUsage? existing = await _dailyUsageDao.find(
+        ownerId,
+        deviceLocalId,
+        key,
+      );
+      _today =
+          existing ??
           DailyUsage(
             ownerId: ownerId,
             deviceLocalId: deviceLocalId,
@@ -749,6 +1062,7 @@ class _OpenSegment {
     required this.processName,
     required this.startedAt,
     required this.lastCreditMonoMs,
+    required this.createdAt,
   });
 
   final String id;
@@ -756,12 +1070,51 @@ class _OpenSegment {
   final String appName;
   final String? processName;
   final DateTime startedAt;
+  final DateTime createdAt;
+
+  /// 是否已经成功写入数据库；首次插入失败时为 false，由 flush 重试。
+  bool persisted = false;
+
+  /// 关闭失败时保存的待补写状态；非 null 表示这一段已经结束、只等落盘。
+  _PendingClose? pendingClose;
+
+  bool get isClosing => pendingClose != null;
 
   /// 已经计入到哪个单调时刻（避免重复计入同一段时间）。
   int lastCreditMonoMs;
 
   /// 已累计的活跃毫秒数。
   int activeMs = 0;
+}
+
+/// 关闭活动段时已经算好的最终结果（关闭失败后留在内存里等待重试）。
+class _PendingClose {
+  const _PendingClose({
+    required this.endedAt,
+    required this.activeSeconds,
+    required this.reason,
+  });
+
+  final DateTime endedAt;
+  final int activeSeconds;
+  final SegmentEndReason reason;
+}
+
+/// 午夜边界的整数秒分配结果。
+class _BoundarySplit {
+  const _BoundarySplit({
+    required this.oldSeconds,
+    required this.newSeconds,
+    required this.newRemainderMs,
+    required this.newDebtMs,
+  });
+
+  final int oldSeconds;
+  final int newSeconds;
+  final int newRemainderMs;
+
+  /// 新日多拿 1 秒后需要先偿还的毫秒数（0 = 没有欠账）。
+  final int newDebtMs;
 }
 
 /// 待确认的应用切换候选。

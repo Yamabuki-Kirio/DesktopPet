@@ -24,6 +24,16 @@ internal class UsageSessionRecorder(
     /** 最近一次检查点写入时刻。 */
     private var lastCheckpointAtMs: Long = 0L
 
+    /**
+     * 仅存在于内存的待重试队列。
+     *
+     * journal 是唯一持久化介质；这里只是"已经结束、但这次没写进 journal"的会话。
+     * 顺序即完成顺序，重试成功一个才移除一个；进程在成功前被系统杀死时，
+     * 仍按现有检查点精度边界处理，不引入第二套持久化文件。
+     */
+    private val pendingPersist = ArrayList<UsageSessionRecord>(4)
+    private val pendingPersistIds = HashSet<String>()
+
     // -----------------------------------------------------------------------
     // 生命周期
     // -----------------------------------------------------------------------
@@ -37,7 +47,10 @@ internal class UsageSessionRecorder(
         val leftover = journal.readOpen()
         if (leftover != null) {
             val record = tracker.recover(leftover)
-            if (record != null) journal.append(record)
+            if (record != null) {
+                // 恢复记录同样必须"先落盘再算成功"：写失败就留在待重试队列。
+                flushCompleted(listOf(record))
+            }
             OverlayLog.log(
                 "usage.journal.recovered-checkpoint id=${leftover.sessionId} " +
                     "pkg=${leftover.packageName} lastSeen=${leftover.creditUpToMs}",
@@ -131,14 +144,52 @@ internal class UsageSessionRecorder(
 
     /** 写入已结束的会话：**先落盘再算成功**；写失败只记日志，绝不影响桌宠。 */
     private fun flushCompleted(records: List<UsageSessionRecord>) {
+        // 先重试旧记录，再写本次新记录：保证 journal 里的顺序与完成顺序一致。
+        retryPendingPersist()
         for (record in records) {
-            if (!journal.append(record)) {
-                OverlayLog.warn(
-                    "usage.session.persist-failed id=${record.sessionId} pkg=${record.packageName}",
-                )
-                continue
-            }
+            persist(record)
+        }
+    }
+
+    /** 尝试把一条已结束会话写入 journal；失败则保留在内存队列。 */
+    private fun persist(record: UsageSessionRecord) {
+        if (!pendingPersistIds.add(record.sessionId)) {
+            // 同一 sessionId 已经排队：只更新内容，绝不重复追加。
+            val index = pendingPersist.indexOfFirst { it.sessionId == record.sessionId }
+            if (index >= 0) pendingPersist[index] = record
+            return
+        }
+        if (journal.append(record)) {
+            pendingPersistIds.remove(record.sessionId)
             OverlayLog.log("usage.outbox.enqueued id=${record.sessionId}（等待 Flutter 导入）")
+            return
+        }
+        pendingPersist.add(record)
+        OverlayLog.warn(
+            "usage.session.persist-failed id=${record.sessionId} pkg=${record.packageName} " +
+                "（已保留在内存待重试，当前 ${pendingPersist.size} 条）",
+        )
+    }
+
+    /** 按完成顺序重试内存队列；写成功一个才移除一个。 */
+    private fun retryPendingPersist() {
+        if (pendingPersist.isEmpty()) return
+        val iterator = pendingPersist.iterator()
+        while (iterator.hasNext()) {
+            val record = iterator.next()
+            if (!journal.append(record)) {
+                // 存储仍不可用：保留剩余记录与顺序，下一次触发继续。
+                OverlayLog.warn(
+                    "usage.session.persist-retry-failed id=${record.sessionId} " +
+                        "（保留 ${pendingPersist.size} 条待重试）",
+                )
+                return
+            }
+            iterator.remove()
+            pendingPersistIds.remove(record.sessionId)
+            OverlayLog.log(
+                "usage.session.persist-retried id=${record.sessionId}（等待 Flutter 导入）",
+            )
         }
     }
 

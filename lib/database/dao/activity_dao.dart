@@ -84,6 +84,19 @@ class ActivityDao {
     );
   }
 
+  /// 幂等插入：主键已存在时保持原行不变。
+  ///
+  /// 采集层的开段写入可能因短暂的数据库错误失败，下一次检查点会重试；
+  /// 重试必须**不能**覆盖已经存在（甚至已经关闭）的同 ID 行，因此这里用
+  /// `INSERT OR IGNORE` 而不是 [insert] 的 `INSERT OR REPLACE`。
+  Future<void> insertIfAbsent(ActivitySegment segment) async {
+    await _db.insert(
+      DbSchema.tableActivitySegments,
+      segment.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+  }
+
   Future<List<ActivitySegment>> listRange(
     String ownerId,
     DateTime from,

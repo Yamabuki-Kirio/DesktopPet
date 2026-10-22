@@ -462,3 +462,121 @@ class UsageSessionJournalTest {
         assertEquals(true, summary["available"])
     }
 }
+
+/**
+ * UsageSessionRecorder 的故障注入测试：
+ * journal 写入失败时记录必须留在内存队列，下一次触发先重试旧记录再写新记录。
+ */
+class UsageSessionRecorderTest {
+
+    private lateinit var root: File
+    private lateinit var journal: UsageSessionJournal
+    private lateinit var tracker: AndroidUsageSessionTracker
+    private lateinit var recorder: UsageSessionRecorder
+    private var now: Long = 0L
+    private var counter: Int = 0
+
+    private val a = "com.example.a"
+
+    private fun setUpRecorder() {
+        root = File(
+            System.getProperty("java.io.tmpdir"),
+            "petlife_usage_recorder_${System.nanoTime()}",
+        )
+        root.mkdirs()
+        journal = UsageSessionJournal(root)
+        tracker = AndroidUsageSessionTracker(
+            idFactory = { "session-${++counter}" },
+            deviceLocalId = { "device-local-1" },
+            clock = { 0L },
+        )
+        recorder = UsageSessionRecorder(
+            tracker = tracker,
+            journal = journal,
+            now = { now },
+        )
+    }
+
+    private fun breakJournalWrites() {
+        // 临时文件位置变成目录 → 原子写入必然失败。
+        File(root, "${UsageSessionJournal.PENDING_FILE}.tmp").mkdirs()
+    }
+
+    private fun repairJournalWrites() {
+        File(root, "${UsageSessionJournal.PENDING_FILE}.tmp").deleteRecursively()
+    }
+
+    @After
+    fun cleanup() {
+        if (::root.isInitialized && root.exists()) root.deleteRecursively()
+    }
+
+    @Test
+    fun `首次 append 失败后下次触发补写，记录只出现一次`() {
+        setUpRecorder()
+        recorder.observe(a, "示例 A", AppCategoryId.SOCIAL, countable = true)
+        now = 3_000
+        recorder.observe(a, "示例 A", AppCategoryId.SOCIAL, countable = true)
+
+        breakJournalWrites()
+        now = 4_000
+        recorder.onServiceStopped()
+        assertEquals(0, journal.pendingCount())
+
+        repairJournalWrites()
+        recorder.onScreenOff() // 没有新会话，只做旧记录重试
+        assertEquals(1, journal.pendingCount())
+        assertEquals("session-1", journal.readPending(limit = 10).single().sessionId)
+
+        recorder.onScreenOff()
+        assertEquals("重试必须幂等，不能重复追加", 1, journal.pendingCount())
+    }
+
+    @Test
+    fun `多条待重试记录保持原顺序且不重复`() {
+        setUpRecorder()
+        breakJournalWrites()
+
+        // 会话 1：0 → 4000ms。
+        recorder.observe(a, "示例 A", AppCategoryId.SOCIAL, countable = true)
+        now = 4_000
+        recorder.onServiceStopped()
+
+        // 会话 2：5000 → 9000ms。
+        now = 5_000
+        recorder.observe(a, "示例 A", AppCategoryId.SOCIAL, countable = true)
+        now = 9_000
+        recorder.onServiceStopped()
+
+        assertEquals("写入失败期间记录只能留在内存", 0, journal.pendingCount())
+
+        repairJournalWrites()
+        recorder.onScreenOff()
+
+        val pending = journal.readPending(limit = 10)
+        assertEquals(listOf("session-1", "session-2"), pending.map { it.sessionId })
+        assertEquals(1, pending.count { it.sessionId == "session-1" })
+        assertEquals(1, pending.count { it.sessionId == "session-2" })
+
+        recorder.onScreenOff()
+        assertEquals("重复触发不得二次追加", 2, journal.pendingCount())
+    }
+
+    @Test
+    fun `恢复成功后先补写旧记录，再写新记录`() {
+        setUpRecorder()
+        breakJournalWrites()
+        recorder.observe(a, "示例 A", AppCategoryId.SOCIAL, countable = true)
+        now = 4_000
+        recorder.onServiceStopped() // session-1 待重试
+
+        repairJournalWrites()
+        now = 5_000
+        recorder.observe(a, "示例 A", AppCategoryId.SOCIAL, countable = true)
+        now = 9_000
+        recorder.onServiceStopped() // 先补 session-1，再写 session-2
+
+        val pending = journal.readPending(limit = 10)
+        assertEquals(listOf("session-1", "session-2"), pending.map { it.sessionId })
+    }
+}

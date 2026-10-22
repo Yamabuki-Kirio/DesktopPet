@@ -21,6 +21,7 @@ class AndroidUsageImportResult {
     this.inserted = 0,
     this.alreadyImported = 0,
     this.acknowledged = 0,
+    this.deferred = 0,
     this.skipped = 0,
     this.failed = false,
     this.error,
@@ -38,6 +39,9 @@ class AndroidUsageImportResult {
   /// 事务成功后被原生确认（从 journal 删除）的条数。
   final int acknowledged;
 
+  /// 因设备标识不一致而**保留待处理**的条数（不确认、不删除、不计入统计）。
+  final int deferred;
+
   /// 解析失败被跳过的条数。
   final int skipped;
 
@@ -48,7 +52,8 @@ class AndroidUsageImportResult {
 
   /// 日志/诊断用的一行摘要。
   String get summaryZh =>
-      '读取 $read，新增 $inserted，已存在 $alreadyImported，确认 $acknowledged，跳过 $skipped';
+      '读取 $read，新增 $inserted，已存在 $alreadyImported，确认 $acknowledged，'
+      '保留 $deferred，跳过 $skipped';
 }
 
 /// Android 原生使用会话的**幂等导入器**（Phase 4C-5.1B，需求 §6 / §7）。
@@ -79,11 +84,11 @@ class AndroidUsageImportService {
     required this.ownerId,
     required this.deviceLocalId,
     this.batchLimit = 200,
-  })  : _overlay = overlay,
-        _database = database,
-        _outboxDao = outboxDao,
-        _outboxProducer = outboxProducer,
-        _applications = applications;
+  }) : _overlay = overlay,
+       _database = database,
+       _outboxDao = outboxDao,
+       _outboxProducer = outboxProducer,
+       _applications = applications;
 
   final AndroidOverlayPet _overlay;
   final AppDatabase _database;
@@ -105,6 +110,8 @@ class AndroidUsageImportService {
   DateTime? _lastImportAt;
   String? _lastError;
   int _lastInserted = 0;
+  int _lastDeferred = 0;
+  List<String> _lastDeferredDeviceIds = const <String>[];
   int _importRunCount = 0;
 
   /// 是否有导入正在进行（界面据此避免重复触发）。
@@ -118,6 +125,12 @@ class AndroidUsageImportService {
 
   /// 最近一次导入新增的条数。
   int get lastInsertedCount => _lastInserted;
+
+  /// 最近一次导入因设备标识不一致而保留的条数（诊断页展示）。
+  int get lastDeferredCount => _lastDeferred;
+
+  /// 最近一次导入遇到的原始设备标识（去重，诊断日志/页面可追溯）。
+  List<String> get lastDeferredDeviceIds => _lastDeferredDeviceIds;
 
   /// 导入被触发的次数（诊断）。
   int get importRunCount => _importRunCount;
@@ -185,40 +198,60 @@ class AndroidUsageImportService {
   Future<AndroidUsageImportResult> _runOnce() async {
     _importRunCount++;
     try {
-      final List<AndroidUsageSession> pending =
-          await _overlay.readPendingUsageSessions(limit: batchLimit);
+      final List<AndroidUsageSession> pending = await _overlay
+          .readPendingUsageSessions(limit: batchLimit);
       if (pending.isEmpty) {
         _lastImportAt = DateTime.now();
         _lastError = null;
         _lastInserted = 0;
+        _lastDeferred = 0;
+        _lastDeferredDeviceIds = const <String>[];
         return const AndroidUsageImportResult();
       }
-      Loggers.activity.info('usage.journal_import_started count=${pending.length}');
+      Loggers.activity.info(
+        'usage.journal_import_started count=${pending.length}',
+      );
 
-      // 0) 归属过滤：**别的设备标识**的记录不属于本机统计，导入进来会污染本设备的数据，
-      //    而且它永远无法被正确导入 → 确认掉，避免永久堵在 FIFO 队头。
+      // 0) 归属过滤：**别的设备标识**的记录不属于本机统计，导入进来会污染本设备的数据。
+      //    但它们也不能被自动确认/删除（否则真正的外部记录会被永久抹掉），
+      //    因此只留在 journal 里等待人工处理，本轮不计入统计。
       //    （设备标识为空的记录是"下发前产生的"，按本机处理，由本端补齐归属。）
       final List<AndroidUsageSession> sessions = <AndroidUsageSession>[];
-      final List<String> foreignSessionIds = <String>[];
+      final List<AndroidUsageSession> deferred = <AndroidUsageSession>[];
       for (final AndroidUsageSession session in pending) {
-        if (session.deviceLocalId.isNotEmpty && session.deviceLocalId != deviceLocalId) {
-          foreignSessionIds.add(session.sessionId);
+        if (session.deviceLocalId.isNotEmpty &&
+            session.deviceLocalId != deviceLocalId) {
+          deferred.add(session);
           continue;
         }
         sessions.add(session);
       }
-      if (foreignSessionIds.isNotEmpty) {
+      final List<String> deferredDeviceIds =
+          deferred
+              .map((AndroidUsageSession s) => s.deviceLocalId)
+              .toSet()
+              .toList(growable: false)
+            ..sort();
+      if (deferred.isNotEmpty) {
+        _lastDeferred = deferred.length;
+        _lastDeferredDeviceIds = deferredDeviceIds;
         Loggers.activity.warning(
-          '跳过 ${foreignSessionIds.length} 条非本机设备标识的使用记录'
-          '（不属于 $deviceLocalId，已从暂存队列移除）',
+          'usage.journal_import_deferred count=${deferred.length} '
+          'devices=${deferredDeviceIds.join(",")} '
+          '（设备标识与 $deviceLocalId 不一致，已保留在 journal，未计入统计）',
         );
-        await _overlay.acknowledgeUsageSessions(foreignSessionIds);
+      } else {
+        _lastDeferred = 0;
+        _lastDeferredDeviceIds = const <String>[];
       }
       if (sessions.isEmpty) {
         _lastImportAt = DateTime.now();
         _lastError = null;
         _lastInserted = 0;
-        return AndroidUsageImportResult(read: pending.length, skipped: foreignSessionIds.length);
+        return AndroidUsageImportResult(
+          read: pending.length,
+          deferred: deferred.length,
+        );
       }
 
       // 1) 先登记应用（显示名 / 分类）—— 上传体的 category 来自应用库，
@@ -237,7 +270,10 @@ class AndroidUsageImportService {
       final List<String> nativeSessionIds = <String>[];
       final List<OutboxEntry> entries = <OutboxEntry>[];
       for (final AndroidUsageSession session in sessions) {
-        final String segmentId = Ids.usageSession(deviceLocalId, session.sessionId);
+        final String segmentId = Ids.usageSession(
+          deviceLocalId,
+          session.sessionId,
+        );
         final Map<String, Object?> row = <String, Object?>{
           'id': segmentId,
           'owner_id': ownerId,
@@ -254,18 +290,21 @@ class AndroidUsageImportService {
         };
         rows.add(row);
         nativeSessionIds.add(session.sessionId);
-        entries.add(OutboxEntry(
-          id: Ids.random(),
-          entityType: SyncEntityType.activitySegment,
-          entityKey: segmentId,
-          entityLocalId: segmentId,
-          payload: (await _outboxProducer.buildPayloadFromRow(
-                SyncEntityType.activitySegment,
-                row,
-              )) ??
-              const <String, Object?>{},
-          createdAt: DateTime.now(),
-        ));
+        entries.add(
+          OutboxEntry(
+            id: Ids.random(),
+            entityType: SyncEntityType.activitySegment,
+            entityKey: segmentId,
+            entityLocalId: segmentId,
+            payload:
+                (await _outboxProducer.buildPayloadFromRow(
+                  SyncEntityType.activitySegment,
+                  row,
+                )) ??
+                const <String, Object?>{},
+            createdAt: DateTime.now(),
+          ),
+        );
       }
 
       // 3) 一个事务里提交"业务行 + outbox"：
@@ -289,19 +328,25 @@ class AndroidUsageImportService {
       );
 
       // 4) 事务成功之后才确认原生记录（顺序反了会丢数据）。
-      final int acknowledged = await _overlay.acknowledgeUsageSessions(nativeSessionIds);
+      final int acknowledged = await _overlay.acknowledgeUsageSessions(
+        nativeSessionIds,
+      );
 
       _lastImportAt = DateTime.now();
       _lastError = null;
       _lastInserted = inserted;
+      _lastDeferred = deferred.length;
+      _lastDeferredDeviceIds = deferredDeviceIds;
       final AndroidUsageImportResult result = AndroidUsageImportResult(
         read: pending.length,
         inserted: inserted,
         alreadyImported: sessions.length - inserted,
-        acknowledged: acknowledged + foreignSessionIds.length,
-        skipped: foreignSessionIds.length,
+        acknowledged: acknowledged,
+        deferred: deferred.length,
       );
-      Loggers.activity.info('usage.journal_import_completed ${result.summaryZh}');
+      Loggers.activity.info(
+        'usage.journal_import_completed ${result.summaryZh}',
+      );
       return result;
     } catch (e, st) {
       // 失败**保留 journal**（不确认），不阻塞启动，下次触发继续重试。

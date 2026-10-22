@@ -962,6 +962,7 @@ class _OverlayPetCardState extends State<OverlayPetCard>
     final AndroidUsageImportService? importer = widget.services.androidUsageImport;
     final DateTime? lastImport = importer?.lastImportAt;
     final String? lastError = importer?.lastError;
+    final int deferred = importer?.lastDeferredCount ?? 0;
     final String? serverDeviceId = widget.services.authenticatedApi.deviceServerId;
     final DateTime? lastSync = widget.services.syncEngine.lastSuccessAt;
     final int pendingUpload = widget.services.syncEngine.pendingCount;
@@ -1016,6 +1017,14 @@ class _OverlayPetCardState extends State<OverlayPetCard>
           child: Text(
             '未登录时本机照常采集，登录后会自动补传（数据不会丢）',
             style: TextStyle(fontSize: 11, color: Color(0xFF8A6D3B)),
+          ),
+        ),
+      if (deferred > 0)
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            '发现 $deferred 条设备标识不一致的暂存记录，已保留，未计入统计',
+            style: const TextStyle(fontSize: 11, color: Color(0xFF8A6D3B)),
           ),
         ),
       if (lastError != null)

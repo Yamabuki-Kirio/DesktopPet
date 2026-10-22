@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:petlife/activity_tracking/activity_segment_service.dart';
 import 'package:petlife/activity_tracking/application_repository.dart';
+import 'package:petlife/activity_tracking/local_change_sink.dart';
 import 'package:petlife/activity_tracking/models/activity_enums.dart';
 import 'package:petlife/activity_tracking/models/activity_sample.dart';
 import 'package:petlife/activity_tracking/models/tracking_settings.dart';
@@ -41,17 +42,21 @@ class Harness {
   final FakeMonotonicClock mono = FakeMonotonicClock(0);
   final FakeWallClock wall = FakeWallClock(base);
 
+  /// 记录 outbox 通知，用于验证「插入成功之前不得创建 outbox」。
+  final RecordingChangeSink sink = RecordingChangeSink();
+
   /// 用本 Harness 的时钟装配状态机。
   ActivitySegmentService buildService() => ActivitySegmentService(
-        activityDao: activityDao,
-        checkpointDao: ActivityCheckpointDao(db.raw),
-        dailyUsageDao: DailyUsageDao(db.raw),
-        applications: apps,
-        ownerId: kOwner,
-        deviceLocalId: kDevice,
-        monotonicClock: mono,
-        wallClock: wall,
-      );
+    activityDao: activityDao,
+    checkpointDao: ActivityCheckpointDao(db.raw),
+    dailyUsageDao: DailyUsageDao(db.raw),
+    applications: apps,
+    ownerId: kOwner,
+    deviceLocalId: kDevice,
+    monotonicClock: mono,
+    wallClock: wall,
+    changeSink: sink,
+  );
 
   int get nowMono => mono.nowMs();
   DateTime get nowWall => wall.now();
@@ -67,12 +72,9 @@ class Harness {
     final int step = advanceMs ?? kTick;
     mono.advance(step);
     wall.advance(Duration(milliseconds: step));
-    await service.tick(build(
-      appPath: appPath,
-      idle: idle,
-      locked: locked,
-      paused: paused,
-    ));
+    await service.tick(
+      build(appPath: appPath, idle: idle, locked: locked, paused: paused),
+    );
   }
 
   ActivitySample build({
@@ -80,22 +82,21 @@ class Harness {
     Duration idle = Duration.zero,
     bool locked = false,
     bool paused = false,
-  }) =>
-      ActivitySample(
-        wallNow: nowWall,
-        monotonicMs: nowMono,
-        foreground: appPath == null
-            ? null
-            : ForegroundAppInfo(
-                windowHandle: 42,
-                processId: 4242,
-                processName: p.basename(appPath),
-                executablePath: appPath,
-              ),
-        idle: idle,
-        sessionLocked: locked,
-        paused: paused,
-      );
+  }) => ActivitySample(
+    wallNow: nowWall,
+    monotonicMs: nowMono,
+    foreground: appPath == null
+        ? null
+        : ForegroundAppInfo(
+            windowHandle: 42,
+            processId: 4242,
+            processName: p.basename(appPath),
+            executablePath: appPath,
+          ),
+    idle: idle,
+    sessionLocked: locked,
+    paused: paused,
+  );
 
   /// 直接读库，避免被上层裁剪逻辑掩盖真实写入结果。
   Future<List<Map<String, Object?>>> rows() async =>
@@ -106,7 +107,10 @@ class Harness {
 
   Future<int> todayActiveSeconds() async {
     final List<Map<String, Object?>> r = await db.raw.query('daily_usage');
-    return r.fold<int>(0, (int s, Map<String, Object?> e) => s + (e['active_seconds']! as int));
+    return r.fold<int>(
+      0,
+      (int s, Map<String, Object?> e) => s + (e['active_seconds']! as int),
+    );
   }
 }
 
@@ -127,7 +131,10 @@ void main() {
   });
 
   setUp(() async {
-    final String dbPath = p.join(tmp.path, 'petlife_${DateTime.now().microsecondsSinceEpoch}.db');
+    final String dbPath = p.join(
+      tmp.path,
+      'petlife_${DateTime.now().microsecondsSinceEpoch}.db',
+    );
     // 每次用例一个独立库文件，避免用例之间互相污染（AppDatabase 是单例，必须关闭再开）。
     await AppDatabase.close();
     db = await AppDatabase.open(path: dbPath);
@@ -135,7 +142,9 @@ void main() {
 
     final ActivityDao activityDao = ActivityDao(db.raw);
     final ApplicationDao applicationDao = ApplicationDao(db.raw);
-    final ApplicationRepository apps = ApplicationRepository(dao: applicationDao);
+    final ApplicationRepository apps = ApplicationRepository(
+      dao: applicationDao,
+    );
     await apps.load();
 
     // 时钟实例必须与 service 共用同一份，否则测试推进的时钟对服务不可见。
@@ -177,7 +186,10 @@ void main() {
       final List<Map<String, Object?>> rows = await h.rows();
       expect(rows.length, 2, reason: '应产生两段：Code 一段 + Chrome 一段');
       expect(rows[0]['app_key'], 'code');
-      expect(rows[0]['end_reason'], SegmentEndReason.foregroundChanged.wireName);
+      expect(
+        rows[0]['end_reason'],
+        SegmentEndReason.foregroundChanged.wireName,
+      );
       expect(rows[1]['app_key'], 'chrome');
       expect(rows[1]['ended_at'], isNull);
     });
@@ -249,12 +261,13 @@ void main() {
       expect(await h.rows(), hasLength(1));
 
       // 注意：这里不推进时钟，验证「立即生效」而不是等下一个采样周期。
-      await h.service.updateSettings(
-        const TrackingSettings(paused: true),
-      );
+      await h.service.updateSettings(const TrackingSettings(paused: true));
 
       final List<Map<String, Object?>> rows = await h.rows();
-      expect(rows.first['end_reason'], SegmentEndReason.trackingPaused.wireName);
+      expect(
+        rows.first['end_reason'],
+        SegmentEndReason.trackingPaused.wireName,
+      );
       expect(rows.first['ended_at'], isNotNull);
 
       // 暂停期间继续采样：不产生新段、不累计设备用量。
@@ -288,12 +301,13 @@ void main() {
     test('11. 快速切换不会产生大量短碎片', () async {
       // 每 2 秒在 Code 与 Chrome 之间来回切换 10 次。
       for (int i = 0; i < 10; i++) {
-        await h.tick(appPath: i.isEven ? r'C:\apps\Code.exe' : r'C:\apps\chrome.exe');
+        await h.tick(
+          appPath: i.isEven ? r'C:\apps\Code.exe' : r'C:\apps\chrome.exe',
+        );
       }
 
       final List<Map<String, Object?>> rows = await h.rows();
-      expect(rows.length, 1,
-          reason: '闪切未达到切换确认时长，应被归入同一段而不是产生 10 个碎片段');
+      expect(rows.length, 1, reason: '闪切未达到切换确认时长，应被归入同一段而不是产生 10 个碎片段');
       expect(rows.first['app_key'], 'code');
     });
 
@@ -318,13 +332,14 @@ void main() {
         final int? started = row['started_at'] as int?;
         final int? ended = row['ended_at'] as int?;
         if (started != null && ended != null) {
-          expect(ended, greaterThanOrEqualTo(started),
-              reason: '结束时间不得早于开始时间');
+          expect(ended, greaterThanOrEqualTo(started), reason: '结束时间不得早于开始时间');
         }
       }
       expect(
-        rows.any((Map<String, Object?> r) =>
-            r['end_reason'] == SegmentEndReason.clockChanged.wireName),
+        rows.any(
+          (Map<String, Object?> r) =>
+              r['end_reason'] == SegmentEndReason.clockChanged.wireName,
+        ),
         isTrue,
         reason: '系统时间大幅变化应显式结束当前段并标记 clock_changed',
       );
@@ -387,8 +402,11 @@ void main() {
       await recovered.recoverInterruptedSegments();
 
       final List<Map<String, Object?>> after = await h.rows();
-      expect(after.first['ended_at'], startedAt,
-          reason: '没有检查点时必须用起点关闭，绝不能虚报一段长记录');
+      expect(
+        after.first['ended_at'],
+        startedAt,
+        reason: '没有检查点时必须用起点关闭，绝不能虚报一段长记录',
+      );
       expect(after.first['active_seconds'], 0);
     });
 
@@ -398,9 +416,72 @@ void main() {
       await h.service.shutdown();
 
       final List<Map<String, Object?>> rows = await h.rows();
-      expect(rows.first['end_reason'], SegmentEndReason.clientShutdown.wireName);
+      expect(
+        rows.first['end_reason'],
+        SegmentEndReason.clientShutdown.wireName,
+      );
       expect(rows.first['ended_at'], isNotNull);
       expect(await h.checkpoints(), isEmpty);
+    });
+  });
+
+  group('数据库短暂失败后的恢复', () {
+    test('20. 首次插入失败，下一次 flush 幂等补写且最终只有一条段', () async {
+      await db.raw.execute(
+        "CREATE TRIGGER fail_segment_insert BEFORE INSERT ON activity_segments "
+        "BEGIN SELECT RAISE(ABORT, 'injected insert failure'); END",
+      );
+
+      await h.tick(); // 开段插入失败，但内存里继续计时
+      expect(await h.rows(), isEmpty);
+      expect(h.sink.segments, isEmpty, reason: '插入成功前不得创建 outbox');
+
+      await db.raw.execute('DROP TRIGGER fail_segment_insert');
+      await h.tick(); // 第二个采样周期累计 2 秒
+      await h.service.flushNow(); // 检查点触发的补写
+
+      final List<Map<String, Object?>> rows = await h.rows();
+      expect(rows, hasLength(1), reason: '重试插入不能产生第二条活动段');
+      expect(rows.first['ended_at'], isNull);
+      expect(rows.first['active_seconds'], 2);
+      expect(h.sink.segments, isNotEmpty);
+
+      // 再 flush 一次仍然只有一条，且不会重复插入。
+      await h.service.flushNow();
+      expect(await h.rows(), hasLength(1));
+    });
+
+    test('21. 关闭失败后保留待关闭状态，下一次 flush 正确关闭', () async {
+      await h.tick();
+      await h.tick();
+      final int threshold = h.service.settings.idleThresholdMs;
+
+      await db.raw.execute(
+        "CREATE TRIGGER fail_segment_close BEFORE UPDATE ON activity_segments "
+        "WHEN NEW.ended_at IS NOT NULL "
+        "BEGIN SELECT RAISE(ABORT, 'injected close failure'); END",
+      );
+
+      await h.tick(
+        advanceMs: 2000,
+        idle: Duration(milliseconds: threshold + 1000),
+      );
+
+      List<Map<String, Object?>> rows = await h.rows();
+      expect(rows, hasLength(1));
+      expect(rows.first['ended_at'], isNull, reason: '关闭失败时必须保留未关闭行');
+      expect(h.service.hasOpenSegment, isTrue, reason: '关闭成功前不得清空内存状态');
+
+      await db.raw.execute('DROP TRIGGER fail_segment_close');
+      await h.service.flushNow();
+
+      rows = await h.rows();
+      expect(rows, hasLength(1), reason: '补写关闭必须幂等，不能产生第二条段');
+      expect(rows.first['end_reason'], SegmentEndReason.userIdle.wireName);
+      expect(rows.first['active_seconds'], 3);
+      expect(rows.first['ended_at'], isNotNull);
+      expect(h.service.hasOpenSegment, isFalse);
+      expect(await h.checkpoints(), isEmpty, reason: '成功关闭后才删除检查点');
     });
   });
 
@@ -419,12 +500,21 @@ void main() {
         await h.tick(idle: Duration(milliseconds: threshold + 60000));
       }
 
-      expect(h.service.todayIdleSeconds, greaterThan(0), reason: '超过阈值的空闲应单独计入空闲时间');
-      expect(h.service.todayActiveSeconds, activeAfterBusy,
-          reason: '进入空闲后活跃时间不应继续增长');
-      expect(h.service.todaySessionSeconds,
-          h.service.todayActiveSeconds + h.service.todayIdleSeconds,
-          reason: '屏幕会话时间 = 活跃 + 空闲');
+      expect(
+        h.service.todayIdleSeconds,
+        greaterThan(0),
+        reason: '超过阈值的空闲应单独计入空闲时间',
+      );
+      expect(
+        h.service.todayActiveSeconds,
+        activeAfterBusy,
+        reason: '进入空闲后活跃时间不应继续增长',
+      );
+      expect(
+        h.service.todaySessionSeconds,
+        h.service.todayActiveSeconds + h.service.todayIdleSeconds,
+        reason: '屏幕会话时间 = 活跃 + 空闲',
+      );
     });
 
     test('15. 未应用任何时间的采样延迟不会被全部算成活跃时间', () async {
@@ -434,8 +524,140 @@ void main() {
 
       final List<Map<String, Object?>> rows = await h.rows();
       final int active = rows.first['active_seconds']! as int;
-      expect(active, lessThanOrEqualTo(6),
-          reason: '单次采样延迟最多只计入 maxCreditPerTickMs');
+      expect(
+        active,
+        lessThanOrEqualTo(6),
+        reason: '单次采样延迟最多只计入 maxCreditPerTickMs',
+      );
+    });
+
+    test('16. 毫秒余数跨采样累计：1999ms + 2001ms = 4 秒（不逐 tick 丢弃）', () async {
+      await h.tick(); // 建立基线并开段
+      await h.tick(advanceMs: 1999);
+      // 1999ms 不足 2 秒，先记 1 秒 + 999ms 余数。
+      expect(h.service.todayActiveSeconds, 1);
+      await h.tick(advanceMs: 2001);
+
+      expect(h.service.todayActiveSeconds, 4);
+      expect(h.service.todaySessionSeconds, 4);
+      expect(h.service.todayIdleSeconds, 0);
+      expect(h.service.currentSegmentSeconds, 4);
+    });
+
+    test('17. 活跃与空闲混合采样后 session = active + idle', () async {
+      final int threshold = h.service.settings.idleThresholdMs;
+      await h.tick();
+      await h.tick(advanceMs: 1500); // 活跃 1.5s
+      await h.tick(
+        advanceMs: 1500,
+        idle: Duration(milliseconds: threshold + 1500),
+      ); // 本 tick 全部空闲 1.5s
+      await h.tick(advanceMs: 2501); // 活跃 2.501s
+
+      expect(
+        h.service.todaySessionSeconds,
+        h.service.todayActiveSeconds + h.service.todayIdleSeconds,
+      );
+      expect(h.service.todayIdleSeconds, 1);
+      expect(h.service.todayActiveSeconds, 4);
+      expect(h.service.todaySessionSeconds, 5);
+    });
+
+    test('18. 跨午夜按最大余数拆到两天，禁止旧日余数整体转入新日', () async {
+      // 2026-09-27 23:59:59.200 → 2026-09-28 00:00:01.200
+      // 旧日 800ms / 新日 1200ms：整数秒必须分成旧日 1 秒、新日 1 秒，
+      // 不能因为把旧日余数带进新日而变成旧日 0 秒、新日 2 秒。
+      h.wall.set(DateTime.utc(2026, 9, 27, 23, 59, 59, 200));
+      h.mono.set(1000);
+      await h.service.tick(h.build()); // 建立基线并开段
+
+      h.mono.advance(2000);
+      h.wall.advance(const Duration(seconds: 2));
+      await h.service.tick(h.build());
+      await h.service.flushNow();
+
+      final List<Map<String, Object?>> days = await db.raw.query(
+        'daily_usage',
+        orderBy: 'day_key ASC',
+      );
+      expect(days, hasLength(2), reason: '跨午夜必须同时留下前后两天的行');
+      expect(days[0]['day_key'], '2026-09-27');
+      expect(days[1]['day_key'], '2026-09-28');
+      expect(days[0]['session_seconds'], 1, reason: '旧日 800ms 按最大余数分配 1 秒');
+      expect(days[1]['session_seconds'], 1, reason: '新日 1200ms 分配 1 秒');
+      expect(days[0]['active_seconds'], 1);
+      expect(days[1]['active_seconds'], 1);
+      expect(
+        (days[0]['session_seconds']! as int) +
+            (days[1]['session_seconds']! as int),
+        2,
+        reason: '总秒数不增不减',
+      );
+    });
+
+    test('18b. 新日拿最大余数后，后续毫秒先偿还 1 秒欠账，不重复累计', () async {
+      // 旧日 400ms / 新日 900ms：最大余数归新日 → 旧日 0 秒、新日 1 秒。
+      h.wall.set(DateTime.utc(2026, 9, 27, 23, 59, 59, 600));
+      h.mono.set(1000);
+      await h.service.tick(h.build());
+
+      h.mono.advance(1300);
+      h.wall.advance(const Duration(milliseconds: 1300));
+      await h.service.tick(h.build());
+      await h.service.flushNow();
+
+      List<Map<String, Object?>> days = await db.raw.query(
+        'daily_usage',
+        orderBy: 'day_key ASC',
+      );
+      expect(days[0]['session_seconds'], 0);
+      expect(days[1]['session_seconds'], 1);
+
+      // 新日再走 200ms：前 100ms 偿还新日提前拿到的 1 秒，剩余 100ms 还不够进位。
+      h.mono.advance(200);
+      h.wall.advance(const Duration(milliseconds: 200));
+      await h.service.tick(h.build());
+      await h.service.flushNow();
+
+      days = await db.raw.query('daily_usage', orderBy: 'day_key ASC');
+      expect(days[1]['session_seconds'], 1, reason: '不得把偿还期内的毫秒再累计成第 2 秒');
+    });
+
+    test('19. 空闲发生后 lastActiveAt 停在活跃区间末端，不落在空闲末端', () async {
+      final int threshold = h.service.settings.idleThresholdMs;
+      await h.tick();
+      await h.tick();
+      await h.tick(
+        advanceMs: 2000,
+        idle: Duration(milliseconds: threshold + 1000),
+      );
+
+      final DateTime wallNow = h.nowWall;
+      expect(h.service.todayLastActiveAt, isNotNull);
+      expect(
+        h.service.todayLastActiveAt,
+        wallNow.subtract(const Duration(milliseconds: 1000)),
+        reason: 'lastActiveAt 必须减去 idleOverMs，不能写成采样结束时刻',
+      );
     });
   });
+}
+
+/// 记录本地变更通知的测试替身。
+class RecordingChangeSink implements LocalChangeSink {
+  final List<String> segments = <String>[];
+
+  @override
+  Future<void> onSegmentChanged(String segmentId) async {
+    segments.add(segmentId);
+  }
+
+  @override
+  Future<void> onDailyUsageChanged({
+    required String deviceLocalId,
+    required String dayKey,
+  }) async {}
+
+  @override
+  Future<void> onApplicationChanged(String appKey) async {}
 }

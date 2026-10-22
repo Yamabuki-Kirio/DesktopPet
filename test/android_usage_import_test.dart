@@ -54,7 +54,10 @@ void main() {
   setUp(() async {
     await AppDatabase.close();
     db = await AppDatabase.open(
-      path: p.join(tmp.path, 'import_${DateTime.now().microsecondsSinceEpoch}.db'),
+      path: p.join(
+        tmp.path,
+        'import_${DateTime.now().microsecondsSinceEpoch}.db',
+      ),
     );
     activityDao = ActivityDao(db.raw);
     outboxDao = SyncOutboxDao(db.raw);
@@ -65,7 +68,11 @@ void main() {
       overlay: overlay,
       database: db,
       outboxDao: outboxDao,
-      outboxProducer: OutboxProducer(db: db, outbox: outboxDao, ownerId: kOwner),
+      outboxProducer: OutboxProducer(
+        db: db,
+        outbox: outboxDao,
+        ownerId: kOwner,
+      ),
       applications: apps,
       ownerId: kOwner,
       deviceLocalId: kDevice,
@@ -88,19 +95,20 @@ void main() {
     int activeSeconds = 20,
     String endReason = 'app_switch',
   }) {
-    final AndroidUsageSession? parsed = AndroidUsageSession.fromMap(<String, Object?>{
-      'schemaVersion': 1,
-      'sessionId': sessionId,
-      'deviceLocalId': deviceLocalId,
-      'packageName': packageName,
-      'appName': appName,
-      'category': category,
-      'startedAt': startedAtMs,
-      'endedAt': endedAtMs,
-      'activeSeconds': activeSeconds,
-      'endReason': endReason,
-      'createdAt': endedAtMs,
-    });
+    final AndroidUsageSession? parsed =
+        AndroidUsageSession.fromMap(<String, Object?>{
+          'schemaVersion': 1,
+          'sessionId': sessionId,
+          'deviceLocalId': deviceLocalId,
+          'packageName': packageName,
+          'appName': appName,
+          'category': category,
+          'startedAt': startedAtMs,
+          'endedAt': endedAtMs,
+          'activeSeconds': activeSeconds,
+          'endReason': endReason,
+          'createdAt': endedAtMs,
+        });
     expect(parsed, isNotNull, reason: '测试夹具本身必须是合法记录');
     return parsed!;
   }
@@ -136,20 +144,23 @@ void main() {
 
     test('关键字段缺失 / 结束早于开始 / 负数时长 → 拒绝', () {
       Map<String, Object?> base() => <String, Object?>{
-            'schemaVersion': 1,
-            'sessionId': 's',
-            'packageName': 'a.b',
-            'startedAt': 1000,
-            'endedAt': 2000,
-            'activeSeconds': 1,
-            'endReason': 'app_switch',
-            'createdAt': 2000,
-          };
+        'schemaVersion': 1,
+        'sessionId': 's',
+        'packageName': 'a.b',
+        'startedAt': 1000,
+        'endedAt': 2000,
+        'activeSeconds': 1,
+        'endReason': 'app_switch',
+        'createdAt': 2000,
+      };
 
       expect(AndroidUsageSession.fromMap(base()..remove('sessionId')), isNull);
       expect(AndroidUsageSession.fromMap(base()..['packageName'] = ''), isNull);
       expect(AndroidUsageSession.fromMap(base()..['endedAt'] = 500), isNull);
-      expect(AndroidUsageSession.fromMap(base()..['activeSeconds'] = -1), isNull);
+      expect(
+        AndroidUsageSession.fromMap(base()..['activeSeconds'] = -1),
+        isNull,
+      );
       expect(AndroidUsageSession.fromMap(base()..['endReason'] = ''), isNull);
     });
 
@@ -160,26 +171,28 @@ void main() {
     });
 
     test('采集器状态解析出可读文案', () {
-      final UsageCollectorState state = UsageCollectorState.fromMap(<String, Object?>{
-        'supported': true,
-        'running': true,
-        'collectorRunning': true,
-        'usageAccessAvailable': true,
-        'journalAvailable': true,
-        'pendingCount': 3,
-        'currentSessionSeconds': 42,
-      });
+      final UsageCollectorState state =
+          UsageCollectorState.fromMap(<String, Object?>{
+            'supported': true,
+            'running': true,
+            'collectorRunning': true,
+            'usageAccessAvailable': true,
+            'journalAvailable': true,
+            'pendingCount': 3,
+            'currentSessionSeconds': 42,
+          });
       expect(state.collecting, isTrue);
       expect(state.labelZh, '采集中');
       expect(state.pendingCount, 3);
       expect(state.currentSessionSeconds, 42);
 
-      final UsageCollectorState missing = UsageCollectorState.fromMap(<String, Object?>{
-        'supported': true,
-        'running': true,
-        'usageAccessAvailable': false,
-        'failureReason': 'usage_access_missing',
-      });
+      final UsageCollectorState missing =
+          UsageCollectorState.fromMap(<String, Object?>{
+            'supported': true,
+            'running': true,
+            'usageAccessAvailable': false,
+            'failureReason': 'usage_access_missing',
+          });
       expect(missing.collecting, isFalse);
       expect(missing.labelZh, '缺少使用情况访问权限');
     });
@@ -188,10 +201,19 @@ void main() {
   group('确定性段 ID', () {
     test('同一设备 + 同一 session_id 永远得到同一个段 ID', () {
       final AndroidUsageSession s = session(sessionId: 'abc');
-      expect(Ids.usageSession(kDevice, s.sessionId), Ids.usageSession(kDevice, 'abc'));
-      expect(Ids.usageSession(kDevice, 'abc'), isNot(Ids.usageSession(kDevice, 'abd')));
+      expect(
+        Ids.usageSession(kDevice, s.sessionId),
+        Ids.usageSession(kDevice, 'abc'),
+      );
+      expect(
+        Ids.usageSession(kDevice, 'abc'),
+        isNot(Ids.usageSession(kDevice, 'abd')),
+      );
       // 换设备 → 换 ID（不同设备的数据不能撞主键）。
-      expect(Ids.usageSession(kDevice, 'abc'), isNot(Ids.usageSession('other', 'abc')));
+      expect(
+        Ids.usageSession(kDevice, 'abc'),
+        isNot(Ids.usageSession('other', 'abc')),
+      );
     });
   });
 
@@ -226,8 +248,9 @@ void main() {
         limit: 10,
         now: DateTime.now().add(const Duration(minutes: 1)),
       );
-      final OutboxEntry segmentEntry = pending
-          .firstWhere((OutboxEntry e) => e.entityType == SyncEntityType.activitySegment);
+      final OutboxEntry segmentEntry = pending.firstWhere(
+        (OutboxEntry e) => e.entityType == SyncEntityType.activitySegment,
+      );
       expect(segmentEntry.payload['app_key'], 'org.telegram.messenger');
       expect(segmentEntry.payload['category'], AppCategory.social.wireName);
       expect(segmentEntry.payload['active_seconds'], 20);
@@ -286,14 +309,17 @@ void main() {
 
       final Future<AndroidUsageImportResult> a = importer.importPending();
       final Future<AndroidUsageImportResult> b = importer.importPending();
-      final List<AndroidUsageImportResult> both =
-          await Future.wait(<Future<AndroidUsageImportResult>>[a, b]);
+      final List<AndroidUsageImportResult> both = await Future.wait(
+        <Future<AndroidUsageImportResult>>[a, b],
+      );
 
       // 两次调用复用同一个在途任务，因此结果是同一次导入。
       expect(both[0].inserted, 1);
       expect(both[1].inserted, 1);
       expect(
-        overlay.calls.where((String c) => c == 'readPendingUsageSessions').length,
+        overlay.calls
+            .where((String c) => c == 'readPendingUsageSessions')
+            .length,
         1,
         reason: '并发触发不得读取两次（否则两次都可能写库）',
       );
@@ -316,7 +342,7 @@ void main() {
       expect(importer.lastInsertedCount, 1);
     });
 
-    test('别的设备标识的记录被跳过：不写库、不进 outbox、且被确认掉', () async {
+    test('别的设备标识的记录被保留：不写库、不进 outbox、不确认', () async {
       overlay.pendingSessions = <AndroidUsageSession>[
         session(sessionId: 'foreign', deviceLocalId: 'another-device-uuid'),
         session(sessionId: 'mine'),
@@ -326,7 +352,11 @@ void main() {
 
       expect(result.read, 2);
       expect(result.inserted, 1);
-      expect(result.skipped, 1);
+      expect(result.deferred, 1);
+      expect(result.skipped, 0);
+      expect(result.acknowledged, 1);
+      expect(importer.lastDeferredCount, 1);
+      expect(importer.lastDeferredDeviceIds, <String>['another-device-uuid']);
 
       final List<ActivitySegment> rows = await activityDao.listRange(
         kOwner,
@@ -335,12 +365,36 @@ void main() {
       );
       expect(rows, hasLength(1));
       expect(rows.first.deviceLocalId, kDevice);
-      // 本机不可导入的记录必须被确认掉，否则会永久堵在 FIFO 队头。
-      expect(overlay.acknowledgedSessionIds, contains('foreign'));
+      // 设备标识不一致的记录必须原样留在 journal，不能被自动删除。
+      expect(overlay.acknowledgedSessionIds, isNot(contains('foreign')));
+      expect(
+        overlay.pendingSessions.map((AndroidUsageSession s) => s.sessionId),
+        contains('foreign'),
+      );
+      // 但合法记录照常导入、入 outbox 并确认，不被异常记录阻塞。
+      expect(overlay.acknowledgedSessionIds, contains('mine'));
+    });
+
+    test('整批都是别的设备标识：全部保留，不写库、不确认', () async {
+      overlay.pendingSessions = <AndroidUsageSession>[
+        session(sessionId: 'foreign-a', deviceLocalId: 'device-a'),
+        session(sessionId: 'foreign-b', deviceLocalId: 'device-b'),
+      ];
+
+      final AndroidUsageImportResult result = await importer.importPending();
+
+      expect(result.inserted, 0);
+      expect(result.deferred, 2);
+      expect(result.acknowledged, 0);
+      expect(overlay.acknowledgedSessionIds, isEmpty);
+      expect(overlay.pendingSessions, hasLength(2));
+      expect(await db.raw.query(DbSchema.tableActivitySegments), isEmpty);
     });
 
     test('设备标识为空（下发前产生的记录）按本机处理，由本端补齐归属', () async {
-      overlay.pendingSessions = <AndroidUsageSession>[session(deviceLocalId: '')];
+      overlay.pendingSessions = <AndroidUsageSession>[
+        session(deviceLocalId: ''),
+      ];
       final AndroidUsageImportResult result = await importer.importPending();
       expect(result.inserted, 1);
 
@@ -359,10 +413,7 @@ void main() {
       expect(result.isEmpty, isTrue);
       expect(result.inserted, 0);
       expect(importer.lastImportAt, isNotNull);
-      expect(
-        await db.raw.query(DbSchema.tableActivitySegments),
-        isEmpty,
-      );
+      expect(await db.raw.query(DbSchema.tableActivitySegments), isEmpty);
     });
 
     test('单批条数受限（避免一次传输过大）', () async {
@@ -370,7 +421,11 @@ void main() {
         overlay: overlay,
         database: db,
         outboxDao: outboxDao,
-        outboxProducer: OutboxProducer(db: db, outbox: outboxDao, ownerId: kOwner),
+        outboxProducer: OutboxProducer(
+          db: db,
+          outbox: outboxDao,
+          ownerId: kOwner,
+        ),
         applications: apps,
         ownerId: kOwner,
         deviceLocalId: kDevice,
