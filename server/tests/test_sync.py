@@ -150,7 +150,7 @@ def test_activity_segment_last_write_wins(api, session_factory):
     early = make_segment(
         device_id=api.device_id,
         started_at=start,
-        ended_at=start + timedelta(minutes=10),
+        ended_at=start + timedelta(minutes=20),
         active_seconds=600,
         record_id=record_id,
         updated_at=start + timedelta(minutes=10),
@@ -158,6 +158,7 @@ def test_activity_segment_last_write_wins(api, session_factory):
     late = dict(early)
     late["active_seconds"] = 900
     late["end_reason"] = "user_idle"
+    late["ended_at"] = (start + timedelta(minutes=20)).isoformat().replace("+00:00", "Z")
     late["updated_at"] = (start + timedelta(minutes=20)).isoformat().replace("+00:00", "Z")
 
     _push(api, segments=[late])
@@ -238,6 +239,33 @@ def test_invalid_time_range_is_rejected_per_record(api):
         app_key="good",
         started_at=start - timedelta(minutes=5),
         ended_at=start,
+    )
+
+    body = _push(api, segments=[bad, good]).json()
+    assert body["accepted_activity_segments"] == 1
+    assert len(body["rejected"]) == 1
+    assert body["rejected"][0]["code"] == "invalid_time_range"
+    assert body["rejected"][0]["key"] == bad["id"]
+
+
+def test_active_seconds_cannot_exceed_wall_span(api):
+    """有效时长不得超过会话墙钟跨度；坏记录单条拒绝，合法记录照常入账。"""
+    api.register(email="sync9b@example.com")
+    api.bind_device(name="时长时间设备")
+
+    start = utcnow()
+    bad = make_segment(
+        device_id=api.device_id,
+        started_at=start,
+        ended_at=start + timedelta(minutes=1),
+        active_seconds=7200,  # 1 分钟会话声称有效 2 小时
+    )
+    good = make_segment(
+        device_id=api.device_id,
+        app_key="good",
+        started_at=start,
+        ended_at=start + timedelta(minutes=1),
+        active_seconds=60,
     )
 
     body = _push(api, segments=[bad, good]).json()

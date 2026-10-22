@@ -108,7 +108,71 @@ class AndroidUsageSession {
     return value.isEmpty ? null : value;
   }
 
-  static int _int(Object? value, int fallback) => value is num ? value.toInt() : fallback;
+  static int _int(Object? value, int fallback) =>
+      value is num ? value.toInt() : fallback;
+
+  static DateTime? _utc(Object? value) {
+    if (value is! num) return null;
+    final int millis = value.toInt();
+    if (millis <= 0) return null;
+    return DateTime.fromMillisecondsSinceEpoch(millis, isUtc: true);
+  }
+}
+
+/// 原生**正在使用中**的会话（只读快照；不会写 journal / 数据库）。
+///
+/// 用于把尚未结束的会话临时并入统计页，避免“连续用了几小时但统计为 0”。
+class AndroidCurrentUsageSession {
+  const AndroidCurrentUsageSession({
+    required this.sessionId,
+    required this.packageName,
+    this.appName,
+    this.category,
+    required this.startedAt,
+    required this.elapsedSeconds,
+  });
+
+  final String sessionId;
+  final String packageName;
+  final String? appName;
+
+  /// 原生分类 wire 值（`AppCategory.wireName`）。
+  final String? category;
+
+  final DateTime startedAt;
+
+  /// 原生当前会话已持续秒数（按当前开放会话实时计算）。
+  final int elapsedSeconds;
+
+  static AndroidCurrentUsageSession? fromMap(Map<String, Object?> map) {
+    final String sessionId = _string(map['sessionId']);
+    final String packageName = _string(map['packageName']);
+    if (sessionId.isEmpty || packageName.isEmpty) return null;
+
+    final DateTime? startedAt = _utc(map['startedAt']);
+    if (startedAt == null) return null;
+    final int elapsed = _int(map['elapsedSeconds'], -1);
+    if (elapsed < 0) return null;
+
+    return AndroidCurrentUsageSession(
+      sessionId: sessionId,
+      packageName: packageName,
+      appName: _nullableString(map['appName']),
+      category: _nullableString(map['category']),
+      startedAt: startedAt,
+      elapsedSeconds: elapsed,
+    );
+  }
+
+  static String _string(Object? value) => value is String ? value : '';
+
+  static String? _nullableString(Object? value) {
+    if (value is! String) return null;
+    return value.isEmpty ? null : value;
+  }
+
+  static int _int(Object? value, int fallback) =>
+      value is num ? value.toInt() : fallback;
 
   static DateTime? _utc(Object? value) {
     if (value is! num) return null;
@@ -174,7 +238,11 @@ class UsageCollectorState {
 
   /// 采集是否真的在产生记录。
   bool get collecting =>
-      supported && running && collectorRunning && usageAccessAvailable && !paused;
+      supported &&
+      running &&
+      collectorRunning &&
+      usageAccessAvailable &&
+      !paused;
 
   /// 采集状态的中文说明。
   String get labelZh {
@@ -188,7 +256,8 @@ class UsageCollectorState {
     };
   }
 
-  static UsageCollectorState fromMap(Map<String, Object?> map) => UsageCollectorState(
+  static UsageCollectorState fromMap(Map<String, Object?> map) =>
+      UsageCollectorState(
         supported: map['supported'] == true,
         running: map['running'] == true,
         paused: map['paused'] == true,

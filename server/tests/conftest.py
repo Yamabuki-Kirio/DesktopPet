@@ -212,13 +212,24 @@ def make_segment(
     category: str = "development",
     started_at: datetime,
     ended_at: datetime | None = None,
-    active_seconds: int = 600,
+    active_seconds: int | None = None,
     end_reason: str = "foreground_changed",
     record_id: str | None = None,
     updated_at: datetime | None = None,
     created_at: datetime | None = None,
 ) -> dict:
-    """构造一条活动段上传体（默认字段齐全，便于用例只覆盖关心的字段）。"""
+    """构造一条活动段上传体（默认字段齐全，便于用例只覆盖关心的字段）。
+
+    ``active_seconds`` 未显式给出时按墙钟跨度取 ``min(600, span)``，
+    保证测试夹具自身满足服务端时间不变量；需要构造非法数据的用例
+    仍可显式传入越界值。
+    """
+    if active_seconds is None:
+        if ended_at is None:
+            active_seconds = 600
+        else:
+            span = max(0, int((ended_at - started_at).total_seconds()))
+            active_seconds = min(600, span)
     return {
         "id": record_id or str(uuid.uuid4()),
         "device_id": device_id,

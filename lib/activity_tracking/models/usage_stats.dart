@@ -40,9 +40,11 @@ class UsageWindow {
     return UsageWindow(
       fromUtc: startUtc,
       toUtc: startUtc.add(const Duration(days: 1)),
-      label: label ?? '${localMidnight.year}-'
-          '${localMidnight.month.toString().padLeft(2, '0')}-'
-          '${localMidnight.day.toString().padLeft(2, '0')}',
+      label:
+          label ??
+          '${localMidnight.year}-'
+              '${localMidnight.month.toString().padLeft(2, '0')}-'
+              '${localMidnight.day.toString().padLeft(2, '0')}',
     );
   }
 
@@ -85,9 +87,11 @@ class UsageWindow {
     DateTime cursor = fromUtc;
     while (cursor.isBefore(toUtc)) {
       final DateTime local = cursor.add(tzOffset);
-      keys.add('${local.year}-'
-          '${local.month.toString().padLeft(2, '0')}-'
-          '${local.day.toString().padLeft(2, '0')}');
+      keys.add(
+        '${local.year}-'
+        '${local.month.toString().padLeft(2, '0')}-'
+        '${local.day.toString().padLeft(2, '0')}',
+      );
       cursor = cursor.add(const Duration(days: 1));
     }
     return keys;
@@ -227,6 +231,33 @@ class UsageSegmentRow {
   }
 }
 
+/// 只读的「正在使用中」会话快照。
+///
+/// 不写入 `activity_segments` / outbox：它只用于把尚未结束的会话并入统计查询，
+/// 会话结束后仍由原有 journal 导入链路落库并同步。
+class LiveUsageSegment {
+  const LiveUsageSegment({
+    required this.segmentId,
+    required this.appKey,
+    this.appName,
+    this.category,
+    required this.startedAtUtc,
+    required this.capturedAtUtc,
+    required this.activeSeconds,
+  });
+
+  final String segmentId;
+  final String appKey;
+  final String? appName;
+
+  /// 原生分类（应用库没有记录时的兜底）。
+  final AppCategory? category;
+
+  final DateTime startedAtUtc;
+  final DateTime capturedAtUtc;
+  final int activeSeconds;
+}
+
 /// 一次统计查询的完整结果。
 class UsageSummary {
   const UsageSummary({
@@ -242,11 +273,11 @@ class UsageSummary {
   final List<CategoryUsageRow> categories;
 
   static UsageSummary emptyFor(UsageWindow window) => UsageSummary(
-        window: window,
-        overview: UsageOverview.empty,
-        apps: const <AppUsageRow>[],
-        categories: const <CategoryUsageRow>[],
-      );
+    window: window,
+    overview: UsageOverview.empty,
+    apps: const <AppUsageRow>[],
+    categories: const <CategoryUsageRow>[],
+  );
 }
 
 /// 把秒数格式化为「2 小时 14 分」这类可读文本。

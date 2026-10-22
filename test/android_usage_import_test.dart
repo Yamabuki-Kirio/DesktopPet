@@ -7,6 +7,7 @@ import 'package:petlife/activity_tracking/android_usage_session.dart';
 import 'package:petlife/activity_tracking/application_repository.dart';
 import 'package:petlife/activity_tracking/models/activity_enums.dart';
 import 'package:petlife/activity_tracking/models/activity_sample.dart';
+import 'package:petlife/activity_tracking/models/usage_stats.dart';
 import 'package:petlife/core/ids.dart';
 import 'package:petlife/database/app_database.dart';
 import 'package:petlife/database/dao/activity_dao.dart';
@@ -466,6 +467,33 @@ void main() {
       final UsageCollectorState state = await importer.collectorState();
       expect(state.pendingCount, 7);
       expect(state.collecting, isTrue);
+    });
+
+    test('进行中会话只读快照可并入统计，不写库、不写 outbox', () async {
+      final DateTime startedAt = DateTime.now().toUtc().subtract(
+        const Duration(minutes: 2),
+      );
+      overlay.currentSession = AndroidCurrentUsageSession(
+        sessionId: 'live-1',
+        packageName: 'org.telegram.messenger',
+        appName: 'Telegram',
+        category: 'social',
+        startedAt: startedAt,
+        elapsedSeconds: 90,
+      );
+
+      final LiveUsageSegment? live = await importer.currentLiveSegment();
+
+      expect(live, isNotNull);
+      expect(live!.segmentId, Ids.usageSession(kDevice, 'live-1'));
+      expect(live.appKey, 'org.telegram.messenger');
+      expect(live.category, AppCategory.social);
+      expect(live.activeSeconds, 90);
+      expect(live.startedAtUtc, startedAt);
+      // 只读：不应触发任何导入 / outbox / journal 确认。
+      expect(await db.raw.query(DbSchema.tableActivitySegments), isEmpty);
+      expect(overlay.acknowledgedSessionIds, isEmpty);
+      expect(overlay.calls, isNot(contains('readPendingUsageSessions')));
     });
   });
 }

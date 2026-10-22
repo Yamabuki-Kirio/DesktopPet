@@ -250,6 +250,19 @@ def _push_activity_segment(
         )
         return
 
+    # 有效时长不能超过会话墙钟跨度。单条坏记录只拒绝这一条，不拖垮整批。
+    if ended is not None:
+        span_seconds = (ended - started).total_seconds()
+        if item.active_seconds > span_seconds:
+            _reject(
+                stats,
+                kind=ENTITY_ACTIVITY_SEGMENT,
+                key=key,
+                code=ErrorCode.invalid_time_range,
+                message="active_seconds 不能超过 ended_at - started_at",
+            )
+            return
+
     updated_at = ensure_utc(item.updated_at)
     existing = db.get(ActivitySegment, (user.id, item.id))
 

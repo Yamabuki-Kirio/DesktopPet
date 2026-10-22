@@ -764,7 +764,9 @@ def get_timeline(
                 device_name=_device_name(devices.get(head.device_id), head.device_id),
                 started_at=to_iso(merged_start) or "",
                 ended_at=to_iso(merged_end),
-                duration_seconds=_union_seconds([(s.start, s.end) for s in group]),
+                # 与 summary / apps 同一口径：按有效活跃秒数（含重叠去重），
+                # 不再用首尾墙钟区间，避免“明细比总计大”。
+                duration_seconds=_effective_seconds(group),
                 merged_session_count=len(group),
                 raw_app_keys=raws,
                 normalized=len(raws) > 1 or identity.normalized,

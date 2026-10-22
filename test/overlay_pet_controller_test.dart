@@ -1085,6 +1085,7 @@ class FakeOverlayPet implements AndroidOverlayPet {
 
   UsageCollectorState collectorState = UsageCollectorState.unsupported;
   List<AndroidUsageSession> pendingSessions = <AndroidUsageSession>[];
+  AndroidCurrentUsageSession? currentSession;
   final List<String> acknowledgedSessionIds = <String>[];
   bool? pushedPaused;
   String? pushedDeviceLocalId;
@@ -1093,6 +1094,12 @@ class FakeOverlayPet implements AndroidOverlayPet {
   Future<UsageCollectorState> usageCollectorState() async {
     calls.add('usageCollectorState');
     return collectorState;
+  }
+
+  @override
+  Future<AndroidCurrentUsageSession?> currentUsageSession() async {
+    calls.add('currentUsageSession');
+    return currentSession;
   }
 
   @override

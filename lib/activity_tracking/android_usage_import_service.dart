@@ -13,6 +13,7 @@ import '../sync/outbox_producer.dart';
 import 'android_usage_session.dart';
 import 'application_repository.dart';
 import 'models/activity_enums.dart';
+import 'models/usage_stats.dart';
 
 /// 一次导入的结果（供界面与日志展示）。
 class AndroidUsageImportResult {
@@ -172,6 +173,41 @@ class AndroidUsageImportService {
     } catch (e, st) {
       Loggers.activity.warning('读取原生采集器状态失败', e, st);
       return UsageCollectorState.unsupported;
+    }
+  }
+
+  /// 读取「正在使用中」的会话，供统计查询只读合并。
+  ///
+  /// 不写数据库、不写 outbox：会话结束后仍由 [importPending] 正常落库。
+  Future<LiveUsageSegment?> currentLiveSegment() async {
+    try {
+      final AndroidCurrentUsageSession? session = await _overlay
+          .currentUsageSession();
+      if (session == null) return null;
+
+      final DateTime capturedAt = DateTime.now().toUtc();
+      final DateTime startedAt = session.startedAt.toUtc();
+      final int wallSeconds = capturedAt.difference(startedAt).inSeconds;
+      final int activeSeconds = session.elapsedSeconds <= 0
+          ? 0
+          : (session.elapsedSeconds > wallSeconds
+                ? wallSeconds
+                : session.elapsedSeconds);
+      if (activeSeconds <= 0) return null;
+
+      return LiveUsageSegment(
+        segmentId: Ids.usageSession(deviceLocalId, session.sessionId),
+        appKey: session.packageName,
+        appName: session.appName,
+        category: _categoryOf(session.category),
+        startedAtUtc: startedAt,
+        capturedAtUtc: capturedAt,
+        activeSeconds: activeSeconds,
+      );
+    } catch (e, st) {
+      // 统计页宁可少一条进行中会话，也不能因此报错。
+      Loggers.activity.warning('读取进行中使用会话失败（统计页降级）', e, st);
+      return null;
     }
   }
 

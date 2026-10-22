@@ -7,6 +7,7 @@
 
 # --- 本地 Python 运行时（用脚本下载的 embeddable 包，可随时删掉重建）---
 .python/
+.venv/
 python-embed*.zip
 get-pip.py
 

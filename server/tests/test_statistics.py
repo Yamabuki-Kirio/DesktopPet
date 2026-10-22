@@ -272,6 +272,33 @@ def test_timeline_merges_adjacent_sessions_for_display(api: ApiClient) -> None:
     assert [i["app_id"] for i in items] == ["code", "wechat"], "时间线按开始时间升序"
 
 
+def test_timeline_duration_uses_active_seconds_not_wall_span(api: ApiClient) -> None:
+    """时间线与排行榜同口径：会话墙钟 60 秒、有效 45 秒时，时间线也显示 45 秒。"""
+    api.register()
+    api.bind_device()
+    push_segments(
+        api,
+        [
+            make_segment(
+                device_id=api.device_id,
+                app_key="code",
+                started_at=local(2026, 9, 29, 9, 0),
+                ended_at=local(2026, 9, 29, 9, 1),
+                active_seconds=45,
+            )
+        ],
+    )
+
+    timeline = query(api, "timeline", date=DAY, timezone=SHANGHAI).json()
+    item = timeline["items"][0]
+    assert item["duration_seconds"] == 45
+    assert timeline["total_duration_seconds"] == 45
+
+    apps = query(api, "apps", date=DAY, timezone=SHANGHAI).json()
+    code = next(a for a in apps["apps"] if a["app_id"] == "code")
+    assert code["duration_seconds"] == 45, "时间线与应用排行必须使用同一有效时长"
+
+
 def test_timeline_does_not_merge_across_large_gap(api: ApiClient) -> None:
     """间隔超过 60 秒不合并。"""
     api.register()

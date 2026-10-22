@@ -301,6 +301,43 @@ void main() {
       expect(summary.apps.single.category, AppCategory.other);
     });
 
+    test('进行中的会话只读并入汇总与时间线，且不写数据库', () async {
+      final UsageAnalyticsService withLive = UsageAnalyticsService(
+        activityDao: activityDao,
+        dailyUsageDao: dailyUsageDao,
+        applications: apps,
+        ownerId: kOwner,
+        deviceLocalId: kDevice,
+        liveSegmentProvider: () async => LiveUsageSegment(
+          segmentId: 'live-session-1',
+          appKey: 'com.example.live',
+          appName: '直播',
+          category: AppCategory.entertainment,
+          startedAtUtc: DateTime.utc(2026, 9, 27, 10, 0),
+          capturedAtUtc: DateTime.utc(2026, 9, 27, 11, 0),
+          activeSeconds: 3600,
+        ),
+      );
+      final DateTime now = DateTime.utc(2026, 9, 27, 12, 0);
+      final UsageWindow window = UsageWindow.dayContaining(now, Duration.zero);
+
+      final UsageSummary summary = await withLive.summarize(window, nowUtc: now);
+      expect(summary.overview.appActiveSeconds, 3600);
+      expect(summary.apps.single.appKey, 'com.example.live');
+      expect(summary.apps.single.displayName, '直播');
+      expect(summary.apps.single.category, AppCategory.entertainment);
+      expect(summary.apps.single.segmentCount, 1);
+
+      final List<UsageSegmentRow> rows = await withLive.timeline(window);
+      expect(rows.single.running, isTrue);
+      expect(rows.single.startedAtUtc, DateTime.utc(2026, 9, 27, 10, 0));
+      expect(rows.single.endedAtUtc, DateTime.utc(2026, 9, 27, 11, 0));
+      expect(rows.single.activeSeconds, 3600);
+
+      // 只读：数据库里不应多出任何记录。
+      expect(await activityDao.listOverlapping(kOwner, window.fromUtc, window.toUtc), isEmpty);
+    });
+
     test('格式化时长符合界面展示习惯', () {
       expect(formatDurationZh(0), '0 分');
       expect(formatDurationZh(59), '59 秒');

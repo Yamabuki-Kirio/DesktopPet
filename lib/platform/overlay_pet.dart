@@ -1832,6 +1832,11 @@ abstract interface class AndroidOverlayPet {
   /// **只读**：不会删除或修改 journal；[limit] 用于避免一次传输过大。
   Future<List<AndroidUsageSession>> readPendingUsageSessions({int limit});
 
+  /// 读取原生**正在使用中**的会话快照（没有则 null）。
+  ///
+  /// 只读：不写 journal、不落库；统计页临时并入，会话结束后仍走 journal 导入。
+  Future<AndroidCurrentUsageSession?> currentUsageSession();
+
   /// 按 `session_id` 确认（删除）已成功导入的记录，返回真正删除的条数。
   ///
   /// 调用方必须**先确保本地事务已提交**；桥接异常绝不删除 journal。
@@ -2041,6 +2046,9 @@ class UnsupportedOverlayPet implements AndroidOverlayPet {
   @override
   Future<List<AndroidUsageSession>> readPendingUsageSessions({int limit = 200}) async =>
       const <AndroidUsageSession>[];
+
+  @override
+  Future<AndroidCurrentUsageSession?> currentUsageSession() async => null;
 
   @override
   Future<int> acknowledgeUsageSessions(List<String> sessionIds) async => 0;

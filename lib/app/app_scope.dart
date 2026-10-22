@@ -453,15 +453,6 @@ class AppServices {
       settings: trackingSettings,
     );
 
-    final UsageAnalyticsService usageAnalytics = UsageAnalyticsService(
-      activityDao: activityDao,
-      dailyUsageDao: dailyUsageDao,
-      applications: applications,
-      ownerId: ownerId,
-      // Phase 4C-5.1A：设备标识由平台层给出（Android 为稳定安装 UUID），不再写死常量。
-      deviceLocalId: trackingDeviceLocalId,
-    );
-
     // 「当前前台应用」提供者：Windows 复用 Dart 采集器、Android 读原生共享快照。
     final CurrentActivityProvider currentActivity =
         host.createCurrentActivityProvider(activityTracker: activityTracker);
@@ -482,6 +473,17 @@ class AppServices {
                 deviceLocalId: trackingDeviceLocalId,
               )
             : null;
+
+    final UsageAnalyticsService usageAnalytics = UsageAnalyticsService(
+      activityDao: activityDao,
+      dailyUsageDao: dailyUsageDao,
+      applications: applications,
+      ownerId: ownerId,
+      // Phase 4C-5.1A：设备标识由平台层给出（Android 为稳定安装 UUID），不再写死常量。
+      deviceLocalId: trackingDeviceLocalId,
+      // 进行中的 Android 会话只读并入统计，避免"连续使用几小时但汇总为 0"。
+      liveSegmentProvider: androidUsageImport?.currentLiveSegment,
+    );
 
     // 13. Phase 2：同步引擎。
     //

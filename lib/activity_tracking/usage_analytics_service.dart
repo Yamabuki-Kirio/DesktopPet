@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import '../core/constants.dart';
+import '../core/logger.dart';
 import '../database/dao/activity_dao.dart';
 import '../database/dao/daily_usage_dao.dart';
 import 'application_repository.dart';
@@ -8,6 +9,9 @@ import 'models/activity_enums.dart';
 import 'models/activity_sample.dart';
 import 'models/tracking_settings.dart';
 import 'models/usage_stats.dart';
+
+/// 读取「正在使用中」会话的只读快照（仅 Android 注入）。
+typedef LiveUsageSegmentProvider = Future<LiveUsageSegment?> Function();
 
 /// 使用统计查询服务（需求「九、十三」）。
 ///
@@ -28,13 +32,16 @@ class UsageAnalyticsService {
     required ApplicationRepository applications,
     required this.ownerId,
     required this.deviceLocalId,
-  })  : _activityDao = activityDao,
-        _dailyUsageDao = dailyUsageDao,
-        _applications = applications;
+    LiveUsageSegmentProvider? liveSegmentProvider,
+  }) : _activityDao = activityDao,
+       _dailyUsageDao = dailyUsageDao,
+       _applications = applications,
+       _liveSegmentProvider = liveSegmentProvider;
 
   final ActivityDao _activityDao;
   final DailyUsageDao _dailyUsageDao;
   final ApplicationRepository _applications;
+  final LiveUsageSegmentProvider? _liveSegmentProvider;
 
   final String ownerId;
   final String deviceLocalId;
@@ -47,12 +54,20 @@ class UsageAnalyticsService {
   }) async {
     final DateTime now = nowUtc ?? DateTime.now().toUtc();
 
-    final List<ActivitySegment> segments = await _activityDao.listOverlapping(
+    final List<ActivitySegment> dbSegments = await _activityDao.listOverlapping(
       ownerId,
       window.fromUtc,
       window.toUtc,
       deviceLocalId: deviceLocalId,
     );
+    final Set<String> dbIds = dbSegments
+        .map((ActivitySegment s) => s.id)
+        .toSet();
+    final LiveUsageSegment? live = await _loadLiveSegment(dbIds);
+    final List<ActivitySegment> segments = <ActivitySegment>[
+      ...dbSegments,
+      if (live != null) _asSegment(live),
+    ];
 
     // 1. 把跨界段裁剪到窗口内，并给出「按墙钟比例折算的活跃秒数」。
     //
@@ -63,8 +78,12 @@ class UsageAnalyticsService {
 
     for (final ActivitySegment seg in segments) {
       final DateTime segEnd = seg.endedAt ?? now;
-      final DateTime start = seg.startedAt.isAfter(window.fromUtc) ? seg.startedAt : window.fromUtc;
-      final DateTime end = segEnd.isBefore(window.toUtc) ? segEnd : window.toUtc;
+      final DateTime start = seg.startedAt.isAfter(window.fromUtc)
+          ? seg.startedAt
+          : window.fromUtc;
+      final DateTime end = segEnd.isBefore(window.toUtc)
+          ? segEnd
+          : window.toUtc;
       if (!end.isAfter(start)) continue;
 
       final int totalWallMs = segEnd.difference(seg.startedAt).inMilliseconds;
@@ -78,45 +97,67 @@ class UsageAnalyticsService {
 
       final _AppAccumulator acc = byApp.putIfAbsent(
         seg.appKey,
-        () => _AppAccumulator(appKey: seg.appKey),
+        () => _AppAccumulator(
+          appKey: seg.appKey,
+          fallbackDisplayName: seg.appName,
+          fallbackCategory: live != null && seg.id == live.segmentId
+              ? live.category
+              : null,
+        ),
       );
       acc.activeSeconds += credited;
       acc.segmentCount += 1;
     }
 
-    final int appActiveSeconds =
-        byApp.values.fold<int>(0, (int sum, _AppAccumulator a) => sum + a.activeSeconds);
+    final int appActiveSeconds = byApp.values.fold<int>(
+      0,
+      (int sum, _AppAccumulator a) => sum + a.activeSeconds,
+    );
 
     // 2. 应用排行（按活跃秒数倒序）。
-    final List<AppUsageRow> appRows = byApp.values.map((_AppAccumulator a) {
-      final TrackedApplication? app = _applications.find(a.appKey);
-      return AppUsageRow(
-        appKey: a.appKey,
-        displayName: app?.displayName ?? a.appKey,
-        category: app?.category ?? AppCategory.other,
-        activeSeconds: a.activeSeconds,
-        segmentCount: a.segmentCount,
-        ratioOfAppTime: appActiveSeconds <= 0 ? 0 : a.activeSeconds / appActiveSeconds,
-      );
-    }).toList()
-      ..sort((AppUsageRow a, AppUsageRow b) => b.activeSeconds.compareTo(a.activeSeconds));
+    final List<AppUsageRow> appRows =
+        byApp.values.map((_AppAccumulator a) {
+          final TrackedApplication? app = _applications.find(a.appKey);
+          return AppUsageRow(
+            appKey: a.appKey,
+            displayName: app?.displayName ?? a.fallbackDisplayName ?? a.appKey,
+            category: app?.category ?? a.fallbackCategory ?? AppCategory.other,
+            activeSeconds: a.activeSeconds,
+            segmentCount: a.segmentCount,
+            ratioOfAppTime: appActiveSeconds <= 0
+                ? 0
+                : a.activeSeconds / appActiveSeconds,
+          );
+        }).toList()..sort(
+          (AppUsageRow a, AppUsageRow b) =>
+              b.activeSeconds.compareTo(a.activeSeconds),
+        );
 
     // 3. 分类统计。
     final Map<AppCategory, int> byCategory = <AppCategory, int>{};
     for (final _AppAccumulator a in byApp.values) {
       final AppCategory category =
-          _applications.find(a.appKey)?.category ?? AppCategory.other;
+          _applications.find(a.appKey)?.category ??
+          a.fallbackCategory ??
+          AppCategory.other;
       byCategory[category] = (byCategory[category] ?? 0) + a.activeSeconds;
     }
-    final List<CategoryUsageRow> categoryRows = byCategory.entries
-        .map((MapEntry<AppCategory, int> e) => CategoryUsageRow(
-              category: e.key,
-              activeSeconds: e.value,
-              ratioOfAppTime: appActiveSeconds <= 0 ? 0 : e.value / appActiveSeconds,
-            ))
-        .toList()
-      ..sort((CategoryUsageRow a, CategoryUsageRow b) =>
-          b.activeSeconds.compareTo(a.activeSeconds));
+    final List<CategoryUsageRow> categoryRows =
+        byCategory.entries
+            .map(
+              (MapEntry<AppCategory, int> e) => CategoryUsageRow(
+                category: e.key,
+                activeSeconds: e.value,
+                ratioOfAppTime: appActiveSeconds <= 0
+                    ? 0
+                    : e.value / appActiveSeconds,
+              ),
+            )
+            .toList()
+          ..sort(
+            (CategoryUsageRow a, CategoryUsageRow b) =>
+                b.activeSeconds.compareTo(a.activeSeconds),
+          );
 
     // 4. 设备级会话 / 活跃 / 空闲（来自 daily_usage）。
     final _DeviceTotals device = await _deviceTotals(window, tzOffset, clipped);
@@ -148,31 +189,93 @@ class UsageAnalyticsService {
   /// * 按开始时间**倒序**；
   /// * **不裁剪**跨界段：跨小时 / 跨午夜的时间段原样显示真实起止时刻；
   /// * `activeSeconds` 用记录值，不按窗口比例折算。
-  Future<List<UsageSegmentRow>> timeline(UsageWindow window, {int limit = 200}) async {
+  Future<List<UsageSegmentRow>> timeline(
+    UsageWindow window, {
+    int limit = 200,
+  }) async {
     final List<ActivitySegment> segments = await _activityDao.listOverlapping(
       ownerId,
       window.fromUtc,
       window.toUtc,
       deviceLocalId: deviceLocalId,
     );
-    final List<UsageSegmentRow> rows = segments.map((ActivitySegment seg) {
-      final TrackedApplication? app = _applications.find(seg.appKey);
-      return UsageSegmentRow(
-        segmentId: seg.id,
-        appKey: seg.appKey,
-        displayName: app?.displayName ?? seg.appName ?? seg.appKey,
-        category: app?.category ?? AppCategory.other,
-        startedAtUtc: seg.startedAt.toUtc(),
-        endedAtUtc: (seg.endedAt ?? seg.startedAt).toUtc(),
-        activeSeconds: seg.activeSeconds ?? 0,
-        endReason: seg.endReason,
-        running: seg.endedAt == null,
+    final List<UsageSegmentRow> rows = segments
+        .map((ActivitySegment seg) {
+          final TrackedApplication? app = _applications.find(seg.appKey);
+          return UsageSegmentRow(
+            segmentId: seg.id,
+            appKey: seg.appKey,
+            displayName: app?.displayName ?? seg.appName ?? seg.appKey,
+            category: app?.category ?? AppCategory.other,
+            startedAtUtc: seg.startedAt.toUtc(),
+            endedAtUtc: (seg.endedAt ?? seg.startedAt).toUtc(),
+            activeSeconds: seg.activeSeconds ?? 0,
+            endReason: seg.endReason,
+            running: seg.endedAt == null,
+          );
+        })
+        .toList(growable: true);
+
+    final LiveUsageSegment? live = await _loadLiveSegment(
+      segments.map((ActivitySegment s) => s.id).toSet(),
+    );
+    if (live != null && _overlapsWindow(live, window)) {
+      final TrackedApplication? app = _applications.find(live.appKey);
+      rows.add(
+        UsageSegmentRow(
+          segmentId: live.segmentId,
+          appKey: live.appKey,
+          displayName: app?.displayName ?? live.appName ?? live.appKey,
+          category: app?.category ?? live.category ?? AppCategory.other,
+          startedAtUtc: live.startedAtUtc,
+          endedAtUtc: live.capturedAtUtc,
+          activeSeconds: live.activeSeconds,
+          endReason: null,
+          running: true,
+        ),
       );
-    }).toList(growable: false)
-      ..sort((UsageSegmentRow a, UsageSegmentRow b) =>
-          b.startedAtUtc.compareTo(a.startedAtUtc));
+    }
+
+    rows.sort(
+      (UsageSegmentRow a, UsageSegmentRow b) =>
+          b.startedAtUtc.compareTo(a.startedAtUtc),
+    );
     return rows.length > limit ? rows.sublist(0, limit) : rows;
   }
+
+  /// 读取当前会话快照；失败只降级为空，绝不影响统计页。
+  Future<LiveUsageSegment?> _loadLiveSegment(Set<String> existingIds) async {
+    final LiveUsageSegmentProvider? provider = _liveSegmentProvider;
+    if (provider == null) return null;
+    try {
+      final LiveUsageSegment? live = await provider();
+      if (live == null) return null;
+      // 已落库的同 ID 记录优先：避免"刚好结束并导入"时重复计算。
+      if (existingIds.contains(live.segmentId)) return null;
+      if (!live.capturedAtUtc.isAfter(live.startedAtUtc)) return null;
+      if (live.activeSeconds < 0) return null;
+      return live;
+    } catch (e, st) {
+      Loggers.activity.warning('读取当前使用会话快照失败（统计页降级）', e, st);
+      return null;
+    }
+  }
+
+  static bool _overlapsWindow(LiveUsageSegment live, UsageWindow window) =>
+      live.startedAtUtc.isBefore(window.toUtc) &&
+      live.capturedAtUtc.isAfter(window.fromUtc);
+
+  static ActivitySegment _asSegment(LiveUsageSegment live) => ActivitySegment(
+    id: live.segmentId,
+    ownerId: '',
+    deviceLocalId: '',
+    appKey: live.appKey,
+    appName: live.appName,
+    startedAt: live.startedAtUtc,
+    endedAt: live.capturedAtUtc,
+    activeSeconds: live.activeSeconds,
+    createdAt: live.startedAtUtc,
+  );
 
   /// 把 [UsageRange] 换算成具体窗口。
   ///
@@ -189,11 +292,11 @@ class UsageAnalyticsService {
     return switch (range) {
       UsageRange.today => UsageWindow.dayContaining(now, offset, label: '今天'),
       UsageRange.yesterday => UsageWindow.dayContaining(
-          now,
-          offset,
-          dayOffset: -1,
-          label: '昨天',
-        ),
+        now,
+        offset,
+        dayOffset: -1,
+        label: '昨天',
+      ),
       UsageRange.last7Days => UsageWindow.lastDays(now, offset, days: 7),
       UsageRange.thisWeek => UsageWindow.weekContaining(now, offset),
     };
@@ -227,7 +330,11 @@ class UsageAnalyticsService {
     final List<String> keys = window.localDayKeys(tzOffset);
     List<DailyUsage> rows = <DailyUsage>[];
     for (final String key in keys) {
-      final DailyUsage? row = await _dailyUsageDao.find(ownerId, deviceLocalId, key);
+      final DailyUsage? row = await _dailyUsageDao.find(
+        ownerId,
+        deviceLocalId,
+        key,
+      );
       if (row != null) rows.add(row);
     }
 
@@ -317,9 +424,15 @@ class _Clipped {
 
 /// 单个应用的累计器。
 class _AppAccumulator {
-  _AppAccumulator({required this.appKey});
+  _AppAccumulator({
+    required this.appKey,
+    this.fallbackDisplayName,
+    this.fallbackCategory,
+  });
 
   final String appKey;
+  final String? fallbackDisplayName;
+  final AppCategory? fallbackCategory;
   int activeSeconds = 0;
   int segmentCount = 0;
 }

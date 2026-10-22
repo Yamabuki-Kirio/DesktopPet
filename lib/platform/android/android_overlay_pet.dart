@@ -19,7 +19,7 @@ const String androidOverlayChannelName = 'asia.akechi.petlife/overlay';
 ///   消息原样透传（原生侧写的就是给用户看的中文）。
 class AndroidOverlayPetBridge implements AndroidOverlayPet {
   AndroidOverlayPetBridge({MethodChannel? channel})
-      : _channel = channel ?? const MethodChannel(androidOverlayChannelName);
+    : _channel = channel ?? const MethodChannel(androidOverlayChannelName);
 
   final MethodChannel _channel;
 
@@ -28,7 +28,9 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
 
   @override
   Future<OverlayPermissionState> permissionState() async =>
-      OverlayPermissionState.fromMap(_asMap(await _invoke('getPermissionStatus')));
+      OverlayPermissionState.fromMap(
+        _asMap(await _invoke('getPermissionStatus')),
+      );
 
   @override
   Future<OverlayPermissionState> requestOverlayPermission() async =>
@@ -67,14 +69,17 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
       );
 
   @override
-  Future<OverlayRuntimeState> updateSettings(OverlayPetSettings settings) async =>
-      OverlayRuntimeState.fromMap(
-        _asMap(await _invoke('updateSettings', settings.toJson())),
-      );
+  Future<OverlayRuntimeState> updateSettings(
+    OverlayPetSettings settings,
+  ) async => OverlayRuntimeState.fromMap(
+    _asMap(await _invoke('updateSettings', settings.toJson())),
+  );
 
   @override
   Future<OverlayRuntimeState> setDebugOverlay(bool enabled) async =>
-      OverlayRuntimeState.fromMap(_asMap(await _invoke('setDebugOverlay', enabled)));
+      OverlayRuntimeState.fromMap(
+        _asMap(await _invoke('setDebugOverlay', enabled)),
+      );
 
   @override
   Future<OverlayRuntimeState> getState() async =>
@@ -91,10 +96,11 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
   // ---------------------------------------------------------------------------
 
   @override
-  Future<OverlayRuntimeState> updateStateMapping(OverlayStateMapping mapping) async =>
-      OverlayRuntimeState.fromMap(
-        _asMap(await _invoke('updateStateMapping', mapping.toJson())),
-      );
+  Future<OverlayRuntimeState> updateStateMapping(
+    OverlayStateMapping mapping,
+  ) async => OverlayRuntimeState.fromMap(
+    _asMap(await _invoke('updateStateMapping', mapping.toJson())),
+  );
 
   @override
   Future<OverlayRuntimeState> setManualState(String? stateId) async =>
@@ -142,9 +148,7 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
 
   @override
   Future<CurrentActivity> currentActivity() async =>
-      CurrentActivity.fromMap(
-        _asMap(await _invoke('getCurrentForegroundApp')),
-      );
+      CurrentActivity.fromMap(_asMap(await _invoke('getCurrentForegroundApp')));
 
   @override
   Future<void> openUsageAccessSettings() async =>
@@ -164,11 +168,13 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
     int? customPrimary,
     required int revision,
   }) async {
-    final Map<String, Object?> map = _asMap(await _invoke('setMenuTheme', <String, Object?>{
-      'themeId': themeId,
-      if (customPrimary != null) 'customPrimary': customPrimary,
-      'revision': revision,
-    }));
+    final Map<String, Object?> map = _asMap(
+      await _invoke('setMenuTheme', <String, Object?>{
+        'themeId': themeId,
+        if (customPrimary != null) 'customPrimary': customPrimary,
+        'revision': revision,
+      }),
+    );
     final bool accepted = map['accepted'] == true;
     return OverlayMenuThemeUpdate(
       accepted: accepted,
@@ -180,7 +186,9 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
 
   @override
   Future<OverlayWheelLayoutSettings> wheelLayout() async =>
-      OverlayWheelLayoutSettings.fromMap(_asMap(await _invoke('getMenuLayout')));
+      OverlayWheelLayoutSettings.fromMap(
+        _asMap(await _invoke('getMenuLayout')),
+      );
 
   @override
   Future<OverlayWheelLayoutUpdate> setWheelLayout({
@@ -211,11 +219,15 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
 
   @override
   Future<OverlayAutostartStatus> autostartStatus() async =>
-      OverlayAutostartStatus.fromMap(_asMap(await _invoke('getAutostartStatus')));
+      OverlayAutostartStatus.fromMap(
+        _asMap(await _invoke('getAutostartStatus')),
+      );
 
   @override
   Future<OverlayAutostartStatus> setAutostart(bool enabled) async =>
-      OverlayAutostartStatus.fromMap(_asMap(await _invoke('setAutostart', enabled)));
+      OverlayAutostartStatus.fromMap(
+        _asMap(await _invoke('setAutostart', enabled)),
+      );
 
   // ---------------------------------------------------------------------------
   // Phase 4C-5.1B：原生使用会话采集
@@ -223,10 +235,14 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
 
   @override
   Future<UsageCollectorState> usageCollectorState() async =>
-      UsageCollectorState.fromMap(_asMap(await _invoke('getUsageCollectorState')));
+      UsageCollectorState.fromMap(
+        _asMap(await _invoke('getUsageCollectorState')),
+      );
 
   @override
-  Future<List<AndroidUsageSession>> readPendingUsageSessions({int limit = 200}) async {
+  Future<List<AndroidUsageSession>> readPendingUsageSessions({
+    int limit = 200,
+  }) async {
     final Object? raw = await _invoke('readPendingUsageSessions', limit);
     if (raw is! List) {
       throw const OverlayPlatformException('bad_response', '原生端返回了非预期的结果');
@@ -237,7 +253,8 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
       // 解析不了的单条直接跳过（由导入器计数上报），绝不因为一条坏数据中断整批。
       final AndroidUsageSession? session = AndroidUsageSession.fromMap(
         item.map<String, Object?>(
-          (Object? key, Object? value) => MapEntry<String, Object?>('$key', value),
+          (Object? key, Object? value) =>
+              MapEntry<String, Object?>('$key', value),
         ),
       );
       if (session != null) sessions.add(session);
@@ -250,6 +267,18 @@ class AndroidOverlayPetBridge implements AndroidOverlayPet {
     if (sessionIds.isEmpty) return 0;
     final Object? raw = await _invoke('acknowledgeUsageSessions', sessionIds);
     return raw is num ? raw.toInt() : 0;
+  }
+
+  @override
+  Future<AndroidCurrentUsageSession?> currentUsageSession() async {
+    final Object? raw = await _invoke('getCurrentUsageSession');
+    if (raw is! Map) return null;
+    return AndroidCurrentUsageSession.fromMap(
+      raw.map<String, Object?>(
+        (Object? key, Object? value) =>
+            MapEntry<String, Object?>('$key', value),
+      ),
+    );
   }
 
   @override
