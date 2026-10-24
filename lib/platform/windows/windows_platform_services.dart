@@ -21,6 +21,7 @@ import '../../sync/credential_store_factory.dart';
 import 'winhttp_system_proxy.dart';
 import '../../ui/pet/pet_host.dart';
 import '../device_info_provider.dart';
+import '../app_lifecycle.dart';
 import '../file_import_provider.dart';
 import '../overlay_pet.dart';
 import '../platform_capabilities.dart';
@@ -28,6 +29,7 @@ import '../platform_database.dart';
 import '../platform_services_contract.dart';
 import '../startup_registrar.dart';
 import 'windows_credential_store_factory.dart';
+import 'windows_app_lifecycle.dart';
 import 'windows_database.dart';
 import 'windows_file_import_provider.dart';
 import 'windows_pet_host.dart';
@@ -88,6 +90,14 @@ class WindowsPlatformServices implements PlatformServices {
 
   @override
   StartupRegistrar get startupRegistrar => const WindowsStartupRegistrar();
+
+  /// 单实例唤醒 / 统一退出协作桥（Runner 单实例协调器的 Dart 侧出口）。
+  ///
+  /// 桥有状态（原生回调处理器），这里持有一个实例复用；
+  /// `AppServices.bootstrap` 在引擎就绪后调用 `initialize` 注册回调。
+  @override
+  AppLifecycleBridge get appLifecycleBridge => _appLifecycleBridge;
+  final AppLifecycleBridge _appLifecycleBridge = WindowsAppLifecycleBridge();
 
   @override
   Future<bool> prepareForStartup() async {

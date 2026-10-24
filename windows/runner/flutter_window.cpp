@@ -9,11 +9,18 @@
 #include <flutter/standard_method_codec.h>
 
 #include "flutter/generated_plugin_registrant.h"
+#include "single_instance_coordinator.h"
 
 namespace {
 
 // 通道名：与 Dart 侧 `windowsSurfaceChannelName` 逐字一致。
 constexpr char kSurfaceChannelName[] = "asia.akechi.petlife/windows_surface";
+
+// 应用生命周期通道名：与 Dart 侧 `appLifecycleChannelName` 逐字一致。
+constexpr char kLifecycleChannelName[] = "asia.akechi.petlife/app_lifecycle";
+
+// WM_ENDSESSION 里等待 Dart 完成统一退出事务的预算（规格§二：3 秒内进程归零）。
+constexpr DWORD kSessionEndPumpMs = 3000;
 
 // 从 EncodableMap 里取一个整数字段（兼容 int32 / int64 / double）。
 bool GetLongField(const flutter::EncodableMap& map, const char* key, long* out) {
@@ -121,6 +128,14 @@ bool FlutterWindow::OnCreate() {
   // 引擎就绪后才注册窗口 Region 通道（此时 messenger 可用）。
   RegisterSurfaceChannel();
 
+  // 生命周期通道 + 单实例协调器回调：第二实例信号从接收窗口转发到 Dart。
+  RegisterLifecycleChannel();
+  petlife::SingleInstanceCoordinator &coordinator =
+      petlife::SingleInstanceCoordinator::Instance();
+  coordinator.SetWakeHandler([this]() { NotifySecondInstanceWake(); });
+  coordinator.SetShutdownRequestHandler(
+      [this]() { NotifyExitRequested("shutdown-request"); });
+
   flutter_controller_->engine()->SetNextFrameCallback([&]() {
     this->Show();
   });
@@ -138,9 +153,13 @@ void FlutterWindow::OnDestroy() {
     // 析构 MethodChannel 会注销消息处理函数（内部等价于 SetMethodCallHandler(null)）。
     surface_channel_.reset();
   }
+  if (lifecycle_channel_) {
+    lifecycle_channel_.reset();
+  }
   if (flutter_controller_) {
     flutter_controller_ = nullptr;
   }
+  petlife::SingleInstanceCoordinator::Instance().ClearHandlers();
 
   Win32Window::OnDestroy();
 }
@@ -269,6 +288,57 @@ void FlutterWindow::RegisterSurfaceChannel() {
       });
 }
 
+void FlutterWindow::RegisterLifecycleChannel() {
+  if (!flutter_controller_ || !flutter_controller_->engine()) return;
+
+  lifecycle_channel_ =
+      std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
+          flutter_controller_->engine()->messenger(), kLifecycleChannelName,
+          &flutter::StandardMethodCodec::GetInstance());
+
+  lifecycle_channel_->SetMethodCallHandler(
+      [](const flutter::MethodCall<flutter::EncodableValue>& call,
+         std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>>
+             result) {
+        petlife::SingleInstanceCoordinator &coordinator =
+            petlife::SingleInstanceCoordinator::Instance();
+        const std::string& method = call.method_name();
+
+        // Dart 退出事务开始 → 置命名事件：第二实例据此判定「正在退出」。
+        if (method == "markShuttingDown") {
+          coordinator.MarkShuttingDown();
+          result->Success();
+          return;
+        }
+        // Dart 退出事务完成 → 置完成事件：WM_ENDSESSION 泵解除阻塞。
+        if (method == "shutdownComplete") {
+          coordinator.MarkShutdownComplete();
+          result->Success();
+          return;
+        }
+        result->NotImplemented();
+      });
+}
+
+void FlutterWindow::NotifySecondInstanceWake() {
+  if (!lifecycle_channel_) return;
+  lifecycle_channel_->InvokeMethod("onSecondInstance", nullptr);
+}
+
+void FlutterWindow::NotifyExitRequested(const std::string& reason) {
+  if (!lifecycle_channel_) return;
+  flutter::EncodableMap args;
+  args[flutter::EncodableValue("reason")] = flutter::EncodableValue(reason);
+  lifecycle_channel_->InvokeMethod(
+      "onExitRequested",
+      std::make_unique<flutter::EncodableValue>(args));
+}
+
+void FlutterWindow::NotifySystemSessionEnd() {
+  if (!lifecycle_channel_) return;
+  lifecycle_channel_->InvokeMethod("onSystemSessionEnd", nullptr);
+}
+
 LRESULT
 FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
                               WPARAM const wparam,
@@ -287,6 +357,22 @@ FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
     case WM_FONTCHANGE:
       flutter_controller_->engine()->ReloadSystemFonts();
       break;
+
+    // 系统注销 / 关机（规格§二退出入口）：走 Dart 统一退出事务。
+    // QUERY 阶段立即放行（返回 TRUE），但先通知 Dart 开始落盘；
+    // END 阶段泵消息等待事务完成（Dart 与消息循环同线程，必须持续泵），
+    // 最长 3 秒，超时由系统结束会话。
+    case WM_QUERYENDSESSION:
+      NotifySystemSessionEnd();
+      return TRUE;
+
+    case WM_ENDSESSION:
+      if (wparam) {
+        NotifySystemSessionEnd();
+        petlife::SingleInstanceCoordinator::Instance()
+            .PumpUntilShutdownComplete(kSessionEndPumpMs);
+      }
+      return 0;
   }
 
   return Win32Window::MessageHandler(hwnd, message, wparam, lparam);

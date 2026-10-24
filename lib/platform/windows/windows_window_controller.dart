@@ -357,8 +357,9 @@ class WindowsWindowController with WindowListener implements WindowController {
 
   @override
   void onWindowClose() {
-    // setPreventClose(true) 时点关闭按钮走到这里：隐藏到托盘而不是退出。
-    Loggers.window.info('收到窗口关闭请求，隐藏到系统托盘');
+    // setPreventClose(true) 时点关闭按钮走到这里：统一进入退出事务
+    //（规格§二：窗口关闭是退出入口之一，不再"隐藏到托盘后进程残留"）。
+    Loggers.window.info('收到窗口关闭请求，进入统一退出事务');
     _onCloseRequested?.call();
   }
 

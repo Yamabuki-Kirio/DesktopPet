@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
 
 import '../../core/logger.dart';
 import '../startup_registrar.dart';
@@ -44,6 +45,12 @@ class WindowsStartupRegistrar implements StartupRegistrar {
   /// 生产代码一律使用 [defaultValueName]。
   final String valueName;
 
+  /// 已知的历史启动项值名称（规格§五：清理仅限这些，绝不扫描其他软件）。
+  ///
+  /// 旧版本曾以这些名字注册过 `Run` 项；收敛到 [defaultValueName] 之后，
+  /// 启动对齐时把它们清掉，保证「开机自启只允许一个入口」。
+  static const List<String> legacyValueNames = <String>['PetLifeDesktopPet'];
+
   /// Windows 绝对路径：`C:\...` 或 UNC `\\server\share\...`。
   static final RegExp _absoluteWindowsPath = RegExp(r'^(?:[a-zA-Z]:[\\/]|\\\\)');
 
@@ -85,6 +92,36 @@ class WindowsStartupRegistrar implements StartupRegistrar {
     }
     native.deleteValue(runKeyPath, valueName);
     Loggers.settings.info('开机自启已移除：$valueName');
+  }
+
+  /// 判定一条历史启动命令是否指向 PetLife（大小写不敏感的路径包含）。
+  ///
+  /// 只有指向 petlife 的条目才允许被清理——即使值名称巧合相同，
+  /// 也**绝不删除**其他软件的启动命令。
+  @visibleForTesting
+  static bool shouldPruneLegacyCommand(String? command) {
+    if (command == null || command.isEmpty) return false;
+    return command.toLowerCase().contains('petlife');
+  }
+
+  @override
+  void pruneLegacyEntries() {
+    final _Advapi32? native = _Advapi32.instance;
+    if (native == null) return;
+    for (final String name in legacyValueNames) {
+      if (name == valueName) continue;
+      try {
+        final String? command = native.readString(runKeyPath, name);
+        if (shouldPruneLegacyCommand(command)) {
+          native.deleteValue(runKeyPath, name);
+          Loggers.settings.info('已清理旧版自启项：$name = $command');
+        }
+      } catch (e, st) {
+        // 清理失败不影响启动：旧项最多造成一次多余的启动尝试，
+        // 而那次尝试会经过单实例互斥体被拦下。
+        Loggers.settings.fine('检查旧版自启项 $name 失败（忽略）', e, st);
+      }
+    }
   }
 
   /// 生成写入 `Run` 项的启动命令。

@@ -25,6 +25,7 @@ import '../sync/device_identity.dart';
 import '../sync/proxy/system_proxy.dart';
 import '../ui/pet/pet_host.dart';
 import 'device_info_provider.dart';
+import 'app_lifecycle.dart';
 import 'file_import_provider.dart';
 import 'overlay_pet.dart';
 import 'platform_capabilities.dart';
@@ -61,6 +62,14 @@ abstract interface class PlatformServices {
 
   /// 开机自启注册器（Windows 真实写 `HKCU\...\Run`；Android 为不支持实现）。
   StartupRegistrar get startupRegistrar;
+
+  /// 应用生命周期桥（第二实例唤醒 / 统一退出协作）。
+  ///
+  /// * Windows：真实实现（`asia.akechi.petlife/app_lifecycle` 通道，
+  ///   配合 Runner 的单实例协调器）；
+  /// * Android：**null** —— 系统按包名保证单实例，也没有注销前落盘的
+  ///   通道约定，装配层直接跳过。
+  AppLifecycleBridge? get appLifecycleBridge;
 
   /// 启动期平台准备。
   ///

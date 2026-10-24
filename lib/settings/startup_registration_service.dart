@@ -99,7 +99,8 @@ class StartupRegistrationService extends ChangeNotifier {
 
   /// 启动时对齐：按偏好修复系统实况，再把偏好校正为系统实况。
   ///
-  /// 幂等，可在每次启动时调用。
+  /// 幂等，可在每次启动时调用。同时清理**已知**的旧版自启项
+  ///（规格§五：自启入口收敛到一个注册项）。
   Future<void> reconcileOnStartup() async {
     if (!_registrar.isSupported) return;
 
@@ -116,6 +117,13 @@ class StartupRegistrationService extends ChangeNotifier {
           st,
         );
       }
+    }
+
+    try {
+      // 只清理已知 PetLife 旧条目（注册器内部限制名单），绝不扫描其他软件。
+      _registrar.pruneLegacyEntries();
+    } catch (e, st) {
+      Loggers.settings.fine('清理旧版自启项失败（不影响启动）', e, st);
     }
 
     final bool actual = isRegistered();

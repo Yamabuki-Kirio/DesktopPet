@@ -7,7 +7,10 @@ import 'app/app_scope.dart';
 import 'app/app_shell.dart';
 import 'core/error_handler.dart';
 import 'core/logger.dart';
+import 'core/paths.dart';
+import 'database/storage_preflight.dart';
 import 'platform/platform_services.dart';
+import 'ui/storage_failure_app.dart';
 
 /// 应用入口。
 ///
@@ -16,10 +19,19 @@ import 'platform/platform_services.dart';
 ///
 /// Phase 4A：入口本身**平台无关**——单实例检查、窗口、托盘、凭据、数据库后端
 /// 全部由 [PlatformServices] 提供（Windows 与 Android 各一套实现）。
-void main() {
+///
+/// [args] 来自 Runner（`set_dart_entrypoint_arguments`）：
+/// 唯一被 Dart 侧消费的开关是 `--acceptance`（真实进程验收模式，
+/// 见 [StorageAcceptanceMode]）；其余参数（如 `--shutdown`）由 Runner 在
+/// 仲裁阶段处理，不会到达这里。
+void main(List<String> args) {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      // 验收模式门控：只在命令行显式带 --acceptance 时才允许
+      // PETLIFE_DATA_ROOT 沙箱重定向生效；正式启动绝不读该环境变量。
+      StorageAcceptanceMode.parseFromArgs(args);
 
       final PlatformServices platform = platformServices;
 
@@ -40,6 +52,10 @@ void main() {
         final AppServices services =
             await AppServices.bootstrap(platform: platform);
         runApp(PetLifeApp(services: services));
+      } on StoragePreflightFailure catch (failure) {
+        // 规格§四：数据目录 / 数据库不可写 → 中文诊断页（打开目录 / 复制诊断 /
+        // 退出），不暴露原始 SQLite 堆栈，不进入主界面，不建窗口和托盘。
+        runApp(StorageFailureApp(failure: failure));
       } catch (e, st) {
         ErrorHandler.record('bootstrap', e, st);
         // 启动失败时至少给用户一个能看懂的界面，而不是什么都没有。

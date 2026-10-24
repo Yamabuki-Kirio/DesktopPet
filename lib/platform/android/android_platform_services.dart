@@ -12,6 +12,7 @@ import '../../sync/device_identity.dart';
 import '../../sync/proxy/system_proxy.dart';
 import '../../ui/pet/pet_host.dart';
 import '../device_info_provider.dart';
+import '../app_lifecycle.dart';
 import '../file_import_provider.dart';
 import '../overlay_pet.dart';
 import '../platform_capabilities.dart';
@@ -86,6 +87,10 @@ class AndroidPlatformServices implements PlatformServices {
   /// Android 没有"登录后自动启动"的等价机制，界面据此隐藏该选项。
   @override
   StartupRegistrar get startupRegistrar => const UnsupportedStartupRegistrar();
+
+  /// Android 没有单实例唤醒 / 注销前落盘的通道约定（系统按包名保证单实例）。
+  @override
+  AppLifecycleBridge? get appLifecycleBridge => null;
 
   @override
   Future<bool> prepareForStartup() async {

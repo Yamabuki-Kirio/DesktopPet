@@ -52,6 +52,13 @@ abstract interface class StartupRegistrar {
 
   /// 删除当前用户的启动项。条目不存在也算成功（幂等）。
   void disable();
+
+  /// 清理**已知**的旧版 PetLife 启动项（规格§五：自启入口收敛）。
+  ///
+  /// 只允许处理实现方明确列出的历史条目，且条目内容必须指向 petlife
+  /// 可执行文件；**绝不扫描或删除其他软件的启动配置**。
+  /// 不支持清理的平台（Android）为 no-op。
+  void pruneLegacyEntries();
 }
 
 /// 不支持开机自启的平台（Android）使用。
@@ -75,4 +82,9 @@ class UnsupportedStartupRegistrar implements StartupRegistrar {
 
   @override
   void disable() => throw const StartupRegistrationException(_reason);
+
+  @override
+  void pruneLegacyEntries() {
+    // Android 没有开机自启概念，也没有可清理的历史条目。
+  }
 }

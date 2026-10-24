@@ -301,11 +301,29 @@ class _DesktopShellState extends State<DesktopShell>
 
       // 把托盘与 UI 之间的动作接上。
       AppServices.panelToggleHook = () async => togglePanel();
-      AppServices.exitHook = () async => _exitApp();
+      // 托盘退出 / 控制面板退出统一收敛到 AppServices.requestShutdown。
+      AppServices.exitHook = () async => AppServices.requestShutdown('tray.exit');
       AppServices.toggleTrackingHook = () async => toggleTracking();
       AppServices.usageStatsHook = () async => openUsageStats();
       // 托盘「重置位置」：走固定画布安全重建事务 + 写回 v2（不再 moveTo(0,0)）。
       AppServices.resetPositionHook = () async => resetPetPosition();
+      // 统一退出事务第 1 步（规格§二）：收起菜单、清 Region、解锁窗口关闭，
+      // 之后窗口 / 菜单任务被 shutdownInProgress 冻结。
+      AppServices.preShutdownHook = () async {
+        await _wheelProbeKey.currentState?.close();
+        await _fixedProbeKey.currentState?.close();
+        await _regionCoordinator.clear(
+          owner: RegionOwner.panel,
+          source: 'shutdown.transaction',
+        );
+        await _s.windowController.setPreventClose(false);
+      };
+      // 第二实例唤醒（规格§六）：面板态显示面板；桌宠态确保桌宠可见。
+      AppServices.secondInstanceWakeHook = () async => _onSecondInstanceWake();
+      // 窗口关闭也是统一退出入口（规格§二）：不再"隐藏到托盘后进程残留"。
+      _s.windowController.onCloseRequested(() {
+        unawaited(AppServices.requestShutdown('window.close'));
+      });
       // 托盘显示 / 隐藏桌宠前先收起菜单（还原窗口矩形 / Region）。
       AppServices.beforePetVisibilityChangeHook = () async {
         await _wheelProbeKey.currentState?.close();
@@ -498,6 +516,8 @@ class _DesktopShellState extends State<DesktopShell>
 
   /// 供托盘调用：切换控制面板。
   static Future<void> togglePanel() async {
+    // 统一退出事务进行中：丢弃新的窗口任务（规格§二第 1 步）。
+    if (AppServices.shutdownInProgress.value) return;
     final _DesktopShellState? state = _shellRef;
     if (state == null) return;
     final WindowsSurfaceMode mode = windowsSurfaceSession.mode;
@@ -538,6 +558,8 @@ class _DesktopShellState extends State<DesktopShell>
   }
 
   Future<void> openPanel() async {
+    // 统一退出事务进行中：丢弃新的窗口任务（规格§二第 1 步）。
+    if (AppServices.shutdownInProgress.value) return;
     if (windowsSurfaceSession.mode != WindowsSurfaceMode.petFixedCanvas) return;
     // 面板尺寸必须先按**桌宠所在显示器**的 workArea 算好：
     // 事务里的尺寸校验（`sizedLikePanel`）用的是同一个值。
@@ -570,22 +592,25 @@ class _DesktopShellState extends State<DesktopShell>
     }
   }
 
-  Future<void> _exitApp() async {
-    try {
-      // 退出 / 销毁窗口前先收起菜单并清除 Region（不留残留 Region / GDI 对象）。
-      await _wheelProbeKey.currentState?.close();
-      await _fixedProbeKey.currentState?.close();
-      await _regionCoordinator.clear(
-        owner: RegionOwner.panel,
-        source: 'shell.exitApp',
-      );
-      await _s.windowController.setPreventClose(false);
-      await _s.shutdown();
-    } catch (e, st) {
-      ErrorHandler.record('exit', e, st);
+  /// 请求退出（控制面板退出按钮 / 托盘退出）。
+  ///
+  /// 只做一件事：进入统一退出事务（规格§二）。菜单收起、Region 清理、
+  /// 配置落盘、停采集、关库、移除托盘、销毁窗口全部由事务按固定顺序完成。
+  Future<void> _exitApp() => AppServices.requestShutdown('panel.exit');
+
+  /// 第二实例唤醒（规格§六）：面板在用 → 显示面板；否则确保桌宠可见。
+  Future<void> _onSecondInstanceWake() async {
+    if (AppServices.shutdownInProgress.value) return;
+    if (windowsSurfaceSession.mode == WindowsSurfaceMode.panel) {
+      await _s.windowController.setVisible(true);
+      Loggers.app.info('第二实例唤醒：控制面板已显示');
+      return;
     }
-    // destroy 必须在 shutdown 之后，否则窗口先没了。
-    await _s.windowController.destroy();
+    final bool visible = await _s.windowController.isVisible();
+    if (!visible) {
+      await _s.windowController.setVisible(true);
+    }
+    Loggers.app.info('第二实例唤醒：桌宠已就绪（此前可见=$visible）');
   }
 
   // ---------------------------------------------------------------------------

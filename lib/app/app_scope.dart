@@ -26,11 +26,13 @@ import '../character/character_repository.dart';
 import '../character/pet_renderer.dart';
 import '../character/sqlite_character_repository.dart';
 import '../core/constants.dart';
+import '../core/app_exit.dart';
 import '../core/error_handler.dart';
 import '../core/ids.dart';
 import '../core/logger.dart';
 import '../core/paths.dart';
 import '../database/app_database.dart';
+import '../database/storage_preflight.dart';
 import '../database/dao/account_session_dao.dart';
 import '../database/dao/activity_checkpoint_dao.dart';
 import '../database/dao/activity_dao.dart';
@@ -46,6 +48,7 @@ import '../diagnostics/perf_sampler.dart';
 import '../menu/fixed_canvas_geometry.dart' show fixedCanvasAnchor;
 import '../menu/wheel_geometry_ownership.dart' show wheelGeometryJournal;
 import '../menu/windows_surface_mode.dart' show WindowsSurfaceMode, windowsSurfaceSession;
+import '../platform/app_lifecycle.dart';
 import '../platform/file_import_provider.dart';
 import '../platform/platform_services.dart';
 import '../settings/settings_controller.dart';
@@ -217,9 +220,13 @@ class AppServices {
     _instance = null;
     panelToggleHook = null;
     exitHook = null;
+    preShutdownHook = null;
+    secondInstanceWakeHook = null;
     toggleTrackingHook = null;
     usageStatsHook = null;
     beforePetVisibilityChangeHook = null;
+    shutdownCoordinator.resetForTest();
+    shutdownInProgress.value = false;
   }
 
   /// 应用启动装配。
@@ -242,8 +249,24 @@ class AppServices {
     //    这类配置错误必须在启动时就炸掉，而不是等用户点「导入」才逐条报错。
     Ids.assertNamespaceValid();
 
-    // 1. 应用数据目录（必须在任何写盘之前）
-    await AppPaths.initialize(overrideRoot: dataRoot);
+    // 1. 应用数据目录（必须在任何写盘之前）。
+    //    目录本身不可用时映射为存储预检失败（规格§四：中文诊断页，
+    //    不暴露原始异常），而不是让 bootstrap 裸抛。诊断页展示的目录
+    //    必须是**本次启动实际试图使用的路径**（含验收模式环境变量口径）。
+    try {
+      await AppPaths.initialize(overrideRoot: dataRoot);
+    } catch (e) {
+      final String attemptedDir =
+          await AppPaths.describeDataRoot(overrideRoot: dataRoot);
+      throw StoragePreflightFailure(
+        issue: StoragePreflightIssue.directoryUnavailable,
+        dataDirPath: attemptedDir,
+        userMessage: 'PetLife 无法写入本地数据目录',
+        userDetail: e.toString().split('\n').first,
+        diagnosticText: 'issue=directoryUnavailable '
+            'dir=$attemptedDir error=$e',
+      );
+    }
     final AppPaths paths = AppPaths.instance;
 
     // 2. 日志
@@ -262,8 +285,46 @@ class AppServices {
     // 让设备身份使用平台解析出的信息（Android 会带机型）。
     DeviceIdentity.configureEnvironment(host.device);
 
-    // 4. 数据库（后端由平台决定，Schema/迁移完全共用）
-    final AppDatabase db = await AppDatabase.open(path: paths.databaseFile.path);
+    // 3.5 存储预检（规格§四，仅 Windows：Android 行为冻结不变）。
+    //     目录探针 / 只读校验失败 → StoragePreflightFailure → 中文诊断页，
+    //     不进入主界面、不建窗口托盘、不碰用户数据库。
+    if (host.capabilities.platformName == 'windows') {
+      await StoragePreflight.ensureWritable(
+        dataDir: paths.root,
+        dbFile: paths.databaseFile,
+      );
+    }
+
+    // 4. 数据库（后端由平台决定，Schema/迁移完全共用）。
+    //    显式传入 host.database：后端选择跟随注入的平台装配（可测），
+    //    而不是全局单例。打开失败映射为存储预检失败（中文诊断，
+    //    不裸抛 SQLite 堆栈）。
+    final AppDatabase db;
+    try {
+      db = await AppDatabase.open(
+        path: paths.databaseFile.path,
+        platform: host.database,
+      );
+    } catch (e) {
+      throw StoragePreflightFailure(
+        issue: StoragePreflightIssue.openOrWriteFailed,
+        dataDirPath: paths.root.path,
+        userMessage: 'PetLife 无法打开或写入本地数据库',
+        userDetail: e.toString().split('\n').first,
+        diagnosticText: 'issue=openOrWriteFailed '
+            'db=${paths.databaseFile.path} error=$e',
+      );
+    }
+    if (host.capabilities.platformName == 'windows') {
+      try {
+        await StoragePreflight.verifyDatabaseWriteTx(db.raw);
+      } catch (_) {
+        // 预检自身已把失败整理为 StoragePreflightFailure；这里只负责
+        // 关掉刚打开的连接再向上抛（诊断页不进主界面）。
+        await AppDatabase.close();
+        rethrow;
+      }
+    }
 
     // 5. 仓储层
     final CharacterRepository repository = SqliteCharacterRepository.fromDatabase(db);
@@ -523,6 +584,32 @@ class AppServices {
     );
 
     final PerfSampler perfSampler = PerfSampler(diagnostics: host.processDiagnostics);
+
+    // 14.5 应用生命周期桥（Windows）：第二实例唤醒 / 退出请求 / 系统会话结束
+    //     全部收敛到 [AppServices.requestShutdown]（规格§二：所有退出入口
+    //     只能调用一个 shutdown 事务）。Android 为 null，直接跳过。
+    final AppLifecycleBridge? lifecycleBridge = host.appLifecycleBridge;
+    if (lifecycleBridge != null) {
+      await lifecycleBridge.initialize(
+        AppLifecycleHandlers(
+          onSecondInstanceWake: () async {
+            Loggers.app.info('收到第二实例唤醒请求');
+            if (shutdownInProgress.value) return;
+            final Future<void> Function()? hook = secondInstanceWakeHook;
+            if (hook != null) {
+              await hook();
+            } else {
+              // UI 尚未就绪：桌宠本就会在启动流程末尾显示，忽略即可。
+              Loggers.app.fine('UI 尚未就绪，唤醒请求已忽略');
+            }
+          },
+          onExitRequested: (String reason) async {
+            await requestShutdown('native.$reason');
+          },
+        ),
+      );
+    }
+
     processMetricsAvailable.value = host.processDiagnostics.isAvailable;
     if (!host.processDiagnostics.isAvailable) {
       Loggers.app.info('本平台不提供进程 CPU / 句柄指标，诊断页将隐藏相应条目');
@@ -683,6 +770,43 @@ class AppServices {
   static Future<void> Function()? panelToggleHook;
   static Future<void> Function()? exitHook;
 
+  /// 统一退出事务的 UI 冻结钩子（外壳注入：收起菜单、清 Region、
+  /// 解锁窗口关闭）—— 对应规格§二第 1 步「禁止新的窗口和菜单任务」。
+  static Future<void> Function()? preShutdownHook;
+
+  /// 第二实例唤醒钩子（外壳注入：显示桌宠或控制面板，规格§六）。
+  static Future<void> Function()? secondInstanceWakeHook;
+
+  /// 退出事务是否已开始（UI 据此丢弃新的窗口 / 菜单任务）。
+  static final ValueNotifier<bool> shutdownInProgress = ValueNotifier<bool>(false);
+
+  /// 统一退出事务协调器：保证事务只执行一次、看门狗 3 秒内进程归零。
+  static final ShutdownCoordinator shutdownCoordinator =
+      ShutdownCoordinator(onForceExit: _forceExitNow);
+
+  static void _forceExitNow() => exit(0);
+
+  /// **所有退出入口的唯一收敛点**（规格§二）：
+  /// 控制面板退出按钮 / 托盘退出 / 窗口关闭 / 系统注销关机 / 更新程序请求。
+  ///
+  /// 并发与重复触发只执行一次事务；事务完成（或看门狗超时）后结束进程。
+  static Future<void> requestShutdown(String source) {
+    return shutdownCoordinator.run(source, () async {
+      shutdownInProgress.value = true;
+      final AppServices? services = _instance;
+      if (services != null) {
+        await services.runShutdownTransaction(source);
+      } else {
+        // 装配未完成时收到退出请求：只关日志句柄后结束。
+        await AppDatabase.close();
+        await AppLog.dispose();
+      }
+      // 结束进程。窗口销毁若已让 Runner 走完消息循环，进程在此之前
+      // 已由 Runner 返回路径结束，不会执行到这里。
+      exit(0);
+    });
+  }
+
   /// 阶段 1：托盘「暂停 / 恢复记录」。
   static Future<void> Function()? toggleTrackingHook;
 
@@ -709,66 +833,108 @@ class AppServices {
     await tray.initialize(iconPath: icon);
   }
 
-  /// 正常退出：落盘 + 释放资源。
-  Future<void> shutdown() async {
-    Loggers.app.info('=== PetLife 退出中 ===');
-    try {
-      // ⚠️ 真机回归 #3 的配套修正：**绝不能**把"控制面板窗口"的位置当成桌宠位置。
-      //
-      // 面板模式下窗口矩形 = 面板矩形（1180×760，在 workArea 居中）；
-      // 固定画布模式下窗口矩形 = 整块画布，桌宠位置 = 画布矩形左上角 + petAnchor。
-      // 旧实现无条件保存"当前窗口左上角"，于是"打开面板 → 直接退出"会把面板
-      // 位置写进 `window.x/y`，下次启动桌宠就跑到面板位置去了。
-      final WindowsSurfaceMode mode = windowsSurfaceSession.mode;
-      if (mode == WindowsSurfaceMode.petFixedCanvas) {
-        final Offset? anchor = fixedCanvasAnchor.anchor;
-        final ({double x, double y})? pos = await windowController.position();
-        if (pos != null) {
-          await settings.rememberWindowPosition(
-            pos.x + (anchor?.dx ?? 0),
-            pos.y + (anchor?.dy ?? 0),
-          );
-        }
-      } else {
-        wheelGeometryJournal.record(
-          'pet.position.save_skipped',
-          fields: <String, Object?>{'mode': mode.wireName},
-        );
-      }
-      await settings.rememberSelection(
-        characterId: stateEngine.snapshot.currentCharacter?.id,
-        state: stateEngine.snapshot.state,
-        assetId: stateEngine.snapshot.currentAsset?.id,
-        manualAssetId: stateEngine.snapshot.manualAssetId,
-      );
-    } catch (e, st) {
-      Loggers.settings.warning('退出前保存配置失败', e, st);
-    }
+  /// 统一退出事务（只能经 [requestShutdown] 进入，规格§二的固定顺序）：
+  ///
+  /// 1. 禁止新的窗口和菜单任务（冻结标记 + 通知第二实例「正在退出」+ 收 UI）；
+  /// 2. 停止活动采集和定时器（采集器写入「正常退出」结束原因）；
+  /// 3. 强制落盘当前活动段（`activityTracker.stop()` 内含，且显式 flush）；
+  /// 4. 停止同步任务（严格超时的收尾同步 + 停引擎）；
+  /// 5. 关闭 SQLite 及日志句柄；
+  /// 6. 移除托盘、悬浮窗口和消息窗口；
+  /// 7. 释放互斥体（Runner 在消息循环结束后执行）；
+  /// 8. 结束进程（调用方 / 看门狗）。
+  Future<void> runShutdownTransaction(String source) async {
+    Loggers.app.info('=== PetLife 统一退出事务（source=$source）===');
 
-    try {
+    // ① 冻结新任务 + 通知第二实例「正在退出」（命名事件，防误判无响应）。
+    await _step('标记退出中', () => platform.appLifecycleBridge?.markShuttingDown());
+    await _step('收起菜单与 Region', () => preShutdownHook?.call());
+
+    // 保存窗口位置与角色选择（写库，必须在数据库关闭前完成）。
+    await _step('保存退出前设置', _saveExitSettings);
+
+    // ② 停止活动采集和定时器；③ 强制落盘当前活动段。
+    await _step('停止性能采样', () async {
       perfSampler.stop();
-      // 先停采集：它会写入「正常退出」的结束原因并把最后一段排入 outbox，
-      // 必须在数据库关闭前完成。
+    });
+    await _step('停止活动采集并落盘当前活动段', () async {
       await activityTracker.stop();
-      // Phase 2：再做一次**严格超时**的快速同步（数据已经入队，能传多少传多少）。
-      // 超时即放弃，绝不长时间阻塞退出。
+      await activitySegments.flushNow();
+    });
+
+    // ④ 停止同步任务（收尾同步自带严格超时，绝不长时间阻塞退出）。
+    await _step('同步收尾并停止同步引擎', () async {
       await syncEngine.syncOnShutdown();
       await syncEngine.stop();
+    });
+
+    // 非窗口资源（渲染 / 状态 / 网络 / 缓存）在关库前释放，避免回调再写库。
+    await _step('释放渲染与状态引擎', () async {
       await presenter.dispose();
       (renderer as PetFrameController).dispose();
       await stateEngine.dispose();
-      await trayHost?.dispose();
-      await windowController.dispose();
+    });
+    await _step('释放网络与缓存', () async {
       authenticatedApi.dispose();
       proxyController.dispose();
       cloudStatistics.dispose();
       await decoder.clear();
-      await AppDatabase.close();
       await platform.dispose();
-      await AppLog.dispose();
+    });
+
+    // ⑤ 关闭 SQLite 与日志句柄；标记事务完成（解除 WM_ENDSESSION 等待）。
+    await _step('关闭数据库', AppDatabase.close);
+    await _step('标记退出事务完成',
+        () => platform.appLifecycleBridge?.markShutdownComplete());
+    await _step('关闭日志句柄', AppLog.dispose);
+
+    // ⑥ 移除托盘、悬浮窗口和消息窗口（托盘先于窗口销毁）。
+    await _step('移除系统托盘', () => trayHost?.dispose());
+    await _step('释放窗口控制器', () => windowController.dispose());
+    // 销毁窗口 → Runner 消息循环结束 → 移除消息窗口并释放互斥体（⑦）。
+    // 引擎随窗口销毁而终止：本 await 可能不再返回，属预期路径。
+    await _step('销毁窗口', () => windowController.destroy());
+  }
+
+  /// 单步执行：失败只记录，绝不中断后续步骤（退出路径不能被清理失败卡住）。
+  /// 动作允许返回 null（钩子未注入时）或同步完成。
+  Future<void> _step(String label, Future<void>? Function() action) async {
+    try {
+      await action();
     } catch (e, st) {
-      Loggers.app.warning('释放资源时发生异常', e, st);
+      Loggers.app.warning('退出事务步骤「$label」失败（继续）', e, st);
     }
+  }
+
+  Future<void> _saveExitSettings() async {
+    // ⚠️ 真机回归 #3 的配套修正：**绝不能**把"控制面板窗口"的位置当成桌宠位置。
+    //
+    // 面板模式下窗口矩形 = 面板矩形（1180×760，在 workArea 居中）；
+    // 固定画布模式下窗口矩形 = 整块画布，桌宠位置 = 画布矩形左上角 + petAnchor。
+    // 旧实现无条件保存"当前窗口左上角"，于是"打开面板 → 直接退出"会把面板
+    // 位置写进 `window.x/y`，下次启动桌宠就跑到面板位置去了。
+    final WindowsSurfaceMode mode = windowsSurfaceSession.mode;
+    if (mode == WindowsSurfaceMode.petFixedCanvas) {
+      final Offset? anchor = fixedCanvasAnchor.anchor;
+      final ({double x, double y})? pos = await windowController.position();
+      if (pos != null) {
+        await settings.rememberWindowPosition(
+          pos.x + (anchor?.dx ?? 0),
+          pos.y + (anchor?.dy ?? 0),
+        );
+      }
+    } else {
+      wheelGeometryJournal.record(
+        'pet.position.save_skipped',
+        fields: <String, Object?>{'mode': mode.wireName},
+      );
+    }
+    await settings.rememberSelection(
+      characterId: stateEngine.snapshot.currentCharacter?.id,
+      state: stateEngine.snapshot.state,
+      assetId: stateEngine.snapshot.currentAsset?.id,
+      manualAssetId: stateEngine.snapshot.manualAssetId,
+    );
   }
 
   /// 诊断信息（诊断页展示）。

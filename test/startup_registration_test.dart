@@ -579,6 +579,14 @@ class _FakeStartupRegistrar implements StartupRegistrar {
     if (failOnDisable) throw const StartupRegistrationException('模拟：删除启动项失败');
     command = null;
   }
+
+  /// 清理旧项的调用计数（规格§五：启动对齐时清理已知旧条目）。
+  int pruneCalls = 0;
+
+  @override
+  void pruneLegacyEntries() {
+    pruneCalls++;
+  }
 }
 
 /// 内存版设置仓储（不碰 SQLite）。

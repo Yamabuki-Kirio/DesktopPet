@@ -1,11 +1,29 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import 'constants.dart';
 
-/// 应用数据目录解析。
+/// 显式验收模式门控（规格§九 + 交付审查修正）。
+///
+/// **正式运行绝不读 `PETLIFE_DATA_ROOT`**：持久化的环境变量会污染正式启动。
+/// 只有命令行带 `--acceptance` 开关（由真实进程验收脚本传入，
+/// Runner 经 `set_dart_entrypoint_arguments` 转为 `main(List<String>)` 的参数）
+/// 时，数据目录沙箱重定向才生效。
+class StorageAcceptanceMode {
+  StorageAcceptanceMode._();
+
+  static bool enabled = false;
+
+  /// 从 `main` 的启动参数里识别验收开关。
+  static void parseFromArgs(List<String> args) {
+    enabled = args.contains('--acceptance');
+  }
+}
+
+/// 数据目录解析。
 ///
 /// 目录布局（全部位于系统 AppData，绝不写入用户素材源目录）：
 /// ```
@@ -35,13 +53,18 @@ class AppPaths {
 
   static bool get isInitialized => _instance != null;
 
+  /// 仅测试使用：模拟 `PETLIFE_DATA_ROOT` 的读取结果（null = 未设置）。
+  @visibleForTesting
+  static String? Function()? environmentReaderForTest;
+
   /// 初始化（幂等）。
   static Future<AppPaths> initialize({Directory? overrideRoot}) async {
     final AppPaths? existing = _instance;
     if (existing != null) return existing;
 
-    final Directory base =
-        overrideRoot ?? Directory(p.join((await getApplicationSupportDirectory()).path, AppConstants.appDataFolder));
+    final Directory base = overrideRoot ??
+        _dataRootFromEnvironment() ??
+        Directory(p.join((await getApplicationSupportDirectory()).path, AppConstants.appDataFolder));
     final AppPaths paths = AppPaths._(base);
     await base.create(recursive: true);
     await paths.assetsRoot.create(recursive: true);
@@ -54,8 +77,48 @@ class AppPaths {
     return paths;
   }
 
+  /// 计算即将使用的应用数据根目录路径（含环境变量与验收模式口径）。
+  ///
+  /// 用于**启动失败诊断**：目录初始化失败时，诊断页要显示的正是
+  /// "本次启动试图使用的目录"，而不是一个 `<无法解析>` 占位符。
+  static Future<String> describeDataRoot({Directory? overrideRoot}) async {
+    if (overrideRoot != null) return overrideRoot.path;
+    final Directory? fromEnv = _dataRootFromEnvironment();
+    if (fromEnv != null) return fromEnv.path;
+    return p.join(
+      (await getApplicationSupportDirectory()).path,
+      AppConstants.appDataFolder,
+    );
+  }
+
   /// 仅测试使用：重置单例。
   static void resetForTest() => _instance = null;
+
+  /// 环境变量 `PETLIFE_DATA_ROOT` 指定的数据目录。
+  ///
+  /// **只在显式验收模式（`--acceptance` 开关）下生效**：真实进程验收脚本
+  /// 用它把待测实例的数据指到沙箱目录，20 次连启 / 只读目录等验收都不碰
+  /// 用户真实数据（规格§九：不得用 Mock 代替真实验证，同时不得动用户库）。
+  /// 正式运行时恒为 null（见 [StorageAcceptanceMode]）。
+  ///
+  /// 没有 POSIX 环境变量概念的平台（Android）读取会抛 UnsupportedError，
+  /// 按未设置处理；平台判定不出现在业务层（由 platform_isolation_test 固化）。
+  static Directory? _dataRootFromEnvironment() {
+    if (!StorageAcceptanceMode.enabled) return null;
+    try {
+      // 测试注入点：flutter_test 进程无法改自身环境变量，
+      // 用例通过它模拟 PETLIFE_DATA_ROOT 的读取结果。
+      final String? Function()? reader = environmentReaderForTest;
+      final String? raw =
+          reader != null ? reader() : Platform.environment['PETLIFE_DATA_ROOT'];
+      if (raw == null || raw.trim().isEmpty) return null;
+      return Directory(raw.trim());
+    } on UnsupportedError {
+      return null;
+    } on NoSuchMethodError {
+      return null;
+    }
+  }
 
   File get databaseFile => File(p.join(root.path, AppConstants.databaseFileName));
 
